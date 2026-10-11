@@ -443,6 +443,8 @@
       markLiveReady();
     }catch(err){
       console.error('RAIO X mês selecionado:',err);
+      document.body.classList.remove('raiox-live-loading');
+      document.body.classList.add('raiox-live-error');
     }
   }
 
