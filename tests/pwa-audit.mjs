@@ -86,3 +86,7 @@ assert.match(html,/id=["']backToEntry["'][^>]*href=["']\.\/#home["']/,'Voltar ao
 
 assert.match(app,/if\(location\.hash!==['"]#home['"]\)cin\.classList\.add\(['"]hide['"]\)/,'troca de area nunca deve ocultar HOME');
 assert.match(app,/if\(location\.hash===['"]#home['"]\)\{cin\.classList\.remove\(['"]hide['"]\)/,'HOME deve ser restaurada apos toda inicializacao');
+
+assert.match(html,/data-area-link=["']promotor["']/,'Promotor deve ficar visivel no topo');
+assert.match(html,/data-area-link=["']liner["']/,'Liner deve ficar visivel no topo');
+assert.match(html,/data-area-link=["']closer["']/,'Closer deve ficar visivel no topo');
