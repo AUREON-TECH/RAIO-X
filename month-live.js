@@ -83,10 +83,9 @@
 
   function currentMonthEmpty(month){
     const empty='<div class="current-month-empty"><b>'+(month.status==='closed'?'Histórico de '+esc(month.label):esc(month.label)+' iniciou')+'</b>'+(month.status==='closed'?'Nenhum resultado foi encontrado para este mês.':'Nenhum resultado de performance foi lançado neste mês ainda.')+'</div>';
-    const goalR=num(month.goal_research),goalC=num(month.goal_couples),goalS=num(month.goal_sales),goalV=num(month.goal_vgv);
+    const goalC=num(month.goal_couples),goalS=num(month.goal_sales),goalV=num(month.goal_vgv);
 
     if($('dk'))$('dk').innerHTML=[
-      ['Pesquisas','0','Meta '+fmtInt(goalR)],
       ['Casais','0','Meta '+fmtInt(goalC)],
       ['Vendas','0','Meta '+fmtInt(goalS)],
       ['VGV','R$ 0','Meta '+fmtMoney(goalV)]
@@ -94,7 +93,7 @@
 
     if($('todayOps'))$('todayOps').innerHTML='<div class="ops-pad">'+empty+'</div>';
     if($('metaPace'))$('metaPace').innerHTML='<div class="ops-pad"><div class="ops-head"><div><span class="ops-kicker">META DO MÊS</span><h3>'+esc(month.label)+'</h3></div></div>'+
-      '<div class="pace-summary"><div class="pace-box"><small>Pesquisas</small><b class="c">'+fmtInt(goalR)+'</b><span>faltam '+fmtInt(goalR)+'</span></div>'+
+      '<div class="pace-summary">'+
       '<div class="pace-box"><small>Casais</small><b class="c">'+fmtInt(goalC)+'</b><span>faltam '+fmtInt(goalC)+'</span></div>'+
       '<div class="pace-box"><small>Vendas</small><b class="g">'+fmtInt(goalS)+'</b><span>faltam '+fmtInt(goalS)+'</span></div>'+
       '<div class="pace-box"><small>VGV</small><b class="v">'+fmtMoney(goalV)+'</b><span>faltam '+fmtMoney(goalV)+'</span></div></div></div>';
@@ -257,7 +256,6 @@
       const p=people.find(x=>x.n===sel.value)||people[0];if(!p)return;
       const conv=p.c?p.s/p.c*100:0,qual=p.c?p.q/p.c*100:0,cost=p.c?p.g/p.c:0;
       if($('ik'))$('ik').innerHTML=[
-        ['Pesquisas',p.research,'no mês'],
         [areaRole()==='Promotor de Marketing'?'Casais':'Atendimentos',p.c,(p.c/Math.max(1,p.d)).toFixed(1).replace('.',',')+'/dia ativo'],
         ['Vendas',p.s,conv.toFixed(1).replace('.',',')+'% conversão'],
         ['VGV',fmtMoneyFull(p.v),p.s?fmtMoneyFull(p.v/p.s)+' ticket':'sem venda'],
