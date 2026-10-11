@@ -172,3 +172,5 @@ select{border:1px solid var(--s);border-radius:11px;padding:8px 10px;background:
 .stage-context h3{margin:0;max-width:920px;font-size:16px;line-height:1.45;color:#f5f7ff}
 .stage-context-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .stage-context-meta span{padding:5px 9px;border:1px solid rgba(103,226,255,.15);border-radius:999px;color:#8ea1c8;font-size:8px;font-weight:800;letter-spacing:.1em}
+
+.nav-home{width:100%;margin:4px 0 14px;padding:12px 14px;border:1px solid rgba(63,211,255,.32);border-radius:12px;background:linear-gradient(90deg,rgba(0,151,219,.15),rgba(132,51,255,.12));color:#dff8ff;font-weight:900;letter-spacing:.08em;text-align:left;cursor:pointer}.nav-home:hover{border-color:#39d9ff;box-shadow:0 0 20px rgba(57,217,255,.12)}
