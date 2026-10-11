@@ -375,7 +375,6 @@
     const last=nonzero[nonzero.length-1]||daily[0];
     const area=areaRole(),volumeLabel=area==='Promotor de Marketing'?'casais':'atendimentos';
     if($('dk'))$('dk').innerHTML=[
-      ['Pesquisas',fmtInt(t.research),'mês'],
       [volumeLabel.charAt(0).toUpperCase()+volumeLabel.slice(1),fmtInt(t.c),'mês'],
       ['Vendas',fmtInt(t.s),(t.c?t.s/t.c*100:0).toFixed(1).replace('.',',')+'% conversão'],
       ['VGV',fmtMoneyFull(t.v),'mês'],
