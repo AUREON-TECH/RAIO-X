@@ -185,9 +185,10 @@ function cinema(){
     barVgv.style.width=vgvPct+'%';
   });
 
-  enter.onclick=()=>cin.classList.add('hide');
+  enter.onclick=()=>{cin.classList.add('hide');history.replaceState(null,'',location.pathname+location.search+'#central');};
   const backToEntry=document.getElementById('backToEntry');
-  if(backToEntry) backToEntry.onclick=()=>{cin.classList.remove('hide');cin.style.display='';document.documentElement.scrollTop=0;document.body.scrollTop=0;window.scrollTo(0,0);};
+  if(backToEntry) backToEntry.onclick=()=>{cin.classList.remove('hide');cin.style.display='';history.replaceState(null,'',location.pathname+location.search+'#home');document.documentElement.scrollTop=0;document.body.scrollTop=0;window.scrollTo(0,0);};
+  if(location.hash==='#home')cin.classList.remove('hide');
 }
 
 function renderArenaX(){
