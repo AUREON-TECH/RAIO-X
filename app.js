@@ -359,7 +359,7 @@ function attentionActionFor(metric){
         ?'Revisar diagnóstico, condução do atendimento e passagem para o closer.'
         :'Revisar abordagem, convite, qualidade da transição e o que acontece depois da entrada em sala.',
     'Qualificação':role==='promotor'
-      ?'Reforçar pesquisa e critérios de qualificação antes da entrada em sala.'
+      ?'Reforçar critérios de qualificação antes da entrada em sala.'
       :'Revisar o perfil das oportunidades recebidas e a qualidade da passagem entre etapas.',
     'VGV/casal':'Revisar mix de oportunidades e potencial financeiro dos atendimentos.',
     'Custo/casal':role==='promotor'
@@ -437,7 +437,7 @@ function buildOperationAttention(){
   }
 
   if(nqRate>=30){
-    alerts.push({level:2,title:'NQ acima de 30% da base',text:S.nq+' NQ em '+S.couples+' '+AREA_VOLUME_LABEL+' • '+pct(nqRate)+'.',action:IS_PROMOTOR?'Revisar pesquisa, perfil e critérios antes da entrada em sala.':'Comparar qualidade das oportunidades recebidas e origem dos NQ.'});
+    alerts.push({level:2,title:'NQ acima de 30% da base',text:S.nq+' NQ em '+S.couples+' '+AREA_VOLUME_LABEL+' • '+pct(nqRate)+'.',action:IS_PROMOTOR?'Revisar perfil e critérios de qualificação antes da entrada em sala.':'Comparar qualidade das oportunidades recebidas e origem dos NQ.'});
   }
 
   if(AREA_KEY==='closer'&&AREA_NOTE){
