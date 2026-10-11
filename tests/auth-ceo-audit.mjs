@@ -25,7 +25,7 @@ assert.match(auth,/grant_type=refresh_token/,'persistent session must refresh sa
 assert.match(auth,/localStorage\.setItem\(STORE/,'session must persist locally');
 assert.match(auth,/raiox_app_users/,'login must check access allowlist');
 assert.match(auth,/approval_status/,'login must enforce CEO approval');
-assert.match(auth,/pending\.html/,'pending users must be routed to approval status page');
+// Legacy authenticated management may keep its own approval flow; operation is public.
 assert.match(auth,/raiox-request-access-v2/,'new access requests must use the safe v2 endpoint');
 assert.match(auth,/const canManage=\[['"]ceo['"],['"]manager['"]\]\.includes\(ctx\.access\.role\)/,'management portal visibility must be limited to CEO or manager roles');
 assert.doesNotMatch(auth,/sms|phone|otp/i,'main login must not depend on SMS/phone/OTP');
@@ -74,7 +74,7 @@ assert.match(authCss,/\.auth-mode-switch/,'login/create access switch must be st
 assert.ok(authCss.length>1000,'login must have dedicated visual styling');
 
 assert.match(sw,/xia-performance\.js/,'PWA cache must include XIA data shell');
-assert.match(sw,/pending\.html/,'PWA cache must include pending approval page');
+assert.doesNotMatch(html,/pending\.html/,'open operational RAIO X must not depend on pending approval flow');
 assert.match(sw,/ALWAYS_NETWORK_FIRST/,'auth and CEO assets must prioritize fresh network versions');
 assert.match(sw,/const CACHE = ['"]raiox-v\d+[-\w]*['"]/,'PWA cache must use a versioned RAIO X cache');
 
