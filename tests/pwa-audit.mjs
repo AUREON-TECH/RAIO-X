@@ -75,5 +75,5 @@ assert.match(html,/id=["']raioxAppShell["']/,'operational shell must be availabl
 
 assert.match(html,/id=["']cin["']/,'HOME oficial deve existir');
 assert.match(html,/id=["']backToEntry["']/,'menu deve ter retorno para HOME');
-assert.match(app,/location\.hash===['"]#home['"]/,'HOME deve ter rota deterministica');
+assert.match(app,/location\.hash\s*===\s*['"]#home['"]/,'HOME deve ter rota deterministica');
 assert.match(app,/location\.pathname\+location\.search\+['"]#home['"]/,'botao voltar deve abrir HOME oficial');
