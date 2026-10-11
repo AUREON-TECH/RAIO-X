@@ -70,7 +70,7 @@
       grid.appendChild(superBox);
     }
 
-    const leader=[...prom].sort((x,y)=>num(y.week_volume)-num(x.week_volume)||num(y.week_sales)-num(x.week_sales))[0];
+    const hasWeekly=prom.some(r=>r.daily&&Object.keys(r.daily||{}).length>0);\n    const leader=hasWeekly?[...prom].sort((x,y)=>num(y.week_volume)-num(x.week_volume)||num(y.week_sales)-num(x.week_sales))[0]:null;
     const monthLeader=[...prom].sort((x,y)=>num(y.couples)-num(x.couples)||num(y.sales)-num(x.sales))[0];
     const winner=[...prom].filter(x=>num(x.couples)>=22).sort((x,y)=>num(y.couples)-num(x.couples))[0];
 
@@ -79,9 +79,9 @@
         ?'<b>'+esc(month.label)+'</b> • '+fmtInt(a.couples)+' casais, '+fmtInt(a.sales)+' vendas e '+fmtMoney(a.vgv)+' em VGV.'
         :'<b>'+esc(month.label)+'</b> aberto. As metas do mês já estão definidas. Aguardando o primeiro lançamento de performance.';
     }
-    if($('heroLeaderName'))$('heroLeaderName').textContent=leader?.professional_name||'SEM RESULTADO AINDA';
-    if($('heroLeaderSub'))$('heroLeaderSub').textContent=leader?'CAPITÃO DA SEMANA • '+fmtInt(leader.week_volume)+' NO PERÍODO':'AGUARDANDO PRIMEIRO LANÇAMENTO • '+month.label.toUpperCase();
-    if($('iCap'))$('iCap').textContent=leader?leader.professional_name+' • '+fmtInt(leader.week_volume):'—';
+    if($('heroLeaderName'))$('heroLeaderName').textContent=leader?.professional_name||'SEM DADOS DA SEMANA';
+    if($('heroLeaderSub'))$('heroLeaderSub').textContent=leader?'CAPITÃO DA SEMANA • '+fmtInt(leader.week_volume)+' NO PERÍODO':'SEM FECHAMENTO SEMANAL IMPORTADO';
+    if($('iCap'))$('iCap').textContent=leader?leader.professional_name+' • '+fmtInt(leader.week_volume):'SEM DADOS DA SEMANA';
     if($('i22'))$('i22').textContent=winner?winner.professional_name+' • VENCEDOR':monthLeader&&num(monthLeader.couples)>0?monthLeader.professional_name+' • '+fmtInt(monthLeader.couples)+'/22':'—';
     const cutoffDays=Math.max(1,...prom.map(r=>Number(String(r.updated_on||'').slice(8,10))||0));\n    const days=cutoffDays;
     const daysInMonth=new Date(Number(month.ref_month.slice(0,4)),Number(month.ref_month.slice(5,7)),0).getDate();
