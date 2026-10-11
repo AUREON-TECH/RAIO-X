@@ -227,3 +227,19 @@ body.raiox-live-ready #raioxAppShell,body.raiox-live-error #raioxAppShell{opacit
   .daily-live-grid{grid-template-columns:1fr!important}
   .area-quick a{font-size:10px!important}
 }
+
+/* Capitão como protagonista da HOME no celular */
+@media(max-width:700px){
+  .future-mission{display:flex!important;flex-direction:column!important;padding-top:6px!important}
+  .future-mission .orbital-core{order:1}
+  .future-mission .mission-label{order:2}
+  .future-mission h1{order:3;margin-bottom:2px!important}
+  .future-mission h2{order:4;margin-bottom:5px!important}
+  .future-mission #missionText{order:5;margin-bottom:8px!important}
+  .future-mission .hero-leader{order:6!important;margin-top:4px!important;margin-bottom:8px!important}
+  .future-mission .live-grid{order:7!important;margin-bottom:9px!important}
+  .future-mission .future-divider,.future-mission .goal-grid,.future-mission .super-goal,.future-mission .future-mantra,.future-mission .entry-actions{order:8}
+  .hero-leader{width:100%!important;grid-template-columns:48px minmax(0,1fr)!important;padding:12px!important}
+  .leader-copy strong{font-size:20px!important;line-height:1.05!important;letter-spacing:.035em!important}
+  .leader-copy span{font-size:9px!important}
+}
