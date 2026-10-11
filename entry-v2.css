@@ -589,3 +589,10 @@
 .hero-leader{margin-top:18px!important;border-color:#d99500!important;background:linear-gradient(90deg,rgba(115,68,0,.72),rgba(28,24,15,.9),rgba(100,55,0,.48))!important;box-shadow:0 0 34px rgba(255,168,0,.12)!important}.hero-leader .leader-crown{color:#ffc32b!important;text-shadow:0 0 18px #ff9d00}.hero-leader .leader-copy span{color:#ffcb4a!important}.leader-live{border-color:#e6a100!important;color:#ffc92e!important;background:rgba(255,175,0,.08)!important}
 .entry-command-dock{grid-template-columns:1fr 1fr!important}.entry-primary{background:linear-gradient(120deg,#008acb,#054eac 65%,#0b75e8)!important;border-color:#13caff!important}.entry-install{background:linear-gradient(120deg,#4820a5,#8014a5 55%,#cf167f)!important;border:1px solid #dc3ecb!important;color:white!important}
 @media(max-width:1000px){.entry-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}.entry-kpis .goal-card:last-of-type{grid-column:span 2}.official-goal-strip{grid-template-columns:1fr 1fr}.entry-command-dock{grid-template-columns:1fr!important}}
+
+/* Entrada atomica: nunca exibir placeholders antes da base oficial */
+body.raiox-live-loading .future-mission{visibility:hidden!important;opacity:0!important}
+body.raiox-live-loading .future-cin:before{content:"RAIO X";position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:radial-gradient(circle at 50% 38%,rgba(62,80,210,.22),transparent 28%),linear-gradient(135deg,#020a18,#07132d 55%,#22083c);color:#dff7ff;font-size:clamp(42px,6vw,92px);font-weight:950;letter-spacing:.08em;text-shadow:0 0 32px rgba(69,211,255,.35)}
+body.raiox-live-ready .future-mission{visibility:visible!important;opacity:1!important;transition:opacity .22s ease}
+body.raiox-live-error .future-mission{visibility:visible!important;opacity:1!important}
+body.raiox-live-error .goal-grid:before{content:"Não foi possível atualizar os dados oficiais. Atualize a página.";grid-column:1/-1;padding:18px;border:1px solid rgba(255,89,111,.45);border-radius:16px;background:rgba(120,16,34,.2);color:#ff9cad;font-weight:800}
