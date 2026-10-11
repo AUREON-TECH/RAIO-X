@@ -10,7 +10,7 @@
 
   async function rest(path,token){
     const res=await fetch(cfg.url+'/rest/v1/'+path,{
-      headers:{apikey:cfg.key,Authorization:'Bearer '+token,Accept:'application/json'}
+      headers:{apikey:cfg.key,Authorization:'Bearer '+(token||cfg.key),Accept:'application/json'}
     });
     if(!res.ok)throw new Error('Falha ao carregar o mês atual.');
     return res.json();
@@ -426,10 +426,10 @@
   function markLiveReady(){ document.body.classList.remove('raiox-live-loading'); document.body.classList.add('raiox-live-ready'); }
 
   async function load(ctx){
-    if(!ctx?.session?.access_token||!cfg.url||!cfg.key)return;
+    if(!cfg.url||!cfg.key)return;
     document.body.classList.add('raiox-live-loading');
     try{
-      const token=ctx.session.access_token;
+      const token=ctx?.session?.access_token||cfg.key;
       const months=await rest('ceo_months?select=ref_month,label,status,goal_research,goal_couples,goal_sales,goal_vgv,super_goal_research,super_goal_couples,super_goal_sales,super_goal_vgv&order=ref_month.desc',token);
       if(!months?.length)return;
 
@@ -457,5 +457,5 @@
   }
 
   window.addEventListener('raiox:authenticated',e=>load(e.detail));
-  if(window.RAIOX_AUTH)load(window.RAIOX_AUTH);
+  load(window.RAIOX_AUTH||null);
 })();
