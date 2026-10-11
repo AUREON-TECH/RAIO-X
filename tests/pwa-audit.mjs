@@ -69,4 +69,4 @@ const installJs=fs.readFileSync('install.js','utf8');
 assert.match(installJs,/beforeinstallprompt/,'install controller must handle beforeinstallprompt');
 assert.match(installJs,/appinstalled/,'install controller must detect completed installation');
 assert.match(sw,/\.\/install\.js/,'service worker shell must include install.js');
-assert.match(html,/id=["']entryCeoPortal["'][^>]*hidden/,'CEO entrance CTA must start hidden for non-CEO users');
+assert.doesNotMatch(html,/id=["']authGate["']/,'operational RAIO X must not block access behind login');\nassert.doesNotMatch(html,/phone-access\.js/i,'operational RAIO X must not load the phone approval gate');\nassert.match(html,/id=["']raioxAppShell["']/,'operational shell must be available directly');
