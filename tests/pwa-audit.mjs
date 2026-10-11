@@ -72,3 +72,8 @@ assert.match(sw,/\.\/install\.js/,'service worker shell must include install.js'
 assert.doesNotMatch(html,/id=["']authGate["']/,'operational RAIO X must not block access behind login');
 assert.doesNotMatch(html,/phone-access\.js/i,'operational RAIO X must not load the phone approval gate');
 assert.match(html,/id=["']raioxAppShell["']/,'operational shell must be available directly');
+
+assert.match(html,/id=["']cin["']/,'HOME oficial deve existir');
+assert.match(html,/id=["']backToEntry["']/,'menu deve ter retorno para HOME');
+assert.match(app,/location\.hash===['"]#home['"]/,'HOME deve ter rota deterministica');
+assert.match(app,/location\.pathname\+location\.search\+['"]#home['"]/,'botao voltar deve abrir HOME oficial');
