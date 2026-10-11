@@ -20,7 +20,7 @@
       <button data-tab="goals">Metas</button>
       <button data-tab="teams">Equipes</button>
       <button data-tab="people">Profissionais</button>
-      <button data-tab="xia">XIA</button>
+      <button data-tab="xia">XIA</button>\n      <button data-tab="profileintel">Raio X do Perfil</button>\n      <button data-tab="agenda">Agenda</button>
       <button data-tab="strategy">Estratégia</button>
       <button data-tab="reports">Relatórios</button>
       <div class="nav-admin-label">ADMINISTRAÇÃO</div>
@@ -413,7 +413,19 @@
       <div class="panel"><div class="panel-head"><div><span class="eyebrow">ABERTAS</span><h2>Pendências da Gestão</h2></div></div><div id="tasksList" class="task-list"></div></div>
     </section>
 
-    <section id="reports" class="ceo-tab">
+    <section id="profileintel" class="ceo-tab">
+  <div class="panel xia-ask-panel">
+    <div class="panel-head"><div><span class="eyebrow">RAIO X DO PERFIL</span><h2>Inteligência dos casais</h2><p>Perfil, exceções, brindes e comportamento de compra em uma única leitura.</p></div><span class="pill">CEO • base real</span></div>
+    <div id="profileIntelSummary" class="summary-grid"></div>
+  </div>
+  <div class="panel xia-ask-panel">
+    <div class="panel-head"><div><span class="eyebrow">PERGUNTE AO RAIO X</span><h2>Pergunte sobre os casais</h2><p>Ex.: quantos entraram fora do perfil, qual perfil mais compra ou quanto gastamos de brinde por casal.</p></div></div>
+    <div class="xia-ask-form"><input id="profileIntelQuestion" placeholder="Ex.: Quantas exceções entraram?"><button id="askProfileIntel" class="primary">Perguntar</button></div>
+    <div class="xia-ask-suggestions"><button data-profile-question="Quantas exceções e casais fora do perfil entraram?">Exceções</button><button data-profile-question="Qual perfil mais compra?">Perfil que mais compra</button><button data-profile-question="Quanto gastamos de brinde por casal?">Brindes por casal</button><button data-profile-question="Quais profissões mais compraram?">Profissões</button></div>
+    <div id="profileIntelAnswer" class="raio-answer"><span>Carregando base de perfil...</span></div>
+  </div>
+  <div class="panel"><div class="panel-head"><div><span class="eyebrow">REGRA OPERACIONAL</span><h2>Perfil oficial</h2></div></div><div class="xia-list"><div>Homem 25+ • Mulher 18+</div><div>Casados ou união estável</div><div>Casa própria • Carro 2011+ • Cartão de crédito</div><div>Renda familiar acima de R$ 15 mil</div><div>Profissões definidas; “do lar” é item fora</div><div>Campos do Jordão / casa em Campos é item fora</div><div><b>0 exceções:</b> Perfil completo • <b>1:</b> Perfil aceitável • <b>2+:</b> Fora do perfil</div></div></div>
+</section>\n\n    <section id="reports" class="ceo-tab">
       <div class="report-command panel">
         <div>
           <span class="eyebrow">RAIO-X DE GESTÃO</span>
@@ -507,6 +519,6 @@
 <script src="./area-data.js?build=20261004-clean1"></script>
 <script src="./fx-data.js?build=20261004-clean1"></script>
 <script src="./xia-performance.js?build=20261004-clean1"></script>
-<script src="./ceo.js?build=20261004-clean1"></script>
+<script src="./profile-intel.js?v=1" defer></script>\n<script src="./ceo.js?build=20261004-clean1"></script>
 </body>
 </html>
