@@ -71,7 +71,7 @@
     const leader=hasWeekly?[...prom].sort((x,y)=>num(y.week_volume)-num(x.week_volume)||num(y.week_sales)-num(x.week_sales))[0]:null;
     const monthLeader=[...prom].sort((x,y)=>num(y.couples)-num(x.couples)||num(y.sales)-num(x.sales))[0];
     const winner=[...prom].filter(x=>num(x.couples)>=22).sort((x,y)=>num(y.couples)-num(x.couples))[0];
-    if($('missionText'))$('missionText').innerHTML='<b>DADOS OFICIAIS</b> • '+esc(month.label)+' • atualizado até '+esc(String(prom[0]?.updated_on||'—').split('-').reverse().join('/'));
+    if($('missionText')){ const snap=prom[0]?.snapshot_at?new Date(prom[0].snapshot_at):null; const stamp=snap&&!isNaN(snap)?snap.toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):String(prom[0]?.updated_on||'—').split('-').reverse().join('/'); $('missionText').innerHTML='<b>DADOS OFICIAIS</b> • '+esc(month.label)+' • atualizado em '+esc(stamp); }
     if($('heroLeaderName'))$('heroLeaderName').textContent=leader?.professional_name||monthLeader?.professional_name||'—';
     if($('heroLeaderSub'))$('heroLeaderSub').textContent=leader?'CAPITÃO DA SEMANA • '+fmtInt(leader.week_volume)+' NO PERÍODO':'TOP 1 EM CASAIS • '+fmtInt(monthLeader?.couples||0)+' NO MÊS';
     if($('iCap'))$('iCap').textContent=leader?leader.professional_name+' • '+fmtInt(leader.week_volume):monthLeader?.professional_name||'—';
@@ -431,7 +431,7 @@
 
       fillMonthSelector(months,month.ref_month);
 
-      const rows=await rest('raiox_performance_records?select=professional_name,role,researches,couples,sales,vgv,q,nq,gifts,active_days,week_volume,week_sales,week_vgv,daily,updated_on&ref_month=eq.'+encodeURIComponent(month.ref_month),token);
+      const rows=await rest('raiox_performance_records?select=professional_name,role,researches,couples,sales,vgv,q,nq,gifts,active_days,week_volume,week_sales,week_vgv,daily,updated_on,snapshot_at&ref_month=eq.'+encodeURIComponent(month.ref_month),token);
       updateCurrentMonthLabels(month);
       if(month.ref_month==='2026-09-01'){
         const selected=(rows||[]).filter(r=>r.role===areaRole());
