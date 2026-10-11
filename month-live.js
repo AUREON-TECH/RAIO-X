@@ -49,46 +49,36 @@
   function updateGoalHero(month,rows){
     const prom=rows.filter(r=>r.role==='Promotor de Marketing');
     const a=aggregate(prom);
+    const conv=a.couples>0?a.sales/a.couples*100:0;
+    const ticket=a.sales>0?a.vgv/a.sales:0;
+    const kpi=(cls,icon,label,value,meta,p)=>'<article class="goal-card '+cls+'"><div class="goal-icon">'+icon+'</div><div class="goal-copy"><b>'+label+'</b><strong>'+value+'</strong><small>'+meta+'</small></div><div class="goal-track"><i style="width:'+Math.min(100,Math.max(0,p||0))+'%"></i></div></article>';
     const grid=document.querySelector('.goal-grid');
     if(grid){
-      grid.classList.add('live-month-goals');
+      grid.classList.add('live-month-goals','entry-kpis');
       grid.innerHTML=
-
-        goalCard('cyan-goal','◎','CASAIS',a.couples,num(month.goal_couples),fmtInt,'barCouples')+
-        goalCard('purple-goal','◇','VENDAS',a.sales,num(month.goal_sales),fmtInt,'barSales')+
-        goalCard('violet-goal','↗','VGV',a.vgv,num(month.goal_vgv),fmtMoney,'barVgv');
+        kpi('cyan-goal','●','CASAIS',fmtInt(a.couples),'META: '+fmtInt(month.goal_couples),pct(a.couples,num(month.goal_couples)))+
+        kpi('green-goal','◆','VENDAS',fmtInt(a.sales),'META: '+fmtInt(month.goal_sales),pct(a.sales,num(month.goal_sales)))+
+        kpi('gold-goal','▥','VGV',fmtMoneyFull(a.vgv),'META: '+fmtMoneyFull(month.goal_vgv),pct(a.vgv,num(month.goal_vgv)))+
+        kpi('purple-goal','◎','CONVERSÃO',conv.toFixed(1).replace('.',',')+'%','META: 25%',conv/25*100)+
+        kpi('pink-goal','★','TICKET MÉDIO',fmtMoneyFull(ticket),'VGV ÷ VENDAS',100);
+      const meta=document.createElement('div');
+      meta.className='official-goal-strip';
+      meta.innerHTML='<div><small>META OFICIAL DO MÊS</small><b>'+esc(month.label).toUpperCase()+'</b></div><div><strong>'+fmtInt(month.goal_couples)+'</strong><span>CASAIS</span></div><div><strong>'+fmtInt(month.goal_sales)+'</strong><span>VENDAS</span></div><div><strong>'+fmtMoneyFull(month.goal_vgv)+'</strong><span>VGV</span></div><i style="--progress:'+Math.min(100,pct(a.vgv,num(month.goal_vgv)))+'%"></i>';
+      grid.appendChild(meta);
     }
-    const label=document.querySelector('.mission-label b');
-    if(label)label.textContent='META OFICIAL • '+month.label.toUpperCase()+(month.status==='closed'?' • FECHADO':'');
-    if(grid && (num(month.super_goal_couples)>0 || num(month.super_goal_vgv)>0)){
-      const superBox=document.createElement('div');
-      superBox.className='super-goal-summary';
-      superBox.style.cssText='grid-column:1/-1;margin-top:10px;padding:14px 16px;border:1px solid rgba(255,215,0,.35);border-radius:14px;background:rgba(255,215,0,.06);display:flex;gap:18px;flex-wrap:wrap;align-items:center;justify-content:center;text-align:center';
-      superBox.innerHTML='<b style="color:#ffd86b">SUPER META</b>'+
-        '<span><strong>'+fmtInt(month.super_goal_couples)+'</strong> CASAIS <small>• 22 por dia</small></span>'+
-        '<span><strong>'+fmtMoneyFull(month.super_goal_vgv)+'</strong> VGV</span>';
-      grid.appendChild(superBox);
-    }
-
-    const hasWeekly=prom.some(r=>r.daily&&Object.keys(r.daily||{}).length>0);
+    const label=document.querySelector('.mission-label b'); if(label)label.textContent='DADOS OFICIAIS • TEMPO REAL • '+month.label.toUpperCase();
+    const hasWeekly=prom.some(r=>num(r.week_volume)>0||num(r.week_sales)>0);
     const leader=hasWeekly?[...prom].sort((x,y)=>num(y.week_volume)-num(x.week_volume)||num(y.week_sales)-num(x.week_sales))[0]:null;
     const monthLeader=[...prom].sort((x,y)=>num(y.couples)-num(x.couples)||num(y.sales)-num(x.sales))[0];
     const winner=[...prom].filter(x=>num(x.couples)>=22).sort((x,y)=>num(y.couples)-num(x.couples))[0];
-
-    if($('missionText')){
-      $('missionText').innerHTML=prom.length
-        ?'<b>'+esc(month.label)+'</b> • '+fmtInt(a.couples)+' casais, '+fmtInt(a.sales)+' vendas e '+fmtMoney(a.vgv)+' em VGV.'
-        :'<b>'+esc(month.label)+'</b> aberto. As metas do mês já estão definidas. Aguardando o primeiro lançamento de performance.';
-    }
-    if($('heroLeaderName'))$('heroLeaderName').textContent=leader?.professional_name||'SEM DADOS DA SEMANA';
-    if($('heroLeaderSub'))$('heroLeaderSub').textContent=leader?'CAPITÃO DA SEMANA • '+fmtInt(leader.week_volume)+' NO PERÍODO':'SEM FECHAMENTO SEMANAL IMPORTADO';
-    if($('iCap'))$('iCap').textContent=leader?leader.professional_name+' • '+fmtInt(leader.week_volume):'SEM DADOS DA SEMANA';
-    if($('i22'))$('i22').textContent=winner?winner.professional_name+' • VENCEDOR':monthLeader&&num(monthLeader.couples)>0?monthLeader.professional_name+' • '+fmtInt(monthLeader.couples)+'/22':'—';
-    const cutoffDays=Math.max(1,...prom.map(r=>Number(String(r.updated_on||'').slice(8,10))||0));
-    const days=cutoffDays;
+    if($('missionText'))$('missionText').innerHTML='<b>DADOS OFICIAIS</b> • '+esc(month.label)+' • atualizado até '+esc(String(prom[0]?.updated_on||'—').split('-').reverse().join('/'));
+    if($('heroLeaderName'))$('heroLeaderName').textContent=leader?.professional_name||monthLeader?.professional_name||'—';
+    if($('heroLeaderSub'))$('heroLeaderSub').textContent=leader?'CAPITÃO DA SEMANA • '+fmtInt(leader.week_volume)+' NO PERÍODO':'TOP 1 EM CASAIS • '+fmtInt(monthLeader?.couples||0)+' NO MÊS';
+    if($('iCap'))$('iCap').textContent=leader?leader.professional_name+' • '+fmtInt(leader.week_volume):monthLeader?.professional_name||'—';
+    if($('i22'))$('i22').textContent=winner?winner.professional_name+' • VENCEDOR':monthLeader?monthLeader.professional_name+' • '+fmtInt(monthLeader.couples)+'/22':'—';
+    const days=Math.max(1,...prom.map(r=>Number(String(r.updated_on||'').slice(8,10))||0));
     const daysInMonth=new Date(Number(month.ref_month.slice(0,4)),Number(month.ref_month.slice(5,7)),0).getDate();
-    const projection=a.couples>0?Math.round(a.couples/days*daysInMonth):0;
-    if($('iProj'))$('iProj').textContent=fmtInt(projection)+' casais';
+    if($('iProj'))$('iProj').textContent=fmtInt(a.couples>0?Math.round(a.couples/days*daysInMonth):0)+' casais';
   }
 
   function currentMonthEmpty(month){
