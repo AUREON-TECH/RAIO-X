@@ -204,7 +204,9 @@
       return a;
     },{research:0,c:0,s:0,v:0,q:0,nq:0,g:0,w:0,ws:0,wv:0});
   }
+  let officialDaily=[];
   function dynamicDaily(people,month){
+    if(areaRole()==='Promotor de Marketing'&&officialDaily.length){const days=daysInRefMonth(month.ref_month),by=new Map(officialDaily.map(r=>[Number(String(r.work_date).slice(8,10)),r]));return Array.from({length:days},(_,i)=>{const r=by.get(i+1);return [i+1,num(r?.couples),num(r?.sales),num(r?.vgv),num(r?.q),num(r?.nq)];});}
     const days=daysInRefMonth(month.ref_month);
     return Array.from({length:days},(_,i)=>{
       const sum=people.reduce((a,p)=>{
@@ -389,7 +391,7 @@
       const goal=area==='Promotor de Marketing'?num(month.goal_couples):0;
       $('metaPace').innerHTML='<div class="ops-pad"><div class="ops-head"><div><span class="ops-kicker">RITMO DO MÊS</span><h3>'+esc(month.label)+'</h3></div></div><div class="pace-summary"><div class="pace-box"><small>Volume</small><b class="c">'+fmtInt(t.c)+'</b><span>'+fmtInt(goal)+' meta geral</span></div><div class="pace-box"><small>Vendas</small><b class="g">'+fmtInt(t.s)+'</b><span>'+fmtInt(month.goal_sales)+' meta geral</span></div><div class="pace-box"><small>VGV</small><b class="v">'+fmtMoneyFull(t.v)+'</b><span>'+fmtMoneyFull(month.goal_vgv)+' meta geral</span></div></div></div>';
     }
-    if($('dailyEvolution'))$('dailyEvolution').innerHTML='<div class="ops-pad"><div class="evo-title"><span class="ops-kicker">EVOLUÇÃO DIÁRIA</span><h3>'+esc(month.label)+'</h3><p>'+nonzero.length+' dia(s) com lançamento na base mensal.</p></div></div>';
+    if($('dailyEvolution'))$('dailyEvolution').innerHTML='<div class="ops-pad"><div class="evo-title"><span class="ops-kicker">EVOLUÇÃO DIÁRIA</span><h3>'+esc(month.label)+'</h3><p>'+nonzero.length+' dia(s) com lançamento na base mensal.</p></div><div class="daily-live-grid">'+nonzero.map(r=>'<div class="daily-live-card"><small>'+String(r[0]).padStart(2,'0')+'/'+month.ref_month.slice(5,7)+'</small><b>'+fmtInt(r[1])+' casais</b><span>'+fmtInt(r[2])+' vendas • '+fmtMoneyFull(r[3])+'</span><em>Q '+fmtInt(r[4])+' • NQ '+fmtInt(r[5])+'</em></div>').join('')+'</div></div>';
     if($('radarCaptain'))$('radarCaptain').innerHTML=leaders.slice(0,5).map((p,i)=>'<div class="fight '+(i===0?'lead':'')+'"><div class="place">'+(i+1)+'</div><div class="who"><b>'+esc(p.n)+'</b><small>'+fmtInt(p.ws)+' venda(s) na semana</small></div><div class="score">'+fmtInt(p.w)+'<span class="gap">semana</span></div></div>').join('');
     const byV=[...people].sort((a,b)=>b.v-a.v),byC=[...people].sort((a,b)=>b.c-a.c);
     if($('radarVgv'))$('radarVgv').innerHTML=byV.slice(0,5).map((p,i)=>'<div class="fight '+(i===0?'lead':'')+'"><div class="place">'+(i+1)+'</div><div class="who"><b>'+esc(p.n)+'</b></div><div class="score">'+fmtMoneyFull(p.v)+'</div></div>').join('');
@@ -431,7 +433,7 @@
 
       fillMonthSelector(months,month.ref_month);
 
-      const rows=await rest('raiox_performance_records?select=professional_name,role,researches,couples,sales,vgv,q,nq,gifts,active_days,week_volume,week_sales,week_vgv,daily,updated_on,snapshot_at&ref_month=eq.'+encodeURIComponent(month.ref_month),token);
+      const rows=await rest('raiox_performance_records?select=professional_name,role,researches,couples,sales,vgv,q,nq,gifts,active_days,week_volume,week_sales,week_vgv,daily,updated_on,snapshot_at&ref_month=eq.'+encodeURIComponent(month.ref_month),token);\n      officialDaily=await rest('raiox_daily_totals?select=work_date,couples,sales,vgv,q,nq,snapshot_at&ref_month=eq.'+encodeURIComponent(month.ref_month)+'&order=work_date.asc',token)||[];
       updateCurrentMonthLabels(month);
       if(month.ref_month==='2026-09-01'){
         const selected=(rows||[]).filter(r=>r.role===areaRole());
