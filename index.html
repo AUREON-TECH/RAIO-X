@@ -83,7 +83,7 @@
     <div class="future-mantra">FOCO TOTAL NA OPERAÇÃO • CLAREZA • RITMO • RESULTADO</div>
     <div class="entry-actions">
       <div class="entry-command-dock">
-        <button class="enter entry-primary" id="enter">
+        <button class="enter entry-primary" id="enter" type="button" aria-label="Entrar na Central do RAIO X">
           <span class="entry-action-icon">RX</span>
           <span class="entry-action-copy"><small>OPERAÇÃO</small><b>ENTRAR NO RAIO X</b><em>Performance • Ranking • Diagnóstico</em></span>
           <strong>→</strong>
@@ -310,6 +310,20 @@
 
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  const enter=document.getElementById('enter');
+  const intro=document.getElementById('cin');
+  const openOperation=()=>{
+    if(intro) intro.classList.add('hide');
+    const dash=document.getElementById('dash');
+    if(dash) dash.scrollIntoView({behavior:'smooth',block:'start'});
+    history.replaceState(null,'',location.pathname+location.search+'#dash');
+  };
+  if(enter) enter.addEventListener('click',openOperation);
+  if(location.hash==='#dash') openOperation();
+});
+</script>
 <script src="./auth-config.js" defer></script>
 <script src="./install.js?v=2" defer></script>
 <script src="./auth.js?v=7" defer></script>
