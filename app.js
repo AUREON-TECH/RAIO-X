@@ -593,7 +593,7 @@ function initAreaSelector(){
     url.searchParams.set('v','28');
     location.assign(url.toString());
   };
-  try{if(sessionStorage.getItem('sx-area-switch')==='1'){cin.classList.add('hide');sessionStorage.removeItem('sx-area-switch');}}catch(_){}
+  try{if(sessionStorage.getItem('sx-area-switch')==='1'){if(location.hash!=='#home')cin.classList.add('hide');sessionStorage.removeItem('sx-area-switch');}}catch(_){}
   const statusHead=document.getElementById('rankStatusHead');
   if(statusHead)statusHead.textContent=IS_PROMOTOR?'22 casais':'Dias ativos';
   const topTitle=document.getElementById('topAreaTitle');
@@ -616,6 +616,7 @@ const opts=P.map(p=>`<option>${p.n}</option>`).join('');
 sel.innerHTML=opts;psel.innerHTML=opts;
 sel.onchange=individual;psel.onchange=projection;dsel.onchange=renderDiagnosis;
 initAreaSelector();cinema();radar();dash();renderTodayOps();renderMetaPace();renderDailyEvolution();rank();individual();renderDiagnosis();profile();projection();costs();
+if(location.hash==='#home'){cin.classList.remove('hide');cin.style.display='';window.scrollTo(0,0);}
 
 const swVersion='raiox-v73-live-data'
 const canRegisterSw=location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
