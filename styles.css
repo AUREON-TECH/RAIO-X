@@ -243,3 +243,15 @@ body.raiox-live-ready #raioxAppShell,body.raiox-live-error #raioxAppShell{opacit
   .leader-copy strong{font-size:20px!important;line-height:1.05!important;letter-spacing:.035em!important}
   .leader-copy span{font-size:9px!important}
 }
+
+/* Seletores mobile: mês + três áreas sempre dentro da tela */
+@media(max-width:700px){
+  .top-actions{display:grid!important;grid-template-columns:1fr!important;width:100%!important;gap:8px!important}
+  .month-switch{display:grid!important;grid-template-columns:1fr!important;width:100%!important;min-width:0!important}
+  .month-switch>div:first-child{display:block!important}
+  .month-switch select{display:block!important;width:100%!important;min-height:44px!important}
+  .area-switch:not(.month-switch){display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;overflow:hidden!important}
+  .area-switch:not(.month-switch)>div:first-child,.area-switch:not(.month-switch)>select{display:none!important}
+  .area-quick{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;width:100%!important;gap:5px!important}
+  .area-quick a{min-width:0!important;width:100%!important;box-sizing:border-box!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+}
