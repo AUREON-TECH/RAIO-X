@@ -156,7 +156,7 @@
     select.value=selectedRef;
     select.onchange=()=>{
       try{sessionStorage.setItem('raiox.view.month.v1',select.value);}catch(_){}
-      location.reload();
+      const u=new URL(location.href); u.searchParams.set('month',select.value); location.href=u.toString();
     };
   }
 
@@ -427,7 +427,8 @@
       let stored='';
       try{stored=sessionStorage.getItem('raiox.view.month.v1')||'';}catch(_){}
       const openMonth=months.find(m=>m.status==='open')||months[0];
-      const selectedRef=months.some(m=>m.ref_month===stored)?stored:openMonth.ref_month;
+      const requested=new URLSearchParams(location.search).get('month')||'';
+      const selectedRef=months.some(m=>m.ref_month===requested)?requested:(months.some(m=>m.ref_month===stored)?stored:openMonth.ref_month);
       const month=months.find(m=>m.ref_month===selectedRef)||openMonth;
 
       fillMonthSelector(months,month.ref_month);
@@ -435,13 +436,8 @@
       const rows=await rest('raiox_performance_records?select=professional_name,role,researches,couples,sales,vgv,q,nq,gifts,active_days,week_volume,week_sales,week_vgv,daily,updated_on,snapshot_at&ref_month=eq.'+encodeURIComponent(month.ref_month),token);
       officialDaily=await rest('raiox_daily_totals?select=work_date,couples,sales,vgv,q,nq,snapshot_at&ref_month=eq.'+encodeURIComponent(month.ref_month)+'&order=work_date.asc',token)||[];
       updateCurrentMonthLabels(month);
-      if(month.ref_month==='2026-09-01'){
-        const selected=(rows||[]).filter(r=>r.role===areaRole());
-        if(!selected.length)currentMonthEmpty(month);
-      }else{
-        updateGoalHero(month,rows||[]);
-        renderDynamicMonth(month,rows||[]);
-      }
+      updateGoalHero(month,rows||[]);
+      renderDynamicMonth(month,rows||[]);
       markLiveReady();
     }catch(err){
       console.error('RAIO X mês selecionado:',err);
