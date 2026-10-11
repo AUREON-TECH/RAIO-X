@@ -255,3 +255,14 @@ body.raiox-live-ready #raioxAppShell,body.raiox-live-error #raioxAppShell{opacit
   .area-quick{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;width:100%!important;gap:5px!important}
   .area-quick a{min-width:0!important;width:100%!important;box-sizing:border-box!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
 }
+
+/* Navegação mobile definitiva: 8 etapas funcionais */
+@media(max-width:740px){
+  aside{display:none!important}
+  main{width:100%!important;margin:0!important;padding:12px 10px 92px!important}
+  .bottom{display:flex!important;position:fixed!important;left:8px!important;right:8px!important;bottom:8px!important;z-index:1000!important;gap:4px!important;padding:6px!important;overflow-x:auto!important;overflow-y:hidden!important;grid-template-columns:none!important;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;touch-action:pan-x;background:rgba(5,8,21,.97)!important;border:1px solid rgba(80,220,255,.24)!important;border-radius:16px!important;box-shadow:0 12px 35px rgba(0,0,0,.45)!important}
+  .bottom button{display:block!important;flex:0 0 72px!important;min-width:72px!important;min-height:48px!important;padding:7px 4px!important;border:0!important;border-radius:10px!important;background:transparent!important;color:#8391b7!important;font-size:9px!important;line-height:1.25!important;text-align:center!important;cursor:pointer!important;pointer-events:auto!important;touch-action:manipulation!important;scroll-snap-align:start}
+  .bottom button.active{color:#fff!important;background:linear-gradient(180deg,rgba(24,231,255,.18),rgba(139,92,255,.12))!important;box-shadow:inset 0 0 0 1px rgba(24,231,255,.22)!important}
+  .sec{display:none!important}
+  .sec.on{display:block!important}
+}
