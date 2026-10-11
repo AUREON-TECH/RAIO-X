@@ -53,7 +53,7 @@
     if(grid){
       grid.classList.add('live-month-goals');
       grid.innerHTML=
-        goalCard('research-goal','⌕','PESQUISAS',a.researches,num(month.goal_research),fmtInt,'barResearch')+
+
         goalCard('cyan-goal','◎','CASAIS',a.couples,num(month.goal_couples),fmtInt,'barCouples')+
         goalCard('purple-goal','◇','VENDAS',a.sales,num(month.goal_sales),fmtInt,'barSales')+
         goalCard('violet-goal','↗','VGV',a.vgv,num(month.goal_vgv),fmtMoney,'barVgv');
