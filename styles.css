@@ -186,3 +186,5 @@ body.raiox-live-ready #raioxAppShell,body.raiox-live-error #raioxAppShell{opacit
 .nav-home{white-space:nowrap;overflow:visible;text-overflow:clip;font-size:15px;letter-spacing:.02em}
 
 .nav-home{display:flex;align-items:center;text-decoration:none;box-sizing:border-box;width:100%;}
+
+.area-switch{flex-wrap:wrap}.area-quick{display:flex;gap:6px;width:100%;margin-top:7px}.area-quick a{flex:1;text-align:center;text-decoration:none;padding:7px 9px;border:1px solid rgba(65,221,255,.22);border-radius:9px;background:rgba(6,20,42,.6);color:#9fb3d8;font-size:11px;font-weight:800;white-space:nowrap}.area-quick a:hover,.area-quick a.active{border-color:#28e7ff;color:#5ff1ff;background:rgba(22,190,220,.12);box-shadow:0 0 16px rgba(30,220,255,.08)}
