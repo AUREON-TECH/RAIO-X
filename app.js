@@ -187,7 +187,7 @@ function cinema(){
 
   enter.onclick=()=>cin.classList.add('hide');
   const backToEntry=document.getElementById('backToEntry');
-  if(backToEntry) backToEntry.onclick=()=>{cin.classList.remove('hide');window.scrollTo({top:0,behavior:'smooth'});};
+  if(backToEntry) backToEntry.onclick=()=>{cin.classList.remove('hide');cin.style.display='';document.documentElement.scrollTop=0;document.body.scrollTop=0;window.scrollTo(0,0);};
 }
 
 function renderArenaX(){
