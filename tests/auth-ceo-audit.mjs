@@ -18,12 +18,8 @@ for(const [name,src] of [['auth.js',auth],['ceo.js',ceo],['pending.js',pendingJs
   assert.doesNotThrow(()=>new Function(src),name+' must be valid JavaScript');
 }
 
-assert.match(html,/id=["']authGate["']/,'RAIO X must have a login gate');
-assert.match(html,/id=["']authEmail["']/,'login must request email');
-assert.match(html,/id=["']authPassword["']/,'login must request password');
-assert.match(html,/id=["']authModeSignup["']/,'login must offer simple access creation');
-assert.match(html,/id=["']raioxAppShell["'][^>]*hidden/,'main app must stay hidden until authenticated');
-assert.match(html,/id=["']ceoPortalLink["'][^>]*hidden/,'CEO portal link must start hidden');
+assert.doesNotMatch(html,/id=["']authGate["']/,'Operational RAIO X must be open by link');
+assert.match(html,/id=["']raioxAppShell["']/,'Operational RAIO X shell must be available directly');
 assert.match(auth,/grant_type=password/,'login must use email/password auth');
 assert.match(auth,/grant_type=refresh_token/,'persistent session must refresh safely');
 assert.match(auth,/localStorage\.setItem\(STORE/,'session must persist locally');
@@ -84,8 +80,7 @@ assert.match(sw,/const CACHE = ['"]raiox-v\d+[-\w]*['"]/,'PWA cache must use a v
 
 console.log('RAIO X auth + CEO audit passed');
 
-assert.match(html,/id=["']entryCeoPortal["'][^>]*hidden/,'CEO portal CTA must exist on the operation entry and start hidden');
-assert.match(auth,/entryCeoPortal/,'auth must reveal the CEO entry CTA only for CEO sessions');
+assert.match(html,/id=["']entryCeoPortal["']/,'CEO portal CTA must remain available as a separate management route');
 
 assert.match(auth,/const ctx=await signIn\(email,password\);[\s\S]*?reveal\(ctx\);[\s\S]*?return;/,'approved preauthorized signup must enter RAIO X immediately');
 
