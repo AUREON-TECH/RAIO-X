@@ -73,6 +73,7 @@ assert.doesNotMatch(html,/id=["']authGate["']/,'operational RAIO X must not bloc
 assert.doesNotMatch(html,/phone-access\.js/i,'operational RAIO X must not load the phone approval gate');
 assert.match(html,/id=["']raioxAppShell["']/,'operational shell must be available directly');
 
+const app=fs.readFileSync('app.js','utf8');
 assert.match(html,/id=["']cin["']/,'HOME oficial deve existir');
 assert.match(html,/id=["']backToEntry["']/,'menu deve ter retorno para HOME');
 assert.ok(app.includes("location.hash==='#home'"),'HOME deve ter rota deterministica');
