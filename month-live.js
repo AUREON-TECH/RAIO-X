@@ -70,7 +70,8 @@
       grid.appendChild(superBox);
     }
 
-    const hasWeekly=prom.some(r=>r.daily&&Object.keys(r.daily||{}).length>0);\n    const leader=hasWeekly?[...prom].sort((x,y)=>num(y.week_volume)-num(x.week_volume)||num(y.week_sales)-num(x.week_sales))[0]:null;
+    const hasWeekly=prom.some(r=>r.daily&&Object.keys(r.daily||{}).length>0);
+    const leader=hasWeekly?[...prom].sort((x,y)=>num(y.week_volume)-num(x.week_volume)||num(y.week_sales)-num(x.week_sales))[0]:null;
     const monthLeader=[...prom].sort((x,y)=>num(y.couples)-num(x.couples)||num(y.sales)-num(x.sales))[0];
     const winner=[...prom].filter(x=>num(x.couples)>=22).sort((x,y)=>num(y.couples)-num(x.couples))[0];
 
@@ -83,7 +84,8 @@
     if($('heroLeaderSub'))$('heroLeaderSub').textContent=leader?'CAPITÃO DA SEMANA • '+fmtInt(leader.week_volume)+' NO PERÍODO':'SEM FECHAMENTO SEMANAL IMPORTADO';
     if($('iCap'))$('iCap').textContent=leader?leader.professional_name+' • '+fmtInt(leader.week_volume):'SEM DADOS DA SEMANA';
     if($('i22'))$('i22').textContent=winner?winner.professional_name+' • VENCEDOR':monthLeader&&num(monthLeader.couples)>0?monthLeader.professional_name+' • '+fmtInt(monthLeader.couples)+'/22':'—';
-    const cutoffDays=Math.max(1,...prom.map(r=>Number(String(r.updated_on||'').slice(8,10))||0));\n    const days=cutoffDays;
+    const cutoffDays=Math.max(1,...prom.map(r=>Number(String(r.updated_on||'').slice(8,10))||0));
+    const days=cutoffDays;
     const daysInMonth=new Date(Number(month.ref_month.slice(0,4)),Number(month.ref_month.slice(5,7)),0).getDate();
     const projection=a.couples>0?Math.round(a.couples/days*daysInMonth):0;
     if($('iProj'))$('iProj').textContent=fmtInt(projection)+' casais';
