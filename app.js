@@ -609,10 +609,12 @@ function go(id){
   const step=FLOW_ORDER.indexOf(id)+1;
   const fb=document.getElementById('flowBadge');
   if(fb)fb.textContent='ETAPA '+String(step).padStart(2,'0')+' DE '+String(FLOW_ORDER.length).padStart(2,'0')+' • '+FLOW_LABEL[id];
-  scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(location.hash!=='#home')history.replaceState(null,'',location.pathname+location.search+'#'+id);
+  const activeBottom=document.querySelector('.bottom [data-go="'+id+'"]'); if(activeBottom)activeBottom.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
 }
 
-document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+document.querySelectorAll('[data-go]').forEach(b=>{b.onclick=e=>{e.preventDefault();e.stopPropagation();go(b.dataset.go);};});
 rm.onchange=rank;
 const opts=P.map(p=>`<option>${p.n}</option>`).join('');
 sel.innerHTML=opts;psel.innerHTML=opts;
