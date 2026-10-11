@@ -77,7 +77,7 @@ const app=fs.readFileSync('app.js','utf8');
 assert.match(html,/id=["']cin["']/,'HOME oficial deve existir');
 assert.match(html,/id=["']backToEntry["']/,'menu deve ter retorno para HOME');
 assert.ok(app.includes("location.hash==='#home'"),'HOME deve ter rota deterministica');
-assert.match(app,/location\.pathname\+location\.search\+['"]#home['"]/,'botao voltar deve abrir HOME oficial');
+assert.match(app,/window\.location\.assign\(location\.origin\+location\.pathname\+['"]#home['"]\)/,'botao voltar deve recarregar HOME oficial');
 
 const css=fs.readFileSync('styles.css','utf8');
 assert.match(css,/raiox-live-loading #raioxAppShell/,'Central nao deve aparecer antes dos dados oficiais');
