@@ -13,7 +13,7 @@ const TITLES={
   teams:['Equipes','Defina equipes, horários e vínculos do mês.'],
   people:['Profissionais','Raio-X individual, metas, presença, performance e acompanhamento.'],
   one:['Olho no Olho','Conversa 1:1, compromissos e acompanhamento.'],
-  xia:['XIA','Central única de inteligência: operação, profissional, feedback e próximos passos.'],
+  xia:['XIA','Central única de inteligência: operação, profissional, feedback e próximos passos.'],\n  profileintel:['Raio X do Perfil','Inteligência dos casais, exceções, brindes e comportamento de compra.'],
   strategy:['Estratégia','Pautas, decisões e estratégias da operação.'],
   agenda:['Agenda','Treinamentos, meetings, reuniões e compromissos.'],
   tasks:['Pendências','Tudo que você precisa revisar, conversar ou acompanhar.'],
