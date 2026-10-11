@@ -18,8 +18,7 @@ $('phoneAccessForm')?.addEventListener('submit',async e=>{
  if(phone.length<10)return say('Digite um telefone válido com DDD.');
  say('Enviando solicitação...');
  const token=crypto.randomUUID();
- const r=await fetch(cfg.url+'/rest/v1/raiox_access_requests',{method:'POST',headers:{...headers,'Prefer':'return=representation'},body:JSON.stringify({full_name,phone,device_token:token,status:'pending'})});
- if(r.ok){localStorage.setItem(KEY,token);say('Solicitação enviada. Aguardando aprovação do CEO.',true);return}
+ const r=await fetch(cfg.url+'/rest/v1/rpc/raiox_request_access',{method:'POST',headers,body:JSON.stringify({p_full_name:full_name,p_phone:phone,p_device_token:token})});\n if(r.ok){const data=await r.json();localStorage.setItem(KEY,data?.token||token);if(data?.status==='approved'){return showApp(data?.name||full_name)}say('Solicitação enviada. Aguardando aprovação do CEO.',true);return}
  if(r.status===409){say('Este telefone já possui uma solicitação. A gestão pode revisar o acesso no Portal CEO.');return}
  say('Não foi possível solicitar agora. Tente novamente.');
 });
