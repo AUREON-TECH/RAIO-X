@@ -83,3 +83,6 @@ const css=fs.readFileSync('styles.css','utf8');
 assert.match(css,/raiox-live-loading #raioxAppShell/,'Central nao deve aparecer antes dos dados oficiais');
 
 assert.match(html,/id=["']backToEntry["'][^>]*href=["']\.\/#home["']/,'Voltar ao Inicio deve ser link HTML nativo para HOME');
+
+assert.match(app,/if\(location\.hash!==['"]#home['"]\)cin\.classList\.add\(['"]hide['"]\)/,'troca de area nunca deve ocultar HOME');
+assert.match(app,/if\(location\.hash===['"]#home['"]\)\{cin\.classList\.remove\(['"]hide['"]\)/,'HOME deve ser restaurada apos toda inicializacao');
