@@ -567,3 +567,25 @@
 @media(max-width:760px){
   .goal-grid.live-month-goals{grid-template-columns:1fr}
 }
+
+/* RAIO X VIVO • entrada inspirada no painel oficial */
+.future-cin{background:radial-gradient(circle at 20% 25%,rgba(0,153,255,.18),transparent 30%),radial-gradient(circle at 82% 28%,rgba(185,0,255,.22),transparent 32%),linear-gradient(180deg,#020916 0%,#061329 58%,#07112b 100%)}
+.future-cin:after{content:"";position:absolute;inset:16% 0 auto;height:260px;background:linear-gradient(135deg,transparent 0 16%,rgba(0,133,255,.14) 35%,transparent 52%,rgba(161,29,255,.18) 72%,transparent);filter:blur(3px);pointer-events:none}
+.future-mission{max-width:1680px!important;padding-top:34px!important}
+.future-mission>h1{font-size:clamp(62px,7vw,112px)!important;line-height:.88;background:linear-gradient(90deg,#e9f8ff,#67d8ff 48%,#dd67ff);-webkit-background-clip:text;color:transparent;text-shadow:0 0 36px rgba(81,176,255,.16)}
+.future-mission>h2{letter-spacing:.28em!important;color:#eef4ff!important}
+.future-mission #missionText{color:#aebdd7!important}
+.mission-label{margin-top:16px!important}.mission-label span{display:none!important}
+.entry-kpis{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:18px!important;max-width:none!important;margin-top:20px!important}
+.entry-kpis .goal-card{min-height:132px!important;padding:20px!important;border-radius:20px!important;background:linear-gradient(145deg,rgba(8,31,62,.96),rgba(7,14,39,.94))!important;box-shadow:0 18px 50px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.05)!important}
+.entry-kpis .goal-copy{align-items:flex-start!important;text-align:left!important}.entry-kpis .goal-copy b{font-size:13px;letter-spacing:.1em}.entry-kpis .goal-copy strong{font-size:clamp(25px,2vw,38px)!important;margin:7px 0 2px}.entry-kpis .goal-icon{width:46px!important;height:46px!important;border-radius:13px!important}
+.entry-kpis .cyan-goal{border-color:#08bfff!important}.entry-kpis .cyan-goal b,.entry-kpis .cyan-goal .goal-icon{color:#18cfff!important}
+.entry-kpis .green-goal{border-color:#00e4a1!important}.entry-kpis .green-goal b,.entry-kpis .green-goal .goal-icon{color:#00e4a1!important}
+.entry-kpis .gold-goal{border-color:#ffb000!important}.entry-kpis .gold-goal b,.entry-kpis .gold-goal .goal-icon{color:#ffc02e!important}
+.entry-kpis .purple-goal{border-color:#8b4dff!important}.entry-kpis .purple-goal b,.entry-kpis .purple-goal .goal-icon{color:#b85cff!important}
+.entry-kpis .pink-goal{border-color:#ed2bbd!important}.entry-kpis .pink-goal b,.entry-kpis .pink-goal .goal-icon{color:#ff49cf!important}
+.official-goal-strip{grid-column:1/-1;position:relative;display:grid;grid-template-columns:1.4fr .7fr .7fr 1fr;align-items:center;gap:20px;padding:18px 28px 28px;border:1px solid #00bfee;border-radius:18px;background:linear-gradient(90deg,rgba(0,151,219,.13),rgba(4,26,58,.96),rgba(81,22,126,.32));overflow:hidden}
+.official-goal-strip div{display:flex;flex-direction:column}.official-goal-strip small{color:#25e5ff;font-weight:800;letter-spacing:.12em}.official-goal-strip strong{font-size:24px;color:#f7fbff}.official-goal-strip span{font-size:11px;color:#8499ba;letter-spacing:.12em}.official-goal-strip>i{position:absolute;left:0;bottom:0;height:8px;width:var(--progress);background:linear-gradient(90deg,#00d7ef,#5d7bff,#b734ff);box-shadow:0 0 18px #4d75ff}
+.hero-leader{margin-top:18px!important;border-color:#d99500!important;background:linear-gradient(90deg,rgba(115,68,0,.72),rgba(28,24,15,.9),rgba(100,55,0,.48))!important;box-shadow:0 0 34px rgba(255,168,0,.12)!important}.hero-leader .leader-crown{color:#ffc32b!important;text-shadow:0 0 18px #ff9d00}.hero-leader .leader-copy span{color:#ffcb4a!important}.leader-live{border-color:#e6a100!important;color:#ffc92e!important;background:rgba(255,175,0,.08)!important}
+.entry-command-dock{grid-template-columns:1fr 1fr!important}.entry-primary{background:linear-gradient(120deg,#008acb,#054eac 65%,#0b75e8)!important;border-color:#13caff!important}.entry-install{background:linear-gradient(120deg,#4820a5,#8014a5 55%,#cf167f)!important;border:1px solid #dc3ecb!important;color:white!important}
+@media(max-width:1000px){.entry-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}.entry-kpis .goal-card:last-of-type{grid-column:span 2}.official-goal-strip{grid-template-columns:1fr 1fr}.entry-command-dock{grid-template-columns:1fr!important}}
