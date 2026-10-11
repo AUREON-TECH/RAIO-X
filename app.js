@@ -579,6 +579,7 @@ function initAreaSelector(){
   const selArea=document.getElementById('areaSel');
   const current=document.getElementById('areaCurrent');
   if(current)current.textContent=AREA_LABEL;
+  document.querySelectorAll('[data-area-link]').forEach(a=>a.classList.toggle('active',a.dataset.areaLink===AREA_KEY));
   const mainTitle=document.getElementById('pt');
   if(mainTitle)mainTitle.textContent='Performance • '+AREA_LABEL;
   if(!selArea)return;
