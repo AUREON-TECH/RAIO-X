@@ -83,7 +83,7 @@
     if($('heroLeaderSub'))$('heroLeaderSub').textContent=leader?'CAPITÃO DA SEMANA • '+fmtInt(leader.week_volume)+' NO PERÍODO':'AGUARDANDO PRIMEIRO LANÇAMENTO • '+month.label.toUpperCase();
     if($('iCap'))$('iCap').textContent=leader?leader.professional_name+' • '+fmtInt(leader.week_volume):'—';
     if($('i22'))$('i22').textContent=winner?winner.professional_name+' • VENCEDOR':monthLeader&&num(monthLeader.couples)>0?monthLeader.professional_name+' • '+fmtInt(monthLeader.couples)+'/22':'—';
-    const days=new Date(month.ref_month+'T12:00:00').getUTCMonth()+1===new Date().getMonth()+1?Math.max(1,new Date().getDate()):1;
+    const cutoffDays=Math.max(1,...prom.map(r=>Number(String(r.updated_on||'').slice(8,10))||0));\n    const days=cutoffDays;
     const daysInMonth=new Date(Number(month.ref_month.slice(0,4)),Number(month.ref_month.slice(5,7)),0).getDate();
     const projection=a.couples>0?Math.round(a.couples/days*daysInMonth):0;
     if($('iProj'))$('iProj').textContent=fmtInt(projection)+' casais';
@@ -439,7 +439,7 @@
 
       fillMonthSelector(months,month.ref_month);
 
-      const rows=await rest('raiox_performance_records?select=professional_name,role,researches,couples,sales,vgv,q,nq,gifts,active_days,week_volume,week_sales,week_vgv,daily&ref_month=eq.'+encodeURIComponent(month.ref_month),token);
+      const rows=await rest('raiox_performance_records?select=professional_name,role,researches,couples,sales,vgv,q,nq,gifts,active_days,week_volume,week_sales,week_vgv,daily,updated_on&ref_month=eq.'+encodeURIComponent(month.ref_month),token);
       updateCurrentMonthLabels(month);
       if(month.ref_month==='2026-09-01'){
         const selected=(rows||[]).filter(r=>r.role===areaRole());
