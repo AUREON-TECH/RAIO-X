@@ -26,7 +26,10 @@ assert.match(cacheVersion, /(?:setembrox|raiox)-v\d+[-\w]*/, 'service worker cac
 assert.ok(swLower.includes('response.status === 206') || swLower.includes('response.status!==206') || swLower.includes('response.status != 206'), 'service worker must reject partial responses');
 assert.match(sw, /function\s+isPublicShellRequest\s*\(/, 'service worker must explicitly whitelist public shell requests');
 assert.match(sw, /fetch\(request,\s*\{[^}]*cache:\s*['"]no-store['"][^}]*\}/s, 'navigation must use network fetch with no-store');
-const navigationMatch = sw.match(/if\s*\(isNavigation\)\s*\{([\s\S]*?)\n\s*\}\n\s*\n\s*if\s*\(!isPublicShellRequest/);
+const navigationMatch = sw.match(/if\s*\(isNavigation\)\s*\{([\s\S]*?)
+\s*\}
+\s*
+\s*if\s*\(!isPublicShellRequest/);
 assert.ok(navigationMatch, 'navigation branch must be isolated from shell caching');
 assert.doesNotMatch(navigationMatch[1], /cache\.put\(/, 'navigation responses must not be written to cache');
 
@@ -35,7 +38,8 @@ const appJs = fs.readFileSync('app.js', 'utf8');
 assert.match(html, /rel=["']manifest["'][^>]*manifest\.webmanifest/i, 'index must link manifest.webmanifest');
 assert.match(html, /name=["']viewport["']/i, 'index needs viewport meta');
 assert.match(html, /theme-color/i, 'index needs theme-color meta');
-assert.match(html + '\n' + appJs, /serviceWorker\.register\([^)]*sw\.js/s, 'app must register the service worker');
+assert.match(html + '
+' + appJs, /serviceWorker\.register\([^)]*sw\.js/s, 'app must register the service worker');
 const swVersionMatch = appJs.match(/const\s+swVersion\s*=\s*['"]([^'"]+)['"]/);
 assert.ok(swVersionMatch, 'app must declare the registered service worker version');
 assert.equal(swVersionMatch[1], cacheVersion, 'service worker registration version must match the active cache version');
@@ -69,4 +73,6 @@ const installJs=fs.readFileSync('install.js','utf8');
 assert.match(installJs,/beforeinstallprompt/,'install controller must handle beforeinstallprompt');
 assert.match(installJs,/appinstalled/,'install controller must detect completed installation');
 assert.match(sw,/\.\/install\.js/,'service worker shell must include install.js');
-assert.doesNotMatch(html,/id=["']authGate["']/,'operational RAIO X must not block access behind login');\nassert.doesNotMatch(html,/phone-access\.js/i,'operational RAIO X must not load the phone approval gate');\nassert.match(html,/id=["']raioxAppShell["']/,'operational shell must be available directly');
+assert.doesNotMatch(html,/id=["']authGate["']/,'operational RAIO X must not block access behind login');
+assert.doesNotMatch(html,/phone-access\.js/i,'operational RAIO X must not load the phone approval gate');
+assert.match(html,/id=["']raioxAppShell["']/,'operational shell must be available directly');
