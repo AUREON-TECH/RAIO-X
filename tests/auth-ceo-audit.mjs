@@ -191,7 +191,7 @@ assert.match(ceo,/function renderStrategy\(/,'Strategy tab must render monthly h
 assert.match(ceoHtml,/data-tab=["']goals["']/,'Portal must expose Livro de Metas tab');
 assert.match(ceoHtml,/id=["']goalBookCards["']/,'Livro de Metas must show all monthly goals');
 assert.match(ceoHtml,/id=["']openMonthGoalsFromBook["']/,'Livro de Metas must edit general goals');
-assert.match(ceo,/goals:\['Livro de Metas'/,'Portal titles must include Livro de Metas');
+assert.match(ceo,/goals:\[['"]Metas['"]/,'Portal titles must include the goals module');
 assert.match(ceo,/if\(id==='goals'\)/,'Livro de Metas tab must render its content');
 assert.match(ceoHtml,/id=["']quickPresenceSearch["']/,'Today must expose quick presence search');
 assert.match(ceoHtml,/id=["']saveQuickPresenceBtn["']/,'Quick presence must expose save action');
