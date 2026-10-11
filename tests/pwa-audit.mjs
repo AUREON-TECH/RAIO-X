@@ -81,3 +81,5 @@ assert.match(app,/window\.location\.assign\(location\.origin\+location\.pathname
 
 const css=fs.readFileSync('styles.css','utf8');
 assert.match(css,/raiox-live-loading #raioxAppShell/,'Central nao deve aparecer antes dos dados oficiais');
+
+assert.match(html,/id=["']backToEntry["'][^>]*href=["']\.\/#home["']/,'Voltar ao Inicio deve ser link HTML nativo para HOME');
