@@ -580,6 +580,7 @@ function initAreaSelector(){
   const current=document.getElementById('areaCurrent');
   if(current)current.textContent=AREA_LABEL;
   document.querySelectorAll('[data-area-link]').forEach(a=>a.classList.toggle('active',a.dataset.areaLink===AREA_KEY));
+  document.querySelectorAll('[data-area-link]').forEach(a=>{const u=new URL(location.href);const k=a.dataset.areaLink;if(k==='promotor')u.searchParams.delete('area');else u.searchParams.set('area',k);a.href=u.pathname+u.search+u.hash;});
   const mainTitle=document.getElementById('pt');
   if(mainTitle)mainTitle.textContent='Performance • '+AREA_LABEL;
   if(!selArea)return;
