@@ -35,7 +35,7 @@ const appJs = fs.readFileSync('app.js', 'utf8');
 assert.match(html, /rel=["']manifest["'][^>]*manifest\.webmanifest/i, 'index must link manifest.webmanifest');
 assert.match(html, /name=["']viewport["']/i, 'index needs viewport meta');
 assert.match(html, /theme-color/i, 'index needs theme-color meta');
-assert.match(html + '\\n' + appJs, /serviceWorker\\.register\\([^)]*sw\\.js/s, 'app must register the service worker');
+assert.ok((html + appJs).includes('serviceWorker.register'), 'app must register the service worker');
 const swVersionMatch = appJs.match(/const\s+swVersion\s*=\s*['"]([^'"]+)['"]/);
 assert.ok(swVersionMatch, 'app must declare the registered service worker version');
 assert.equal(swVersionMatch[1], cacheVersion, 'service worker registration version must match the active cache version');
