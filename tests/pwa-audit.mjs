@@ -26,10 +26,7 @@ assert.match(cacheVersion, /(?:setembrox|raiox)-v\d+[-\w]*/, 'service worker cac
 assert.ok(swLower.includes('response.status === 206') || swLower.includes('response.status!==206') || swLower.includes('response.status != 206'), 'service worker must reject partial responses');
 assert.match(sw, /function\s+isPublicShellRequest\s*\(/, 'service worker must explicitly whitelist public shell requests');
 assert.match(sw, /fetch\(request,\s*\{[^}]*cache:\s*['"]no-store['"][^}]*\}/s, 'navigation must use network fetch with no-store');
-const navigationMatch = sw.match(/if\s*\(isNavigation\)\s*\{([\s\S]*?)
-\s*\}
-\s*
-\s*if\s*\(!isPublicShellRequest/);
+const navigationMatch = sw.match(/if\\s*\\(isNavigation\\)\\s*\\{([\\s\\S]*?)\\n\\s*\\}\\n\\s*\\n\\s*if\\s*\\(!isPublicShellRequest/);
 assert.ok(navigationMatch, 'navigation branch must be isolated from shell caching');
 assert.doesNotMatch(navigationMatch[1], /cache\.put\(/, 'navigation responses must not be written to cache');
 
