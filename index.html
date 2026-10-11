@@ -80,7 +80,7 @@
 <div class="app">
 <aside>
   <div class="brand"><div class="bm">X</div><div><b>RAIO X</b><small>RELATÓRIO DE PERFORMANCE</small></div></div>
-  <button class="nav-home" id="backToEntry" type="button">⌂ · INÍCIO</button>\n  <div class="nav-label">FLUXO OPERACIONAL</div>\n  <nav class="nav">
+  <button class="nav-home" id="backToEntry" type="button">← VOLTAR AO INÍCIO</button>\n  <div class="nav-label">FLUXO OPERACIONAL</div>\n  <nav class="nav">
     <button class="active" data-go="dash">01 · Central</button>
     <button data-go="rank">02 · Ranking</button>
     <button data-go="ind">03 · Individual</button>
@@ -91,18 +91,7 @@
     <button data-go="custos">08 · Custos</button>
   </nav>
   <div class="foot"><span class="dot"></span>Base atual • carregando
-    <div class="auth-session-box">
-      <small>USUÁRIO CONECTADO</small>
-      <b id="authUserName">—</b>
-      <small id="authUserEmail">—</small>
-      <div class="auth-session-actions">
-        <a id="ceoPortalLink" href="./ceo.html" hidden>Portal de Gestão</a>
-        <button id="installRaioXSide" type="button" data-install-raiox>Instalar App</button>
-        <button id="raioxLogout" type="button">Sair</button>
-      </div>
-    </div>
-  </div>
-</aside>
+    <div class="public-session-box"><b>RAIO X • ACESSO DIRETO</b><button id="installRaioXSide" type="button" data-install-raiox>Instalar App</button></div>\n  </div>\n</aside>
 
 <main>
 <header class="top">
@@ -303,7 +292,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 <script src="./area-data.js" defer></script>
 <script src="./fx-data.js" defer></script>
-<script src="./app.js?v=74" defer></script>
+<script src="./app.js?v=75" defer></script>
 <script src="./fx-engine.js" defer></script>
 <script src="./sales-count-fix.js" defer></script>
 <script src="./month-live.js?v=12" defer></script>
