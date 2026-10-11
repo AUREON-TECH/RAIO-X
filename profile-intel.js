@@ -31,7 +31,7 @@ async function load(){
   window.__profileRows=rows; const cls=rows.map(r=>classify(r)); const full=cls.filter(x=>x.n===0).length, one=cls.filter(x=>x.n===1).length, out=cls.filter(x=>x.n>=2).length;
   const gifts=rows.reduce((a,r)=>a+Number(r.gift_value||0),0), sales=rows.filter(r=>Number(r.sale_value)>0);
   $('profileIntelSummary').innerHTML=[['Casais',rows.length],['Vendas',sales.length],['Perfil completo',full],['1 exceção',one],['Fora do perfil',out],['Brinde/casal',money(rows.length?gifts/rows.length:0)]].map(x=>'<div class="summary-card"><small>'+x[0]+'</small><b>'+x[1]+'</b></div>').join('');
-  $('profileIntelAnswer').innerHTML='<span>Base carregada: '+rows.length+' casais. Faça uma pergunta ao RAIO X.</span>';
+  $('profileIntelAnswer').innerHTML=rows.length?'<span>Base carregada: '+rows.length+' casais. Faça uma pergunta ao RAIO X.</span>':'<span>Inteligência de perfil aguardando importação dos casais detalhados. Os totais de performance continuam disponíveis normalmente.</span>'; 
  }catch(e){$('profileIntelAnswer').textContent='A base de perfil ainda não foi importada para este mês.'}
 }
 document.addEventListener('click',e=>{if(e.target.id==='askProfileIntel'){const q=$('profileIntelQuestion').value.trim();$('profileIntelAnswer').textContent=answer(q,window.__profileRows||[])} if(e.target.dataset.profileQuestion){$('profileIntelQuestion').value=e.target.dataset.profileQuestion;$('profileIntelAnswer').textContent=answer(e.target.dataset.profileQuestion,window.__profileRows||[])}});
