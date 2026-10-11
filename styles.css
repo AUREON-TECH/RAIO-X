@@ -184,3 +184,5 @@ select{border:1px solid var(--s);border-radius:11px;padding:8px 10px;background:
 body.raiox-live-loading #raioxAppShell{opacity:0;visibility:hidden;pointer-events:none}
 body.raiox-live-ready #raioxAppShell,body.raiox-live-error #raioxAppShell{opacity:1;visibility:visible;transition:opacity .18s ease}
 .nav-home{white-space:nowrap;overflow:visible;text-overflow:clip;font-size:15px;letter-spacing:.02em}
+
+.nav-home{display:flex;align-items:center;text-decoration:none;box-sizing:border-box;width:100%;}
