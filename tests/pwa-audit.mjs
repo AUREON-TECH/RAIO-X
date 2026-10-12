@@ -90,6 +90,6 @@ assert.match(html,/data-area-link=["']promotor["']/,'Promotor deve ficar visivel
 assert.match(html,/data-area-link=["']liner["']/,'Liner deve ficar visivel no topo');
 assert.match(html,/data-area-link=["']closer["']/,'Closer deve ficar visivel no topo');
 
-for(const id of ['dash','rank','ind','fx','diag','perfil','proj','custos']) assert.match(html,new RegExp('data-go=["\\']'+id+'["\\']'),'Aba mobile '+id+' deve existir');
+for (const id of ['dash','rank','ind','fx','diag','perfil','proj','custos']) assert.match(html, new RegExp(`data-go=["']${id}["']`), 'Aba mobile '+id+' deve existir');
 assert.match(css,/\.bottom button\{[^}]*pointer-events:auto!important/s,'Abas mobile devem aceitar toque');
 assert.match(css,/\.sec\.on\{display:block!important\}/,'Etapa ativa deve aparecer no celular');
