@@ -67,14 +67,14 @@
       grid.appendChild(meta);
     }
     const label=document.querySelector('.mission-label b'); if(label)label.textContent='DADOS OFICIAIS • TEMPO REAL • '+month.label.toUpperCase();
-    const hasWeekly=prom.some(r=>num(r.week_volume)>0||num(r.week_sales)>0);
-    const leader=hasWeekly?[...prom].sort((x,y)=>num(y.week_volume)-num(x.week_volume)||num(y.week_sales)-num(x.week_sales))[0]:null;
+    const captain=captainScores(rows,month);
+    const leader=captain.leaders[0]||null;
     const monthLeader=[...prom].sort((x,y)=>num(y.couples)-num(x.couples)||num(y.sales)-num(x.sales))[0];
     const winner=[...prom].filter(x=>num(x.couples)>=22).sort((x,y)=>num(y.couples)-num(x.couples))[0];
     if($('missionText')){ const snap=prom[0]?.snapshot_at?new Date(prom[0].snapshot_at):null; const stamp=snap&&!isNaN(snap)?snap.toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):String(prom[0]?.updated_on||'—').split('-').reverse().join('/'); $('missionText').innerHTML='<b>DADOS OFICIAIS</b> • '+esc(month.label)+' • atualizado em '+esc(stamp); }
-    if($('heroLeaderName'))$('heroLeaderName').textContent=leader?.professional_name||monthLeader?.professional_name||'—';
-    if($('heroLeaderSub'))$('heroLeaderSub').textContent=leader?'CAPITÃO DA SEMANA • '+fmtInt(leader.week_volume)+' NO PERÍODO':'TOP 1 EM CASAIS • '+fmtInt(monthLeader?.couples||0)+' NO MÊS';
-    if($('iCap'))$('iCap').textContent=leader?leader.professional_name+' • '+fmtInt(leader.week_volume):monthLeader?.professional_name||'—';
+    if($('heroLeaderName'))$('heroLeaderName').textContent=leader?.n||'Aguardando resultado semanal';
+    if($('heroLeaderSub'))$('heroLeaderSub').textContent=leader?'CAPITÃO DA SEMANA • '+fmtInt(leader.w)+' CASAIS • '+captain.week.label:'CAPITÃO DA SEMANA • '+captain.week.label+' • SEM DADOS';
+    if($('iCap'))$('iCap').textContent=leader?leader.n+' • '+fmtInt(leader.w)+' casais':'Aguardando dados da semana';
     if($('i22'))$('i22').textContent=winner?winner.professional_name+' • VENCEDOR':monthLeader?monthLeader.professional_name+' • '+fmtInt(monthLeader.couples)+'/22':'—';
     const days=Math.max(1,...prom.map(r=>Number(String(r.updated_on||'').slice(8,10))||0));
     const daysInMonth=new Date(Number(month.ref_month.slice(0,4)),Number(month.ref_month.slice(5,7)),0).getDate();
@@ -193,6 +193,35 @@
       daily:Array.isArray(row.daily)?row.daily:[]
     };
   }
+  // Capitão: semana civil de segunda a domingo, no horário de Brasília.
+  function captainWeek(){
+    const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+    const get=k=>Number(parts.find(p=>p.type===k)?.value||0);
+    const today=new Date(Date.UTC(get('year'),get('month')-1,get('day')));
+    const monday=new Date(today);monday.setUTCDate(today.getUTCDate()-((today.getUTCDay()+6)%7));
+    const sunday=new Date(monday);sunday.setUTCDate(monday.getUTCDate()+6);
+    const iso=d=>d.toISOString().slice(0,10);
+    return {start:iso(monday),end:iso(sunday),label:monday.toLocaleDateString('pt-BR',{timeZone:'UTC',day:'2-digit',month:'2-digit'})+' a '+sunday.toLocaleDateString('pt-BR',{timeZone:'UTC',day:'2-digit',month:'2-digit'})};
+  }
+  function captainScores(rows,month){
+    const week=captainWeek();
+    // Nunca usar totais de uma semana anterior como se fossem da atual.
+    if(month.ref_month.slice(0,7)!==week.start.slice(0,7))return {week,leaders:[]};
+    const leaders=rows.filter(r=>r.role==='Promotor de Marketing').map(r=>{
+      const daily=Array.isArray(r.daily)?r.daily:[];
+      let w=0,ws=0,wv=0,hasDaily=false;
+      for(let i=0;i<daily.length;i++){
+        const day=month.ref_month.slice(0,7)+'-'+String(i+1).padStart(2,'0');
+        if(day<week.start||day>week.end||!Array.isArray(daily[i]))continue;
+        hasDaily=true;w+=num(daily[i][0]);ws+=num(daily[i][1]);wv+=num(daily[i][2]);
+      }
+      if(!hasDaily&&String(r.updated_on||'')>=week.start&&String(r.updated_on||'')<=week.end){
+        w=num(r.week_volume);ws=num(r.week_sales);wv=num(r.week_vgv);
+      }
+      return {n:r.professional_name,w,ws,wv};
+    }).filter(p=>p.w>0).sort((a,b)=>b.w-a.w||b.ws-a.ws||b.wv-a.wv||a.n.localeCompare(b.n,'pt-BR'));
+    return {week,leaders};
+  }
   function dynamicPeople(rows,month){
     return rows.map(r=>legacyPerson(r,month)).sort((a,b)=>b.c-a.c||b.s-a.s||b.v-a.v);
   }
@@ -204,6 +233,7 @@
     },{research:0,c:0,s:0,v:0,q:0,nq:0,g:0,w:0,ws:0,wv:0});
   }
   let officialDaily=[];
+  let currentPerformanceRows=[];
   function dynamicDaily(people,month){
     if(areaRole()==='Promotor de Marketing'&&officialDaily.length){const days=daysInRefMonth(month.ref_month),by=new Map(officialDaily.map(r=>[Number(String(r.work_date).slice(8,10)),r]));return Array.from({length:days},(_,i)=>{const r=by.get(i+1);return [i+1,num(r?.couples),num(r?.sales),num(r?.vgv),num(r?.q),num(r?.nq)];});}
     const days=daysInRefMonth(month.ref_month);
@@ -381,7 +411,8 @@
       ['Brindes',fmtMoneyFull(t.g),'valor'],
       ['Custo/volume',fmtMoneyFull(t.c?t.g/t.c:0),'eficiência']
     ].map(x=>'<div class="card kpi"><small>'+x[0]+'</small><b class="c">'+x[1]+'</b><span class="muted">'+x[2]+'</span></div>').join('');
-    const leaders=[...people].sort((a,b)=>b.w-a.w||b.c-a.c);
+    const captain=captainScores(currentPerformanceRows,month);
+    const leaders=captain.leaders;
     const top=leaders[0];
     if($('todayOps'))$('todayOps').innerHTML='<div class="ops-pad"><div class="ops-head"><div><span class="ops-kicker">ÚLTIMO DIA COM DADOS • '+String(last[0]).padStart(2,'0')+'/'+month.ref_month.slice(5,7)+'</span><h3>Pulso da operação</h3></div></div><div class="today-hero"><b>'+fmtInt(last[1])+'</b><span>'+volumeLabel.toUpperCase()+'</span></div><div class="today-strip"><div class="today-stat"><small>Vendas</small><b class="g">'+fmtInt(last[2])+'</b></div><div class="today-stat"><small>VGV</small><b class="v">'+fmtMoneyFull(last[3])+'</b></div><div class="today-stat"><small>Q / NQ</small><b>'+fmtInt(last[4])+' / '+fmtInt(last[5])+'</b></div></div></div>';
     if($('metaPace')){
@@ -389,7 +420,7 @@
       $('metaPace').innerHTML='<div class="ops-pad"><div class="ops-head"><div><span class="ops-kicker">RITMO DO MÊS</span><h3>'+esc(month.label)+'</h3></div></div><div class="pace-summary"><div class="pace-box"><small>Volume</small><b class="c">'+fmtInt(t.c)+'</b><span>'+fmtInt(goal)+' meta geral</span></div><div class="pace-box"><small>Vendas</small><b class="g">'+fmtInt(t.s)+'</b><span>'+fmtInt(month.goal_sales)+' meta geral</span></div><div class="pace-box"><small>VGV</small><b class="v">'+fmtMoneyFull(t.v)+'</b><span>'+fmtMoneyFull(month.goal_vgv)+' meta geral</span></div></div></div>';
     }
     if($('dailyEvolution'))$('dailyEvolution').innerHTML='<div class="ops-pad"><div class="evo-title"><span class="ops-kicker">EVOLUÇÃO DIÁRIA</span><h3>'+esc(month.label)+'</h3><p>'+nonzero.length+' dia(s) com lançamento na base mensal.</p></div><div class="daily-live-grid">'+nonzero.map(r=>'<div class="daily-live-card"><small>'+String(r[0]).padStart(2,'0')+'/'+month.ref_month.slice(5,7)+'</small><b>'+fmtInt(r[1])+' casais</b><span>'+fmtInt(r[2])+' vendas • '+fmtMoneyFull(r[3])+'</span><em>Q '+fmtInt(r[4])+' • NQ '+fmtInt(r[5])+'</em></div>').join('')+'</div></div>';
-    if($('radarCaptain'))$('radarCaptain').innerHTML=leaders.slice(0,5).map((p,i)=>'<div class="fight '+(i===0?'lead':'')+'"><div class="place">'+(i+1)+'</div><div class="who"><b>'+esc(p.n)+'</b><small>'+fmtInt(p.ws)+' venda(s) na semana</small></div><div class="score">'+fmtInt(p.w)+'<span class="gap">semana</span></div></div>').join('');
+    if($('radarCaptain'))$('radarCaptain').innerHTML='<div class="muted">Semana: '+captain.week.label+' • segunda a domingo • prêmio R$ 200</div>'+(leaders.length?leaders.slice(0,5).map((p,i)=>'<div class="fight '+(i===0?'lead':'')+'"><div class="place">'+(i+1)+'</div><div class="who"><b>'+esc(p.n)+'</b><small>'+fmtInt(p.ws)+' venda(s) na semana</small></div><div class="score">'+fmtInt(p.w)+'<span class="gap">casais</span></div></div>').join(''):'<div class="muted">Sem resultados confirmados nesta semana.</div>');
     const byV=[...people].sort((a,b)=>b.v-a.v),byC=[...people].sort((a,b)=>b.c-a.c);
     if($('radarVgv'))$('radarVgv').innerHTML=byV.slice(0,5).map((p,i)=>'<div class="fight '+(i===0?'lead':'')+'"><div class="place">'+(i+1)+'</div><div class="who"><b>'+esc(p.n)+'</b></div><div class="score">'+fmtMoneyFull(p.v)+'</div></div>').join('');
     if($('radarCouples'))$('radarCouples').innerHTML=byC.slice(0,5).map((p,i)=>'<div class="fight '+(i===0?'lead':'')+'"><div class="place">'+(i+1)+'</div><div class="who"><b>'+esc(p.n)+'</b></div><div class="score">'+fmtInt(p.c)+'</div></div>').join('');
@@ -433,6 +464,7 @@
 
       const rows=await rest('raiox_performance_records?select=professional_name,role,researches,couples,sales,vgv,q,nq,gifts,active_days,week_volume,week_sales,week_vgv,daily,updated_on,snapshot_at&ref_month=eq.'+encodeURIComponent(month.ref_month),token);
       officialDaily=await rest('raiox_daily_totals?select=work_date,couples,sales,vgv,q,nq,snapshot_at&ref_month=eq.'+encodeURIComponent(month.ref_month)+'&order=work_date.asc',token)||[];
+      currentPerformanceRows=rows||[];
       updateCurrentMonthLabels(month);
       updateGoalHero(month,rows||[]);
       renderDynamicMonth(month,rows||[]);
