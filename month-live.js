@@ -297,7 +297,7 @@
       if($('cc'))$('cc').innerHTML='<b>'+esc(p.n)+'</b> está com <b>'+fmtInt(p.c)+'</b> '+(areaRole()==='Promotor de Marketing'?'casais':'atendimentos')+', <b>'+fmtInt(p.s)+'</b> vendas e <b>'+fmtMoneyFull(p.v)+'</b> em VGV no mês '+esc(month.label)+'.';
       if($('cg'))$('cg').innerHTML='<div><small>Conversão</small><b>'+conv.toFixed(1).replace('.',',')+'%</b></div><div><small>Qualificação</small><b>'+qual.toFixed(1).replace('.',',')+'%</b></div><div><small>Dias ativos</small><b>'+fmtInt(p.d)+'</b></div><div><small>Semana</small><b>'+fmtInt(p.w)+'</b></div>';
     };
-    sel.onchange=render;render();
+    sel.onchange=()=>{render();['psel','dsel','fxSel'].forEach(id=>{const el=$(id);if(el&&[...el.options].some(o=>o.value===sel.value)){el.value=sel.value;el.dispatchEvent(new Event('change'));}});};render();
     return {render,options};
   }
   function dynamicProjection(month,people){
@@ -432,7 +432,7 @@
   function renderDynamicMonth(month,rows){
     const selected=rows.filter(r=>r.role===areaRole());
     if(!selected.length){currentMonthEmpty(month);return;}
-    const people=dynamicPeople(selected,month);
+    const people=dynamicPeople(selected,month).filter(p=>!(month.ref_month==='2026-10-01' && /manara\s+alexandre\s+sousa/i.test(p.n)));
     dynamicCentral(month,people);
     dynamicRank(month,people);
     dynamicIndividual(month,people);
