@@ -207,7 +207,7 @@
     const week=captainWeek();
     // Nunca usar totais de uma semana anterior como se fossem da atual.
     if(month.ref_month.slice(0,7)!==week.start.slice(0,7))return {week,leaders:[]};
-    const leaders=rows.filter(r=>r.role==='Promotor de Marketing').map(r=>{
+    const leaders=rows.filter(r=>r.role==='Promotor de Marketing' && !(/manara\s+alexandre\s+sousa/i.test(r.professional_name)&&month.ref_month==='2026-10-01')).map(r=>{
       const daily=Array.isArray(r.daily)?r.daily:[];
       let w=0,ws=0,wv=0,hasDaily=false;
       for(let i=0;i<daily.length;i++){
@@ -432,15 +432,16 @@
   function renderDynamicMonth(month,rows){
     const selected=rows.filter(r=>r.role===areaRole());
     if(!selected.length){currentMonthEmpty(month);return;}
-    const people=dynamicPeople(selected,month).filter(p=>!(month.ref_month==='2026-10-01' && /manara\s+alexandre\s+sousa/i.test(p.n)));
-    dynamicCentral(month,people);
+    const allPeople=dynamicPeople(selected,month);
+    const people=allPeople.filter(p=>!(month.ref_month==='2026-10-01' && /manara\s+alexandre\s+sousa/i.test(p.n)));
+    dynamicCentral(month,allPeople);
     dynamicRank(month,people);
     dynamicIndividual(month,people);
     dynamicProjection(month,people);
     dynamicDiagnosis(month,people);
     dynamicFx(month,people);
     dynamicProfile(month);
-    dynamicCosts(month,people);
+    dynamicCosts(month,allPeople);
   }
 
   function markLiveReady(){ document.body.classList.remove('raiox-live-loading'); document.body.classList.add('raiox-live-ready'); }
