@@ -310,5 +310,13 @@ document.addEventListener('DOMContentLoaded',()=>{
 <script>
 if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js", {scope:"./"}).catch(console.error)); }
 </script>
+
+<style id="rank-mobile-controls-v4">
+@media(max-width:900px){#rank .tw{position:relative!important;overflow-x:scroll!important;overscroll-behavior-x:contain!important;touch-action:pan-x!important;max-width:100%!important}#rank .tw table{width:max-content!important;min-width:1100px!important}#rank .rank-scroll-controls{display:flex!important;align-items:center;justify-content:space-between;gap:10px;margin:10px 0;padding:8px 10px;border:1px solid #24425c;border-radius:12px;background:#0a132a}#rank .rank-scroll-controls button{border:1px solid #2b6d8c;background:#102c45;color:#d8faff;border-radius:10px;min-width:74px;min-height:44px;font-size:15px;font-weight:700}#rank .rank-scroll-controls span{font-size:12px;color:#a7bdd4;text-align:center}}
+@media(min-width:901px){#rank .rank-scroll-controls{display:none!important}}
+</style>
+<script id="rank-scroll-v4">
+(function(){function setup(){var section=document.getElementById('rank');if(!section)return;var wrap=section.querySelector('.tw');if(!wrap||section.querySelector('.rank-scroll-controls'))return;var controls=document.createElement('div');controls.className='rank-scroll-controls';controls.innerHTML='<button type="button" aria-label="Voltar colunas">◀ Voltar</button><span>Deslize ou use as setas para ver VGV, vendas e conversão</span><button type="button" aria-label="Próximas colunas">Avançar ▶</button>';wrap.parentNode.insertBefore(controls,wrap);var buttons=controls.querySelectorAll('button');buttons[0].addEventListener('click',function(){wrap.scrollBy({left:-Math.max(250,wrap.clientWidth*.75),behavior:'smooth'})});buttons[1].addEventListener('click',function(){wrap.scrollBy({left:Math.max(250,wrap.clientWidth*.75),behavior:'smooth'})});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();})();
+</script>
 </body>
 </html>
