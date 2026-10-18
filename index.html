@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 <script src="./app.js?v=83" defer></script>
 <script src="./fx-engine.js" defer></script>
 <script src="./sales-count-fix.js" defer></script>
-<script src="./month-live.js?v=18" defer></script>
+<script src="./month-live.js?v=19" defer></script>
 <script>
 if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js", {scope:"./"}).catch(console.error)); }
 </script>
@@ -317,6 +317,14 @@ if ("serviceWorker" in navigator) { window.addEventListener("load", () => naviga
 </style>
 <script id="rank-scroll-v4">
 (function(){function setup(){var section=document.getElementById('rank');if(!section)return;var wrap=section.querySelector('.tw');if(!wrap||section.querySelector('.rank-scroll-controls'))return;var controls=document.createElement('div');controls.className='rank-scroll-controls';controls.innerHTML='<button type="button" aria-label="Voltar colunas">◀ Voltar</button><span>Deslize ou use as setas para ver VGV, vendas e conversão</span><button type="button" aria-label="Próximas colunas">Avançar ▶</button>';wrap.parentNode.insertBefore(controls,wrap);var buttons=controls.querySelectorAll('button');buttons[0].addEventListener('click',function(){wrap.scrollBy({left:-Math.max(250,wrap.clientWidth*.75),behavior:'smooth'})});buttons[1].addEventListener('click',function(){wrap.scrollBy({left:Math.max(250,wrap.clientWidth*.75),behavior:'smooth'})});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();})();
+</script>
+
+<style id="individual-mobile-v5">
+@media(max-width:900px){#ind #sel{width:100%!important;min-height:52px!important;font-size:16px!important;touch-action:manipulation}#ind .individual-stepper{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}#ind .individual-stepper button{min-height:46px;border:1px solid #29637e;background:#0d2a40;color:#e4faff;border-radius:12px;font-weight:700}}
+@media(min-width:901px){#ind .individual-stepper{display:none}}
+</style>
+<script id="individual-navigation-v5">
+(function(){function init(){var s=document.getElementById('sel');if(!s||document.querySelector('#ind .individual-stepper'))return;var controls=document.createElement('div');controls.className='individual-stepper';controls.innerHTML='<button type="button" aria-label="Profissional anterior">◀ Anterior</button><button type="button" aria-label="Próximo profissional">Próximo ▶</button>';s.insertAdjacentElement('afterend',controls);var b=controls.querySelectorAll('button');function move(n){if(!s.options.length)return;s.selectedIndex=(s.selectedIndex+n+s.options.length)%s.options.length;s.dispatchEvent(new Event('change',{bubbles:true}));}b[0].addEventListener('click',function(){move(-1)});b[1].addEventListener('click',function(){move(1)});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();
 </script>
 </body>
 </html>
