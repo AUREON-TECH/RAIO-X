@@ -58,3 +58,20 @@ html,body{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:1
 @media (max-width:320px){
   .kpis,#dk.kpis,#ik.kpis,#ck.kpis{grid-template-columns:1fr!important}
 }
+
+/* RAIO X v3 — rolagem horizontal de rankings e navegacao no celular */
+@media (max-width:900px){
+  #rank .tw, #rank .card .tw, .sec .tw{
+    display:block!important;width:100%!important;max-width:100%!important;
+    overflow-x:auto!important;overflow-y:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    touch-action:pan-x pan-y!important;
+    overscroll-behavior-x:contain;
+    scrollbar-width:thin;
+  }
+  #rank .tw table, .sec .tw table{width:max-content!important;min-width:850px!important;table-layout:auto!important}
+  #rank .tw th, #rank .tw td{white-space:nowrap!important}
+  #rank .card{min-width:0!important;max-width:100%!important}
+  .bottom{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;touch-action:pan-x!important;-webkit-overflow-scrolling:touch!important;scrollbar-width:thin!important;grid-template-columns:none!important;justify-content:flex-start!important}
+  .bottom button{flex:0 0 66px!important;min-width:66px!important;white-space:nowrap!important}
+}
