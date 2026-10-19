@@ -1,0 +1,20 @@
+/* RAIO X Gestão mobile: compact, readable, no clipped tables */
+@media(max-width:900px){
+ #gestao .rb-compact-audit,#gestao .rb-gift-panel{padding:13px!important}
+ #gestao .rb-compact-audit h3,#gestao .rb-gift-panel h3{font-size:15px!important;margin:0 0 10px!important}
+ #gestao .rb-audit-strip{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important}
+ #gestao .rb-audit-strip>span{display:flex!important;flex-direction:column!important;justify-content:center!important;min-width:0!important;gap:5px!important;padding:10px 6px!important;border:1px solid #24547e!important;background:linear-gradient(145deg,#0c2543,#07152e)!important;border-radius:12px!important;text-align:center!important}
+ #gestao .rb-audit-strip b{font-size:clamp(14px,3.7vw,19px)!important;line-height:1.15!important;color:#67ddff!important;overflow-wrap:anywhere!important}
+ #gestao .rb-audit-strip small{font-size:10px!important;color:#9bb9d4!important;line-height:1.25!important}
+ #gestao .rb-note{font-size:11px!important;line-height:1.5!important;color:#9eb4cb!important;margin:9px 0 0!important}
+ #gestao .rb-income-labels{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important}
+ #gestao .rb-income-labels span{display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;min-height:42px!important;padding:7px 4px!important;font-size:11px!important;color:#d3e8f7!important;background:#091d39!important;border:1px solid #25466d!important;border-radius:10px!important}
+ #gestao .rb-scroll{width:100%!important;max-width:100%!important;overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior-x:contain!important;position:relative!important}
+ #gestao .rb-scroll table{width:max-content!important;min-width:650px!important;table-layout:auto!important;font-size:12px!important}
+ #gestao .rb-scroll th,#gestao .rb-scroll td{white-space:nowrap!important;padding:9px 10px!important}
+ #gestao .rb-scroll th:first-child,#gestao .rb-scroll td:first-child{position:sticky!important;left:0!important;z-index:1!important;min-width:155px!important;max-width:190px!important;white-space:normal!important;background:#081b35!important;box-shadow:2px 0 6px #0005!important}
+ #gestao .rb-scroll th:first-child{z-index:2!important;background:#0a2341!important}
+ #gestao .rb-gift-panel .rb-scroll{margin-top:10px!important}
+ #gestao .rb-panel{min-width:0!important;max-width:100%!important;overflow:hidden!important}
+ #gestao .rb-bar{min-width:0!important}
+}
