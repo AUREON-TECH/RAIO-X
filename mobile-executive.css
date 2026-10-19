@@ -1,0 +1,46 @@
+/* RAIO X — tema executivo mobile inspirado no layout aprovado */
+@media(max-width:900px){
+ :root{--rx-bg:#040b1d;--rx-panel:#08172f;--rx-line:rgba(43,132,198,.38)}
+ body{background:var(--rx-bg)!important;color:#eff7ff!important}
+ #cin{display:none!important}
+ #raioxAppShell>.app{display:block!important;min-height:100dvh!important}
+ .app main{padding:10px 12px calc(98px + env(safe-area-inset-bottom))!important;max-width:100%!important}
+ .top{position:relative!important;display:flex!important;flex-direction:column!important;gap:8px!important;background:transparent!important;border:0!important;box-shadow:none!important;padding:3px 2px 8px!important;margin:0!important}
+ .top>div:first-child{display:block!important}
+ .top #eye{font-size:10px!important;color:#2ad6ff!important;letter-spacing:.14em!important}
+ .top #pt{font-size:clamp(26px,7vw,34px)!important;font-weight:900!important;line-height:1.1!important;letter-spacing:-.03em!important;background:linear-gradient(90deg,#a7f5ff,#39b9ff,#c76cff);-webkit-background-clip:text;background-clip:text;color:transparent!important;margin:0!important}
+ .top #ps,.top #flowBadge{display:none!important}
+ .top-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important;width:100%!important}
+ .top-actions .month-switch,.top-actions .area-switch{width:100%!important;min-width:0!important;max-width:100%!important;min-height:50px!important;padding:7px 9px!important;border:1px solid var(--rx-line)!important;border-radius:12px!important;background:#07162c!important}
+ .top-actions .month-switch>div,.top-actions .area-switch>div:first-child{display:none!important}
+ .top-actions select{font-size:12px!important;font-weight:700!important;min-width:0!important;width:100%!important;max-width:100%!important;min-height:34px!important;padding:4px 20px 4px 4px!important}
+ .top-actions .area-quick,.top-actions .leaders{display:none!important}
+ #dash.sec.on{display:flex!important;flex-direction:column!important;gap:10px!important}
+ #dash #radar{order:0!important;margin:0!important;padding:0!important;background:none!important;border:0!important}
+ #dash #dk{order:1!important}
+ #dash #dailyEvolution{order:2!important}
+ #dash .ops-grid{order:3!important}
+ #dash .grid.command{order:4!important}
+ #dash>.grid.split{order:5!important}
+ #dash .radar-head{display:none!important}
+ #dash .radar-grid{display:flex!important;flex-direction:column!important;gap:8px!important}
+ #dash .radar-grid>.battle{display:none!important}
+ #dash .radar-grid>.battle.captain{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;grid-column:auto!important;box-sizing:border-box!important;padding:12px 13px!important;border:1px solid #bc891b!important;border-radius:16px!important;background:linear-gradient(105deg,rgba(100,60,0,.45),rgba(35,20,64,.7))!important}
+ #dash .battle.captain .battle-title{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important}
+ #dash .battle.captain .battle-title b{font-size:13px!important;color:#ffd34f!important}
+ #dash .battle.captain #radarCaptain{font-size:15px!important;line-height:1.35!important;overflow-wrap:break-word!important;word-break:normal!important}
+ #dash #dk{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;width:100%!important}
+ #dash #dk>.kpi,#dash #dk>.card{min-width:0!important;max-width:100%!important;padding:13px 10px!important;border:1px solid #1265a0!important;border-radius:15px!important;background:linear-gradient(145deg,#071a36,#071125)!important;box-shadow:none!important}
+ #dash #dk>.kpi:nth-child(2),#dash #dk>.card:nth-child(2){border-color:#0e9c7c!important}
+ #dash #dk>.kpi:nth-child(3),#dash #dk>.card:nth-child(3){border-color:#8c42d1!important}
+ #dash #dk b,#dash #dk strong{font-size:clamp(20px,6vw,28px)!important;line-height:1.1!important;overflow-wrap:break-word!important}
+ #dash #dk small{font-size:11px!important;letter-spacing:.02em!important}
+ #dash .ops-card,#dash .card,#dash .radar-wrap,#gestao .rb-panel,#gestao .rb-tile{background:#08172f!important;border:1px solid var(--rx-line)!important;border-radius:15px!important;box-shadow:none!important}
+ #dash #dailyEvolution{padding:12px!important;min-width:0!important;overflow:hidden!important}
+ .bottom{display:flex!important;position:fixed!important;bottom:0!important;left:0!important;right:0!important;z-index:1200!important;gap:5px!important;padding:7px 9px calc(7px + env(safe-area-inset-bottom))!important;background:rgba(4,12,30,.98)!important;border:1px solid rgba(72,144,205,.4)!important;border-radius:18px 18px 0 0!important;overflow-x:auto!important;scroll-snap-type:x proximity!important}
+ .bottom button{flex:0 0 83px!important;min-width:83px!important;min-height:52px!important;white-space:normal!important;font-size:11px!important;line-height:1.3!important;padding:7px 5px!important;border-radius:12px!important}
+ .bottom button.active{border:1px solid #12caff!important;background:linear-gradient(150deg,#06416d,#082340)!important;color:#fff!important;outline:none!important}
+ .sec .stage-context{padding:10px!important}
+ .sec .tw{max-width:100%!important;overflow-x:auto!important}
+ .sec .grid{gap:9px!important}
+}
