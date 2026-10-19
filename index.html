@@ -308,6 +308,24 @@
       <label>Meta de referência<input id="pul-goal" type="number" min="0" step="1" value="605" inputmode="numeric"></label>
     </div>
   </div>
+  <div class="pul-panel"><div class="pul-heading"><h3>Qualidade, vendas e brindes</h3><span>INDICADORES DO CENÁRIO</span></div>
+    <div class="pul-inputs">
+      <label>Vendas projetadas<input id="pul-sales" type="number" min="0" step="1" value="0" inputmode="numeric"></label>
+      <label>Casais qualificados (Q)<input id="pul-q" type="number" min="0" step="1" value="0" inputmode="numeric"></label>
+      <label>Custo total de brindes (R$)<input id="pul-gifts" type="number" min="0" step="50" value="0" inputmode="decimal"></label>
+      <label>Mínimo garantido por captador (R$)<input id="pul-minimum" type="number" min="0" step="50" value="0" inputmode="decimal"></label>
+      <label>Outros custos da captação (R$)<input id="pul-other" type="number" min="0" step="50" value="0" inputmode="decimal"></label>
+      <label>VGV projetado (R$)<input id="pul-vgv" type="number" min="0" step="1000" value="0" inputmode="decimal"></label>
+    </div>
+  </div>
+  <div class="pul-panel"><div class="pul-heading"><h3>Capacidade e operação</h3><span>POR DIA</span></div>
+    <div class="pul-inputs">
+      <label>Salas disponíveis<input id="pul-rooms" type="number" min="0" step="1" value="0" inputmode="numeric"></label>
+      <label>Atendimentos por sala/dia<input id="pul-slots" type="number" min="0" step="1" value="0" inputmode="numeric"></label>
+      <label>Pontos de captação<input id="pul-points" type="number" min="0" step="1" value="0" inputmode="numeric"></label>
+      <label>Regime de trabalho<select id="pul-shift"><option value="diurno">Diurno</option><option value="noturno">Noturno</option><option value="agendamento">Agendamento</option><option value="misto">Misto</option></select></label>
+    </div>
+  </div>
   <div class="pul-results" aria-live="polite">
     <div class="pul-kpi" id="pul-headcount"><span>Variação da equipe</span><strong>—</strong><small>profissionais adicionais</small></div>
     <div class="pul-kpi" id="pul-fixed"><span>Custo mensal</span><strong>—</strong><small>custo mensal estimado</small></div>
@@ -315,6 +333,16 @@
     <div class="pul-kpi" id="pul-percap"><span>Média por captador</span><strong>—</strong><small>casais por captador</small></div>
     <div class="pul-kpi" id="pul-day"><span>Meta diária</span><strong>—</strong><small>casais por dia</small></div>
     <div class="pul-kpi" id="pul-gap"><span>Diferença para referência</span><strong>—</strong><small>diferença para meta</small></div>
+  </div>
+  <div class="pul-results pul-extra-results" aria-live="polite">
+    <div class="pul-kpi" id="pul-conversion"><span>Conversão</span><strong>—</strong><small>vendas ÷ casais</small></div>
+    <div class="pul-kpi" id="pul-qrate"><span>Qualificação</span><strong>—</strong><small>Q ÷ casais</small></div>
+    <div class="pul-kpi" id="pul-giftunit"><span>Brinde por casal</span><strong>—</strong><small>custo médio</small></div>
+    <div class="pul-kpi" id="pul-totalcost"><span>Custo total</span><strong>—</strong><small>equipe + brindes + outros</small></div>
+    <div class="pul-kpi" id="pul-costsale"><span>Custo por venda</span><strong>—</strong><small>custo total ÷ vendas</small></div>
+    <div class="pul-kpi" id="pul-capacity"><span>Capacidade das salas</span><strong>—</strong><small>atendimentos no período</small></div>
+    <div class="pul-kpi" id="pul-point"><span>Casais por ponto</span><strong>—</strong><small>média mensal</small></div>
+    <div class="pul-kpi" id="pul-ticket"><span>Ticket médio</span><strong>—</strong><small>VGV ÷ vendas</small></div>
   </div>
   <div class="pul-panel pul-insight"><div class="pul-heading"><h3>Leitura gerencial</h3><span>EM TEMPO REAL</span></div><p id="pul-analysis"></p><p class="pul-disclaimer">Simulador independente. Os números iniciais reproduzem um cenário da planilha enviada; não são os resultados oficiais do RAIO X. Nenhum dado é salvo ou alterado no banco.</p><button type="button" id="pul-reset">Restaurar cenário inicial</button></div>
 </section>
