@@ -1,0 +1,31 @@
+/* RAIO X • correção da abertura no Android • 19/10/2026 */
+@media(max-width:900px){
+ body:has(#cin:not(.hide)) .bottom{display:none!important}
+ #cin{overflow-y:auto!important;overflow-x:hidden!important;place-items:start center!important;overscroll-behavior:contain}
+ #cin .future-mission{min-height:0!important;height:auto!important;width:100%!important;max-width:480px!important;padding:16px 14px calc(22px + env(safe-area-inset-bottom))!important;justify-content:flex-start!important;gap:5px!important}
+ #cin .orbital-core{width:70px!important;height:68px!important;margin:0 auto!important}
+ #cin .orbital-core .x{width:53px!important;height:53px!important;border-radius:16px!important;font-size:25px!important}
+ #cin .orbit{width:85px!important;max-width:85px!important}
+ #cin .over{font-size:9px!important;letter-spacing:.13em!important;margin:2px 0 0!important;text-align:center!important}
+ #cin .future-mission h1{font-size:clamp(38px,10vw,48px)!important;line-height:1!important;margin:0!important}
+ #cin .future-mission h2{font-size:12px!important;letter-spacing:.1em!important;margin:1px 0!important;text-align:center!important}
+ #cin #missionText{font-size:11px!important;line-height:1.3!important;margin:2px 0 5px!important;text-align:center!important}
+ #cin .mission-label{margin:3px 0!important;font-size:10px!important}
+ #cin .goal-grid{gap:6px!important;margin:3px 0!important}
+ #cin .goal-card{padding:8px!important;min-height:0!important}
+ #cin .hero-leader{margin:5px 0!important;padding:9px 10px!important;min-height:0!important;border-radius:12px!important}
+ #cin .hero-leader .leader-crown{font-size:20px!important}
+ #cin .hero-leader strong{font-size:15px!important;line-height:1.15!important}
+ #cin .hero-leader span{font-size:9px!important}
+ #cin .mgrid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:6px!important;width:100%!important;margin:4px 0!important}
+ #cin .mgrid .mc{padding:8px!important;min-height:0!important;border-radius:10px!important}
+ #cin .mgrid .mc:last-child{grid-column:1/-1}
+ #cin .mgrid .mc small{font-size:10px!important}
+ #cin .mgrid .mc b{font-size:13px!important}
+ #cin .future-mantra{display:none!important}
+ #cin .entry-actions{width:100%!important;margin:6px 0 0!important}
+ #cin .entry-command-dock{gap:7px!important}
+ #cin .entry-primary{min-height:52px!important;padding:9px 12px!important}
+ #cin .entry-primary .entry-action-copy em{display:none!important}
+ #cin .entry-install{display:none!important}
+}
