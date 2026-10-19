@@ -1,0 +1,29 @@
+/* RAIO X • Mobile executive polish v82 */
+@media(max-width:900px){
+ :root{--rx-panel:#07152e;--rx-line:rgba(54,135,204,.32)}
+ body{background:radial-gradient(ellipse at 65% -15%,rgba(26,70,154,.17),transparent 48%),#030b1c!important}
+ .app main{padding-left:12px!important;padding-right:12px!important}
+ body:has(#dash.sec.on) .top{padding:0 0 3px!important}
+ body:has(#dash.sec.on) .top #eye{color:#55dfff!important;letter-spacing:.16em!important;font-weight:800!important}
+ body:has(#dash.sec.on) .top #pt{font-size:clamp(19px,4.7vw,24px)!important;line-height:1.14!important}
+ body:has(#dash.sec.on) .top-actions .month-switch{background:linear-gradient(115deg,#091b39,#0b1732)!important;border-color:#1e5e91!important;box-shadow:inset 0 0 0 1px #13365c!important}
+ #dash #dk{gap:8px!important}
+ #dash #dk>.kpi{position:relative!important;overflow:hidden!important;min-height:91px!important;padding:12px 9px!important;background:linear-gradient(145deg,#0a2041,#07152e)!important;border:1px solid #155c96!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important}
+ #dash #dk>.kpi:nth-child(2){border-color:#108e78!important;background:linear-gradient(145deg,#082d34,#071b2c)!important}
+ #dash #dk>.kpi:nth-child(3){border-color:#8540c5!important;background:linear-gradient(145deg,#27123d,#0b1530)!important}
+ #dash #dk>.kpi:nth-child(4){border-color:#1d78b8!important}
+ #dash #dk>.kpi:nth-child(5){border-color:#a44cb2!important}
+ #dash #dk>.kpi:nth-child(6){border-color:#bc8435!important}
+ #dash #dk>.kpi b{color:#e9faff!important;text-shadow:0 0 14px rgba(44,204,255,.16)!important}
+ #dash #dk>.kpi:nth-child(2) b{color:#42f2c7!important}
+ #dash #dk>.kpi:nth-child(3) b{color:#e3b0ff!important}
+ #dash #dk>.kpi small{color:#a2bad2!important;font-weight:800!important}
+ #dash #dk>.kpi .muted{color:#9ab2cb!important}
+ #dash .radar-grid>.battle.captain{background:radial-gradient(circle at 90% 18%,rgba(255,185,37,.30),transparent 55%),linear-gradient(110deg,#211509,#33200c,#150d22)!important;border:1px solid #dcac46!important;box-shadow:inset 0 1px 0 #ffdc8740,0 7px 24px #0006!important}
+ #dash .battle.captain #radarCaptain{color:#f7e4c4!important}
+ #dash #dailyEvolution{background:linear-gradient(155deg,#0a1b37,#07132a)!important;border-color:#1c5d8e!important}
+ #dash #dailyEvolution .daily-live-card{background:linear-gradient(145deg,#0b2443,#09162d)!important;border:1px solid #24537c!important}
+ #dash #dailyEvolution .daily-live-card small{color:#55ddff!important}
+ .bottom{background:rgba(3,12,30,.98)!important;border-top:1px solid #1c6396!important;box-shadow:0 -8px 25px #0005!important}
+ .bottom button.active{background:linear-gradient(145deg,#08628c,#092345)!important;box-shadow:inset 0 0 0 1px #26c6f988,0 0 12px #05a9ff26!important}
+}
