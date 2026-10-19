@@ -1,0 +1,21 @@
+/* RAIO X v83: accessible controls, executive visual, mobile-first */
+@media(max-width:900px){
+ body:has(#dash.sec.on) .top-actions{display:grid!important;grid-template-columns:minmax(0,44fr) minmax(0,56fr)!important;gap:7px!important;width:100%!important}
+ body:has(#dash.sec.on) .top-actions .area-switch{display:flex!important;align-items:center!important;min-width:0!important;min-height:45px!important;padding:5px 7px!important;border-radius:12px!important;border:1px solid #245781!important;background:linear-gradient(145deg,#0b1b36,#071328)!important}
+ body:has(#dash.sec.on) .top-actions .month-switch{display:flex!important;width:auto!important;min-height:45px!important}
+ body:has(#dash.sec.on) .top-actions .area-switch:not(.month-switch){display:flex!important}
+ body:has(#dash.sec.on) .top-actions .area-switch select{display:block!important;min-width:0!important;width:100%!important;max-width:100%!important;height:35px!important;padding:4px 20px 4px 6px!important;font-size:12px!important;font-weight:750!important;overflow:hidden!important;text-overflow:ellipsis!important;background-color:#07172e!important;color:#e5f7ff!important}
+ body:has(#dash.sec.on) .top-actions .area-quick{display:none!important}
+ body:has(#dash.sec.on) .top #pt{font-size:clamp(23px,6vw,28px)!important;letter-spacing:-.025em!important;white-space:nowrap!important}
+ #dash #dk>.kpi{transition:transform .15s ease,border-color .15s ease!important}
+ #dash #dk>.kpi b{font-variant-numeric:tabular-nums!important}
+ #dash .radar-grid>.battle.captain{padding:13px 15px!important}
+ #dash .battle.captain .battle-title{align-items:center!important}
+ #dash .battle.captain #radarCaptain{font-size:clamp(13px,3.8vw,17px)!important}
+ #dash #dailyEvolution .daily-live-grid{overscroll-behavior-x:contain!important;-webkit-overflow-scrolling:touch!important}
+ #dash #dailyEvolution .daily-live-card{scroll-snap-align:start!important}
+ .bottom{scrollbar-width:none!important;-webkit-overflow-scrolling:touch!important}
+ .bottom::-webkit-scrollbar{display:none!important}
+ .bottom button{font-variant-numeric:tabular-nums!important}
+}
+@media(max-width:360px){body:has(#dash.sec.on) .top #pt{font-size:21px!important}body:has(#dash.sec.on) .top-actions .area-switch select{font-size:11px!important}}
