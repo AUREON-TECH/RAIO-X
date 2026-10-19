@@ -23,6 +23,10 @@ const sum=(arr,k)=>arr.reduce((a,p)=>a+N(p[k]),0),couples=sum(promoters,'couples
 const top=[...active].sort((a,b)=>N(b.vgv)-N(a.vgv)),vol=[...active].sort((a,b)=>N(b.couples)-N(a.couples)),low=[...active].filter(p=>N(p.couples)>0).sort((a,b)=>(N(a.sales)/N(a.couples))-(N(b.sales)/N(b.couples)));
 snapshot={month,rows:promoters,days,summary:{couples,sales,vgv,gift,q,nq},top,vol,low};
 const anomalies=promoters.filter(p=>N(p.sales)===0&&N(p.vgv)>0);
+const dailyCouples=sum(days,'couples'),dailySales=sum(days,'sales'),dailyVgv=sum(days,'vgv');
+const checks=[['Casais',couples,dailyCouples],['Vendas',sales,dailySales],['VGV',vgv,dailyVgv]];
+const mismatches=checks.filter(([,a,b])=>Math.abs(a-b)>0.01);
+const lastDay=days.length?days[days.length-1].work_date:'Nenhum lançamento';
 root.innerHTML='<div class="rb-kpis">'+tile('Casais',fmt(couples)) +tile('Vendas',fmt(sales), (couples?100*sales/couples:0).toFixed(1)+'% conversão')+tile('VGV',money(vgv))+tile('Ticket médio',sales?money(vgv/sales):'—')+tile('Brindes',money(gift),couples?money(gift/couples)+'/casal':'')+tile('Q / NQ',fmt(q)+' / '+fmt(nq),'Classificação agregada')+'</div>'+
 '<div class="rb-panel"><h3>Ranking completo • captação</h3><p>Ordenado por VGV. Inativos preservados no histórico, fora do ranking ativo.</p>'+table(top)+'</div>'+
 '<div class="rb-panel"><h3>Maiores VGVs</h3>'+bar(top.slice(0,8),'vgv')+'</div>'+
@@ -32,7 +36,8 @@ root.innerHTML='<div class="rb-kpis">'+tile('Casais',fmt(couples)) +tile('Vendas
 '<div class="rb-panel"><h3>Renda dos clientes compradores</h3><div class="rb-kpis">'+tile('Até R$ 12 mil','Não disponível')+tile('R$ 12–15 mil','Não disponível')+tile('Acima de R$ 15 mil','Não disponível')+'</div><p>Para medir corretamente, precisamos da renda e do status de compra por casal. Não é possível inferir essas faixas pelos totais mensais.</p></div>'+
 '<div class="rb-panel"><h3>Brindes e custo de aquisição</h3><p>Brindes lançados: <b>'+money(gift)+'</b> • Custo/casal: <b>'+(couples?money(gift/couples):'—')+'</b> • Custo/venda: <b>'+(sales?money(gift/sales):'—')+'</b>. Valores somados dos registros de captação; verificar competência dos lançamentos.</p>'+table([...active].sort((a,b)=>N(b.gifts)-N(a.gifts)).slice(0,8))+'</div>'+
 '<div class="rb-panel"><h3>Evolução diária</h3>'+bar(days.slice(-10).map(d=>({...d,professional_name:new Date(d.work_date+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})})),'sales')+'</div>'+
-'<div class="rb-panel"><h3>Auditoria e pendências</h3><p>Registros com VGV positivo e zero vendas: '+(anomalies.length?anomalies.map(p=>esc(p.professional_name)).join(', '):'nenhum')+'.</p><p>Contratos cancelados, perfil dos compradores e renda por venda exigem dados individuais. Não confundir Q/NQ atendidos com Q/NQ que compraram.</p></div>';
+'<div class="rb-panel"><h3>Conciliação automática de dados</h3><p>Último dia registrado: <b>'+esc(lastDay)+'</b>. Comparação dos registros individuais com os totais diários de outubro.</p><div class="rb-kpis">'+checks.map(([name,individual,diario])=>tile(name, name==='VGV'?money(individual):fmt(individual),'Diário: '+(name==='VGV'?money(diario):fmt(diario))+' • '+(Math.abs(individual-diario)<0.01?'CONFERE':'DIVERGÊNCIA'))).join('')+'</div><p>'+ (mismatches.length?'Atenção: '+mismatches.map(x=>x[0]).join(', ')+' não conciliado(s).':'Os três indicadores conciliam com os lançamentos diários.')+'</p></div>'+ 
+'<div class="rb-panel"><h3>Auditoria e pendências</h3><p>Registros com VGV positivo e zero vendas: <b>'+(anomalies.length?anomalies.map(p=>esc(p.professional_name)+' ('+money(p.vgv)+')').join(', '):'nenhum')+'</b>.</p><p>Não corrigir automaticamente lançamentos financeiros. Contratos cancelados, perfil dos compradores e renda por venda exigem dados individuais vinculados ao contrato. Não confundir Q/NQ atendidos com Q/NQ que compraram.</p></div>';
 $('#rb-updated').textContent='Mês '+month.slice(0,7)+' • dados consultados agora';
 }catch(e){root.innerHTML='<p class="rb-error">'+esc(e.message)+'</p><button id="rb-retry" type="button">Tentar novamente</button>';$('#rb-retry')?.addEventListener('click',refresh)}
 }
