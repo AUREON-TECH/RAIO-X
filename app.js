@@ -623,7 +623,7 @@ sel.onchange=individual;psel.onchange=projection;dsel.onchange=renderDiagnosis;
 initAreaSelector();cinema();radar();dash();renderTodayOps();renderMetaPace();renderDailyEvolution();rank();individual();renderDiagnosis();profile();projection();costs();
 if(location.hash==='#home'){cin.classList.remove('hide');cin.style.display='';window.scrollTo(0,0);}
 
-const swVersion='raiox-v77-mobile-entry'
+const swVersion='raiox-v78-mobile-entry-rebuild'
 const canRegisterSw=location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
 if('serviceWorker'in navigator&&canRegisterSw){
   navigator.serviceWorker.register(`./sw.js?v=${swVersion}`,{updateViaCache:'none'})
