@@ -44,3 +44,27 @@
  .sec .tw{max-width:100%!important;overflow-x:auto!important}
  .sec .grid{gap:9px!important}
 }
+
+/* Gestão: leitura compacta e sem cartões vazios */
+@media(max-width:900px){
+ body:has(#gestao.sec.on) .top-actions .area-switch:not(.month-switch){display:none!important}
+ body:has(#gestao.sec.on) .top-actions{display:flex!important}
+ body:has(#gestao.sec.on) .top-actions .month-switch{width:100%!important;min-height:43px!important;padding:3px 10px!important}
+ body:has(#gestao.sec.on) .top-actions .month-switch select{min-height:35px!important;font-size:14px!important}
+ #gestao.sec.on{display:flex!important;flex-direction:column!important;gap:9px!important}
+ #gestao .stage-context{padding:10px 12px!important;min-height:0!important;margin:0!important;border-radius:12px!important}
+ #gestao .stage-context .eye{font-size:10px!important}
+ #gestao .stage-context h3{font-size:16px!important;margin:3px 0!important}
+ #gestao .stage-context p{font-size:12px!important;line-height:1.35!important;margin:3px 0!important}
+ #gestao .rb-actions{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important}
+ #gestao .rb-actions button{min-width:0!important;min-height:43px!important;padding:7px 4px!important;font-size:11px!important;line-height:1.2!important;white-space:normal!important}
+ #gestao #rb-updated{font-size:11px!important;margin:0!important;color:#8eb4cc!important}
+ #gestao #rb-content{display:flex!important;flex-direction:column!important;gap:9px!important}
+ #gestao .rb-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
+ #gestao .rb-tile{min-height:78px!important;padding:10px!important}
+ #gestao .rb-tile strong{font-size:clamp(18px,5vw,23px)!important;line-height:1.1!important;overflow-wrap:anywhere!important}
+ #gestao .rb-panel{padding:12px!important}
+ #gestao .rb-panel h3{font-size:14px!important;margin-bottom:6px!important}
+ #gestao .rb-panel p{font-size:12px!important;margin:5px 0!important}
+ .bottom [data-go="gestao"]{font-size:10px!important;line-height:1.15!important}
+}
