@@ -561,8 +561,8 @@ function costs(){
   ci.innerHTML=ins('Melhor eficiência',`${a[0].n}: ${moneyFull(co(a[0]))}/casal.`)+ins('Média da operação',`${moneyFull(c)}/casal.`)+ins('Controle','Valores calculados a partir dos brindes efetivos da base oficial.');
 }
 
-const FLOW_ORDER=['dash','rank','ind','fx','diag','perfil','proj','custos'];
-const FLOW_LABEL={dash:'CENTRAL',rank:'RANKING',ind:'INDIVIDUAL',fx:'FX',diag:'DIAGNÓSTICO',perfil:'PERFIL',proj:'PROJEÇÕES',custos:'CUSTOS'};
+const FLOW_ORDER=['dash','rank','ind','fx','diag','perfil','proj','custos','gestao'];
+const FLOW_LABEL={dash:'CENTRAL',rank:'RANKING',ind:'INDIVIDUAL',fx:'FX',diag:'DIAGNÓSTICO',perfil:'PERFIL',proj:'PROJEÇÕES',custos:'CUSTOS',gestao:'GESTÃO'};
 
 const META={
   dash:['CENTRAL DE MISSÃO','Performance da Captação','Onde estamos, onde podemos chegar e o que fazer hoje.'],
@@ -572,6 +572,7 @@ const META={
   diag:['DIAGNÓSTICO X','Central de Atenção','Somente sinais que exigem ação, acompanhamento ou correção.'],
   perfil:['INTELIGÊNCIA DE PERFIL','Perfil de Casais','Quem chega, quem compra e qual perfil gera resultado.'],
   proj:['FUTURO PROVÁVEL','Projeções','Ritmo atual, +10% e alta performance.'],
+  gestao:['GESTÃO RAFAEL BUENO','Gestão Rafael Bueno','Relatório executivo completo para reuniões.'],
   custos:['EFICIÊNCIA FINANCEIRA','Custo de Brinde','Quanto cada casal, Q e venda estão custando.']
 };
 
