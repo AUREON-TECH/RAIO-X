@@ -565,14 +565,14 @@ const FLOW_ORDER=['dash','rank','ind','fx','diag','perfil','proj','custos','gest
 const FLOW_LABEL={dash:'CENTRAL',rank:'RANKING',ind:'INDIVIDUAL',fx:'FX',diag:'DIAGNÓSTICO',perfil:'PERFIL',proj:'PROJEÇÕES',custos:'CUSTOS',gestao:'GESTÃO'};
 
 const META={
-  dash:['CENTRAL DE MISSÃO','Performance da Captação','Onde estamos, onde podemos chegar e o que fazer hoje.'],
+  dash:['CENTRAL DE PERFORMANCE','RAIO X • Central','Onde estamos, onde podemos chegar e o que fazer hoje.'],
   rank:['COMPETITIVIDADE','Ranking de Performance','Resultado e projeção no mesmo lugar.'],
   ind:['PROFESSOR X','Performance Individual','Seu resultado transformado em ação.'],
   fx:['FX • FEEDBACK EXPERIENCE','Relatório de Performance','Constância, resultado, sinais diários e conclusão para uma conversa 1:1.'],
   diag:['DIAGNÓSTICO X','Central de Atenção','Somente sinais que exigem ação, acompanhamento ou correção.'],
   perfil:['INTELIGÊNCIA DE PERFIL','Perfil de Casais','Quem chega, quem compra e qual perfil gera resultado.'],
   proj:['FUTURO PROVÁVEL','Projeções','Ritmo atual, +10% e alta performance.'],
-  gestao:['GESTÃO RAFAEL BUENO','Gestão Raphael Bueno','Relatório executivo completo para reuniões.'],
+  gestao:['GESTÃO RAPHAEL BUENO','Gestão Raphael Bueno','Relatório executivo completo para reuniões.'],
   custos:['EFICIÊNCIA FINANCEIRA','Custo de Brinde','Quanto cada casal, Q e venda estão custando.']
 };
 
@@ -623,7 +623,7 @@ sel.onchange=individual;psel.onchange=projection;dsel.onchange=renderDiagnosis;
 initAreaSelector();cinema();radar();dash();renderTodayOps();renderMetaPace();renderDailyEvolution();rank();individual();renderDiagnosis();profile();projection();costs();
 if(location.hash==='#home'){cin.classList.remove('hide');cin.style.display='';window.scrollTo(0,0);}
 
-const swVersion='raiox-v80-mobile-dashboard'
+const swVersion='raiox-v83-audit-mobile'
 const canRegisterSw=location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
 if('serviceWorker'in navigator&&canRegisterSw){
   navigator.serviceWorker.register(`./sw.js?v=${swVersion}`,{updateViaCache:'none'})
