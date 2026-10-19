@@ -593,7 +593,7 @@ function initAreaSelector(){
     try{sessionStorage.setItem('sx-area-switch','1');}catch(_){}
     const url=new URL(location.href);
     if(next==='promotor')url.searchParams.delete('area'); else url.searchParams.set('area',next);
-    url.searchParams.set('v','28');
+    url.searchParams.set('v','84');
     location.assign(url.toString());
   };
   try{if(sessionStorage.getItem('sx-area-switch')==='1'){if(location.hash!=='#home')cin.classList.add('hide');sessionStorage.removeItem('sx-area-switch');}}catch(_){}
@@ -606,7 +606,7 @@ function initAreaSelector(){
 function go(id){
   document.querySelectorAll('.sec').forEach(x=>x.classList.toggle('on',x.id===id));
   document.querySelectorAll('[data-go]').forEach(x=>x.classList.toggle('active',x.dataset.go===id));
-  const m=META[id];eye.textContent=m[0];pt.textContent=(id==='dash'?'Performance • '+AREA_LABEL:m[1]);ps.textContent=m[2];
+  const m=META[id];eye.textContent=m[0];pt.textContent=(id==='dash'?'RAIO X • '+AREA_LABEL:m[1]);ps.textContent=m[2];
   const step=FLOW_ORDER.indexOf(id)+1;
   const fb=document.getElementById('flowBadge');
   if(fb)fb.textContent='ETAPA '+String(step).padStart(2,'0')+' DE '+String(FLOW_ORDER.length).padStart(2,'0')+' • '+FLOW_LABEL[id];
@@ -623,7 +623,7 @@ sel.onchange=individual;psel.onchange=projection;dsel.onchange=renderDiagnosis;
 initAreaSelector();cinema();radar();dash();renderTodayOps();renderMetaPace();renderDailyEvolution();rank();individual();renderDiagnosis();profile();projection();costs();
 if(location.hash==='#home'){cin.classList.remove('hide');cin.style.display='';window.scrollTo(0,0);}
 
-const swVersion='raiox-v83-audit-mobile'
+const swVersion='raiox-v84-contract-audit'
 const canRegisterSw=location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
 if('serviceWorker'in navigator&&canRegisterSw){
   navigator.serviceWorker.register(`./sw.js?v=${swVersion}`,{updateViaCache:'none'})
