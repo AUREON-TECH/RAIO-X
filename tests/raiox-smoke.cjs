@@ -16,7 +16,7 @@ for(const profile of devicesToTest){
  await page.goto(base,{waitUntil:'domcontentloaded',timeout:45000});
  await page.waitForTimeout(5000);
  await page.evaluate(()=>{document.querySelector('#cin')?.classList.add('hide');const app=document.querySelector('.app');if(app)app.style.display='';});
- const tabs=['dash','rank','ind','fx','diag','perfil','proj','custos','gestao'];
+ const tabs=['dash','rank','ind','fx','diag','perfil','proj','custos','gestao','pulsador'];
  for(const id of tabs){
   const button=page.locator('.bottom [data-go="'+id+'"]');
   if(!await button.count()){console.log('FAIL missing button',profile.name,id);failures++;continue;}
@@ -56,6 +56,12 @@ for(const profile of devicesToTest){
  if(/Consultando resultados oficiais|Consultando o banco de dados/.test(report)){console.log('WARN report still loading',profile.name);}
  const buttons=['rb-refresh','rb-ppt','rb-csv'];
  for(const id of buttons){const b=page.locator('#'+id);if(!await b.count()||!await b.isEnabled()){console.log('FAIL report button',profile.name,id);failures++;}}
+ await page.locator('.bottom [data-go="pulsador"]').click();
+ const pul=page.locator('#pul-percap strong');
+ if(!await pul.count()||!(await pul.innerText()).trim()){console.log('FAIL Pulsador missing output',profile.name);failures++;}
+ const pulInput=page.locator('#pul-current');await pulInput.fill('25');await pulInput.dispatchEvent('input');
+ const changed=await pul.innerText();if(!changed||changed==='22,5'){console.log('FAIL Pulsador recalculation',profile.name);failures++;}
+ await page.locator('#pul-reset').click();if(await pulInput.inputValue()!=='20'){console.log('FAIL Pulsador reset',profile.name);failures++;}
  const selectors=await page.evaluate(()=>[...document.querySelectorAll('select')].map(s=>({id:s.id,options:s.options.length,disabled:s.disabled})));
  console.log('SELECTS',profile.name,JSON.stringify(selectors));
  console.log('JS ERRORS',profile.name,JSON.stringify(errors.slice(0,12)));
