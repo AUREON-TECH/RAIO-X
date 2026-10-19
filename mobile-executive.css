@@ -68,3 +68,5 @@
  #gestao .rb-panel p{font-size:12px!important;margin:5px 0!important}
  .bottom [data-go="gestao"]{font-size:10px!important;line-height:1.15!important}
 }
+
+@media(max-width:900px){#dash .radar-grid>.battle.captain{position:relative!important;overflow:hidden!important;min-height:145px!important;padding:20px!important;border:1px solid #f4c04b!important;border-radius:20px!important;background:radial-gradient(circle at 90% 15%,#704314,#251606 65%,#130e21)!important;box-shadow:0 0 22px #b2782533!important}#dash .battle.captain:before{content:'♛';position:absolute;right:12px;top:5px;font-size:95px;color:#dba53340;pointer-events:none}#dash .battle.captain .battle-title b{color:#ffd96c!important;font-size:12px!important;letter-spacing:1px!important}#dash .battle.captain #radarCaptain{position:relative!important;font-size:clamp(20px,6vw,27px)!important;font-weight:900!important;line-height:1.2!important;color:#fff0c5!important;word-break:normal!important}}
