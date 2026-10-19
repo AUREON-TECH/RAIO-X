@@ -572,7 +572,7 @@ const META={
   diag:['DIAGNÓSTICO X','Central de Atenção','Somente sinais que exigem ação, acompanhamento ou correção.'],
   perfil:['INTELIGÊNCIA DE PERFIL','Perfil de Casais','Quem chega, quem compra e qual perfil gera resultado.'],
   proj:['FUTURO PROVÁVEL','Projeções','Ritmo atual, +10% e alta performance.'],
-  gestao:['GESTÃO RAFAEL BUENO','Gestão Rafael Bueno','Relatório executivo completo para reuniões.'],
+  gestao:['GESTÃO RAFAEL BUENO','Gestão Raphael Bueno','Relatório executivo completo para reuniões.'],
   custos:['EFICIÊNCIA FINANCEIRA','Custo de Brinde','Quanto cada casal, Q e venda estão custando.']
 };
 
