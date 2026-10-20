@@ -404,7 +404,7 @@
     const area=areaRole(),volumeLabel=area==='Promotor de Marketing'?'casais':'atendimentos';
     if($('dk'))$('dk').innerHTML=[
       [volumeLabel.charAt(0).toUpperCase()+volumeLabel.slice(1),fmtInt(t.c),'mês'],
-      ['Vendas',fmtInt(t.s),(t.c?t.s/t.c*100:0).toFixed(1).replace('.',',')+'% conversão'],
+      ['Vendas',fmtInt(t.s),month.ref_month==='2026-10-01'?'até 18/10 • validar dia 19':(t.c?t.s/t.c*100:0).toFixed(1).replace('.',',')+'% conversão'],
       ['VGV',fmtMoneyFull(t.v),'mês'],
       ['Q',fmtInt(t.q),t.c?(t.q/t.c*100).toFixed(1).replace('.',',')+'% qualificação':'0%'],
       ['NQ',fmtInt(t.nq),'não qualificados'],
