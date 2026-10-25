@@ -263,7 +263,7 @@
     center(level===50?'SUPER META DE 50 CASAIS':level===35?'META DE 35 CASAIS':'META DE 22 CASAIS',332,48,level===50?'#f9cf78':'#a8f8d9');
     x.fillStyle='#272e65';x.beginPath();x.arc(540,478,94,0,Math.PI*2);x.fill();
     center(p.n.charAt(0).toUpperCase(),515,100,'#ffffff');
-    const names=p.n.trim().split(/\\s+/);const short=p.n.length>27?names[0]+' '+names[names.length-1]:p.n;
+    const names=p.n.trim().split(/\s+/);const short=p.n.length>27?names[0]+' '+names[names.length-1]:p.n;
     center(short.toUpperCase(),644,53,'#ffffff');
     center('PARABÉNS PELA CONQUISTA!',710,35,'#b9d4ff');
     x.fillStyle='#19264c';x.fillRect(95,770,890,355);
@@ -273,7 +273,7 @@
     center('RESULTADO REALIZADO  •  '+month.label.toUpperCase(),1197,27,'#aab8f9');
     center('FOCO  •  INTENSIDADE  •  RESULTADO',1255,27,'#d4c6ff');
     const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)return;
-    const filename='RAIOX-conquista-'+p.n.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]+/gi,'-')+'.png';
+    const filename='RAIOX-conquista-'+p.n.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/gi,'-')+'.png';
     const file=new File([blob],filename,{type:'image/png'});
     if(navigator.canShare?.({files:[file]})){try{await navigator.share({files:[file],title:'Conquista RAIO X'});return}catch(err){if(err.name==='AbortError')return}}
     const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);
