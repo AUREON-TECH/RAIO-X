@@ -292,8 +292,6 @@
   function dynamicRank(month,people){
     const body=$('rb'),metric=$('rm');if(!body||!metric)return;
     metric.disabled=false;
-    const title=body.closest('section,article,.card')?.querySelector('h2,h3')||document.querySelector('#rb')?.parentElement?.parentElement?.querySelector('h2,h3');
-    if(title&&!$('raiox-share-full-ranking')){const btn=document.createElement('button');btn.id='raiox-share-full-ranking';btn.type='button';btn.textContent='📤 Compartilhar ranking completo';btn.style.cssText='margin:10px 0;padding:10px 15px;border-radius:12px;border:1px solid #6275b9;background:#203363;color:#fff;font-weight:800;cursor:pointer';title.insertAdjacentElement('afterend',btn);}
     const value=(p,key)=>{
       if(key==='weekly')return p.w;
       if(key==='sales')return p.s;
@@ -317,7 +315,7 @@
           '<td>'+conv.toFixed(1).replace('.',',')+'%</td><td>'+fmtInt(p.q)+'</td><td>'+fmtMoneyFull(cost)+'</td><td><b class="v">'+fmtInt(p.p)+'</b></td>'+
           '<td><span class="tag">'+fmtInt(p.d)+' dias ativos</span></td></tr>';
       }).join('');
-      const btn=$('raiox-share-full-ranking');if(btn){btn.disabled=false;btn.style.pointerEvents='auto';btn.style.position='relative';btn.style.zIndex='30';btn.onclick=async event=>{event.preventDefault();event.stopPropagation();btn.textContent='⏳ Gerando imagem...';try{await shareFullRanking(rows,month,metric.options[metric.selectedIndex]?.text||'Casais');}catch(err){console.error('Falha ao compartilhar ranking',err);alert('Erro ao gerar a imagem: '+(err.message||err));}finally{btn.textContent='📤 Compartilhar ranking completo';}};}
+      const btn=$('raiox-share-full-ranking');if(btn){btn.disabled=false;btn.style.pointerEvents='auto';btn.style.zIndex='999';btn.onclick=async event=>{event.preventDefault();event.stopPropagation();btn.textContent='⏳ Gerando imagem...';try{await shareFullRanking(rows,month,metric.options[metric.selectedIndex]?.text||'Casais');}catch(err){console.error('Falha ao compartilhar ranking',err);alert('Erro ao gerar a imagem: '+(err.message||err));}finally{btn.textContent='📤 Compartilhar ranking completo';}};}
     };
     metric.onchange=render;render();
   }
