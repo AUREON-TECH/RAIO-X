@@ -252,42 +252,50 @@
     el.innerHTML=items.map(([name,value])=>'<div class="br"><label>'+esc(name)+'</label><div class="bar"><i style="width:'+(num(value)/max*100)+'%"></i></div><b>'+fmt(value)+'</b></div>').join('');
   }
   async function shareFullRanking(rows,month,sortLabel){
-    const width=1400,rowH=78,height=330+rows.length*rowH+100;
-    const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
-    const ctx=canvas.getContext('2d');
-    const bg=ctx.createLinearGradient(0,0,width,height);bg.addColorStop(0,'#101b3d');bg.addColorStop(1,'#11122c');
-    ctx.fillStyle=bg;ctx.fillRect(0,0,width,height);
-    const write=(str,x,y,size=24,color='#fff',weight='normal',align='left',max=undefined)=>{ctx.font=weight+' '+size+'px Arial,sans-serif';ctx.textAlign=align;ctx.fillStyle=color;ctx.fillText(String(str),x,y,max)};
-    write('RAIO X  /  CAPTAÇÃO',52,70,27,'#9ebcff','bold');
-    write('RANKING COMPLETO',52,137,53,'#ffffff','bold');
-    write(month.label+'  •  Classificação por '+sortLabel,52,181,24,'#afc4f2');
-    const sum=(key)=>rows.reduce((s,p)=>s+Number(p[key]||0),0);
-    write('PROFISSIONAIS ATIVOS: '+rows.length,52,242,24,'#a4f5d0','bold');
-    write('CASAIS: '+fmtInt(sum('c'))+'   |   VENDAS: '+fmtInt(sum('s'))+'   |   VGV: '+fmtMoneyFull(sum('v')),52,284,23,'#e2e8ff','bold');
-    const headers=[['#',54],['PROFISSIONAL',118],['CASAIS',720],['VENDAS',838],['VGV',952],['CONV.',1140],['META',1255]];
-    ctx.fillStyle='#25335d';ctx.fillRect(32,306,width-64,54);
-    headers.forEach(([label,x])=>write(label,x,342,19,'#c2d4ff','bold'));
+    if(!rows.length)throw Error('Ranking sem profissionais para compartilhar');
+    const W=1800,H=430+rows.length*96+150,scale=1;
+    const canvas=document.createElement('canvas');canvas.width=W*scale;canvas.height=H*scale;
+    const x=canvas.getContext('2d');if(!x)throw Error('Canvas indisponível');
+    const rect=(px,py,w,h,fill,r=0)=>{x.fillStyle=fill;x.beginPath();x.roundRect(px,py,w,h,r);x.fill()};
+    const text=(v,px,py,size=28,color='#fff',weight='500',max)=>{x.fillStyle=color;x.font=weight+' '+size+'px Arial, sans-serif';x.textAlign='left';x.fillText(String(v),px,py,max)};
+    const grad=x.createLinearGradient(0,0,W,H);grad.addColorStop(0,'#08142d');grad.addColorStop(0.6,'#121d41');grad.addColorStop(1,'#0a1026');rect(0,0,W,H,grad);
+    const gold=x.createLinearGradient(0,0,650,0);gold.addColorStop(0,'#ffe7a4');gold.addColorStop(1,'#e7aa36');
+    rect(35,35,W-70,H-70,'#53628a',28);rect(38,38,W-76,H-76,'#0b1630',26);
+    text('RAIO',90,134,78,'#ffffff','900');text('X',308,134,94,'#ffc950','900');
+    text('CAPTAÇÃO  •  PERFORMANCE',90,172,24,'#a9bde7','700');
+    text('RANKING COMPLETO',510,130,67,'#ffffff','900');
+    text(String(month.label||'OUTUBRO/2026').toUpperCase()+'  |  ORDEM: '+sortLabel.toUpperCase(),515,178,27,'#e7c57c','700');
+    text('DISCIPLINA   •   FOCO   •   RESULTADO',W-660,230,27,'#b6c9f0','700');
+    const total=key=>rows.reduce((s,p)=>s+Number(p[key]||0),0);
+    const cards=[['PROFISSIONAIS',fmtInt(rows.length)],['CASAIS ATIVOS',fmtInt(total('c'))],['VENDAS ATIVAS',fmtInt(total('s'))],['VGV DOS ATIVOS',fmtMoneyFull(total('v'))]];
+    cards.forEach(([label,val],i)=>{const xx=75+i*420;rect(xx,263,402,125,'#182b50',18);rect(xx,263,402,3,i===3?'#ffc65b':'#587ad5',2);text(label,xx+24,306,22,'#b4c9f5','700');text(val,xx+24,365,i===3?35:52,'#ffffff','900',355)});
+    const cols=[['#',87],['PROFISSIONAL',180],['CASAIS',850],['VENDAS',975],['VGV',1095],['CONVERSÃO',1370],['CONQUISTA',1570]];
+    rect(65,412,W-130,67,'#293b69',12);cols.forEach(([t,px])=>text(t,px,455,24,'#d7e5ff','700'));
     rows.forEach((p,i)=>{
-      const y=360+i*rowH;
-      ctx.fillStyle=i%2===0?'#172344':'#111b38';ctx.fillRect(32,y,width-64,rowH-3);
-      const meta=p.c>=50?'50 ✓':p.c>=35?'35 ✓':p.c>=22?'22 ✓':'—';
-      write(String(i+1).padStart(2,'0'),54,y+47,27,i<3?'#ffd27e':'#dbe6ff','bold');
-      write(p.n,118,y+34,25,'#fff','bold',570);
-      write(p.c>=50?'SUPER META CONQUISTADA':p.c>=35?'META 35 CONQUISTADA':p.c>=22?'META 22 CONQUISTADA':'',118,y+60,17,'#86edc7','bold',560);
-      write(fmtInt(p.c),720,y+47,28,'#fff','bold');
-      write(fmtInt(p.s),838,y+47,28,'#fff','bold');
-      write(fmtMoneyFull(p.v),952,y+47,23,'#fff','bold',175);
-      write((p.c?p.s/p.c*100:0).toFixed(1).replace('.',',')+'%',1140,y+47,23,'#fff');
-      write(meta,1255,y+47,26,p.c>=22?'#8df1cb':'#8091b8','bold');
+      const yy=487+i*96;rect(65,yy,W-130,88,i%2?'#101d39':'#1a2a4a',10);
+      if(i<3)rect(65,yy,7,88,i===0?'#f8c75e':i===1?'#c4d1e8':'#c48e6e',3);
+      text(i===0?'1º':i===1?'2º':i===2?'3º':String(i+1)+'º',87,yy+54,31,i<3?'#ffd680':'#e7ecff','900');
+      const full=String(p.n||'').trim();text(full,180,yy+39,29,'#fff','800',635);
+      text('PROMOTOR DE MARKETING',180,yy+72,17,'#a8bee8','500');
+      text(fmtInt(p.c),850,yy+54,34,'#ffffff','800');
+      text(fmtInt(p.s),975,yy+54,32,'#ffffff','800');
+      text(fmtMoneyFull(p.v),1095,yy+54,29,'#ffffff','800',245);
+      text((p.c?p.s/p.c*100:0).toFixed(1).replace('.',',')+'%',1370,yy+54,30,'#ffffff','700');
+      const tier=p.c>=50?50:p.c>=35?35:p.c>=22?22:0;
+      const tag=tier===50?'50  SUPER META':tier===35?'35  META AVANÇADA':tier===22?'22  META BATIDA':'EM EVOLUÇÃO';
+      const tagColor=tier===50?'#7a551a':tier===35?'#4b2c78':tier===22?'#0f5546':'#293754';
+      rect(1555,yy+21,170,48,tagColor,14);text(tag,1566,yy+52,tier?17:19,tier?'#fff1b4':'#d1dcf3','800',150);
     });
-    write('Metas alcançadas: 22  •  35  •  50 casais  |  RAIO X',52,height-45,21,'#aab7e0');
-    const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('Não foi possível gerar a imagem');
-    const filename='RAIOX-ranking-completo-'+month.ref_month+'.png';
+    const fy=500+rows.length*96;rect(65,fy,W-130,76,'#1b2d50',15);
+    text('METAS:  22 CASAIS  •  35 CASAIS  •  50 CASAIS',95,fy+48,27,'#f5d48c','800');
+    text('DADOS DO RAIO X  |  APENAS PROFISSIONAIS ATIVOS',910,fy+48,22,'#b7c9ef','700');
+    const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('Falha ao gerar PNG');
+    const filename='RAIOX-ranking-completo-'+(month.ref_month||'outubro-2026')+'.png';
     if(typeof File!=='undefined'&&navigator.canShare&&navigator.share){
       const file=new File([blob],filename,{type:'image/png'});
       if(navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:'Ranking completo RAIO X'});return}catch(err){if(err.name==='AbortError')return}}
     }
-    const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);
+    const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=filename;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);
   }
   function dynamicRank(month,people){
     const body=$('rb'),metric=$('rm');if(!body||!metric)return;
