@@ -149,7 +149,7 @@
   <div class="stage-context"><span class="eye">RANKING DE PERFORMANCE</span><h3>Compare volume, vendas, VGV, conversão e ritmo. Use o ranking para reconhecer liderança e identificar quem precisa acelerar.</h3><div class="stage-context-meta"><span>BASE OFICIAL DO MÊS</span><span>DECISÃO ORIENTADA POR DADOS</span></div></div>
   <div class="card pad">
     <div class="title">
-      <div><h3>Ranking completo</h3><span class="mini">Projeção já dentro do ranking • base atual</span></div>
+      <div><h3>Ranking completo</h3><button id="raiox-share-full-ranking" type="button" style="display:inline-block;position:relative;z-index:999;pointer-events:auto;touch-action:manipulation;cursor:pointer;margin:9px 0;padding:12px 17px;border:1px solid #6275b9;border-radius:12px;background:#203363;color:white;font-weight:800;font-size:14px">📤 Compartilhar ranking completo</button><span class="mini">Projeção já dentro do ranking • base atual</span></div>
       <select id="rm"><option value="couples">Casais</option><option value="weekly">Semana</option><option value="sales">Vendas</option><option value="vgv">VGV</option><option value="conversion">Conversão</option><option value="q">Q</option><option value="cost">Menor custo/casal</option><option value="projection">Projeção</option></select>
     </div>
     <div class="tw"><table><thead><tr><th>#</th><th>Profissional</th><th>Casais</th><th>Semana</th><th>Vendas</th><th>VGV</th><th>Conv.</th><th>Q</th><th>Custo/casal</th><th>Projeção do mês</th><th id="rankStatusHead">22 casais</th></tr></thead><tbody id="rb"></tbody></table></div>
@@ -322,7 +322,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 <script src="./app.js?v=94" defer></script>
 <script src="./fx-engine.js" defer></script>
 <script src="./sales-count-fix.js" defer></script>
-<script src="./month-live.js?v=28" defer></script>
+<script src="./month-live.js?v=29" defer></script>
 <script src="./gestao-rafael.js?v=6" defer></script>
 <script>
 if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js", {scope:"./"}).catch(console.error)); }
