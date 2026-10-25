@@ -269,8 +269,10 @@
       const rows=[...people].sort((a,b)=>value(b,key)-value(a,key));
       body.innerHTML=rows.map((p,i)=>{
         const conv=p.c?p.s/p.c*100:0,cost=p.c?p.g/p.c:0;
+        const milestone=p.c>=50?{emoji:'🏆',label:'SUPER META 50!',bg:'#423010',fg:'#ffe19a'}:p.c>=35?{emoji:'🥇',label:'META 35 BATIDA!',bg:'#2b2453',fg:'#dfc5ff'}:p.c>=22?{emoji:'🎉',label:'META 22 BATIDA!',bg:'#103f38',fg:'#92f5cf'}:null;
+        const achievement=milestone?'<span title="Parabéns! '+milestone.label+'" style="display:inline-flex;align-items:center;gap:5px;margin-top:5px;padding:5px 9px;border-radius:999px;background:'+milestone.bg+';color:'+milestone.fg+';font-size:11px;font-weight:800;white-space:nowrap">'+milestone.emoji+' '+milestone.label+'</span>':'';
         return '<tr><td class="pos">'+(['🥇','🥈','🥉'][i]||'#'+(i+1))+'</td>'+
-          '<td><div class="person"><div class="av">'+esc(p.n.charAt(0))+'</div><div><b>'+esc(p.n)+'</b><span class="mini">'+esc(p.r)+'</span></div></div></td>'+
+          '<td><div class="person"><div class="av">'+esc(p.n.charAt(0))+'</div><div><b>'+esc(p.n)+'</b><span class="mini">'+esc(p.r)+'</span>'+achievement+'</div></div></td>'+
           '<td><b>'+fmtInt(p.c)+'</b></td><td>'+fmtInt(p.w)+'</td><td>'+fmtInt(p.s)+'</td><td>'+fmtMoneyFull(p.v)+'</td>'+
           '<td>'+conv.toFixed(1).replace('.',',')+'%</td><td>'+fmtInt(p.q)+'</td><td>'+fmtMoneyFull(cost)+'</td><td><b class="v">'+fmtInt(p.p)+'</b></td>'+
           '<td><span class="tag">'+fmtInt(p.d)+' dias ativos</span></td></tr>';
