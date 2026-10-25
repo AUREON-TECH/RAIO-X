@@ -317,7 +317,7 @@
           '<td>'+conv.toFixed(1).replace('.',',')+'%</td><td>'+fmtInt(p.q)+'</td><td>'+fmtMoneyFull(cost)+'</td><td><b class="v">'+fmtInt(p.p)+'</b></td>'+
           '<td><span class="tag">'+fmtInt(p.d)+' dias ativos</span></td></tr>';
       }).join('');
-      const btn=$('raiox-share-full-ranking');if(btn)btn.onclick=()=>shareFullRanking(rows,month,metric.options[metric.selectedIndex]?.text||'Casais').catch(err=>{console.error(err);alert('Não foi possível gerar o ranking. Tente novamente.');});
+      const btn=$('raiox-share-full-ranking');if(btn){btn.disabled=false;btn.style.pointerEvents='auto';btn.style.position='relative';btn.style.zIndex='30';btn.onclick=async event=>{event.preventDefault();event.stopPropagation();btn.textContent='⏳ Gerando imagem...';try{await shareFullRanking(rows,month,metric.options[metric.selectedIndex]?.text||'Casais');}catch(err){console.error('Falha ao compartilhar ranking',err);alert('Erro ao gerar a imagem: '+(err.message||err));}finally{btn.textContent='📤 Compartilhar ranking completo';}};}
     };
     metric.onchange=render;render();
   }
