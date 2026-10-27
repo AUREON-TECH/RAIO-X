@@ -482,7 +482,7 @@
     const selected=rows.filter(r=>r.role===areaRole());
     if(!selected.length){currentMonthEmpty(month);return;}
     const allPeople=dynamicPeople(selected,month);
-    const people=allPeople.filter(p=>!(month.ref_month==='2026-10-01' && /(?:manara\s+alexandre\s+sousa|clacion\s+de\s+souza\s+braga)/i.test(p.n)));
+    const people=allPeople.filter(p=>!(month.ref_month==='2026-10-01' && /(?:manara\s+alexandre\s+sousa|clacion\s+de\s+souza\s+braga|gabriella\s+furtado\s+gomes)/i.test(p.n)));
     dynamicCentral(month,allPeople);
     dynamicRank(month,people);
     dynamicIndividual(month,people);
