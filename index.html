@@ -343,5 +343,6 @@ if ("serviceWorker" in navigator) { window.addEventListener("load", () => naviga
 <script id="individual-navigation-v5">
 (function(){function init(){var s=document.getElementById('sel');if(!s||document.querySelector('#ind .individual-stepper'))return;var controls=document.createElement('div');controls.className='individual-stepper';controls.innerHTML='<button type="button" aria-label="Profissional anterior">◀ Anterior</button><button type="button" aria-label="Próximo profissional">Próximo ▶</button>';s.insertAdjacentElement('afterend',controls);var b=controls.querySelectorAll('button');function move(n){if(!s.options.length)return;s.selectedIndex=(s.selectedIndex+n+s.options.length)%s.options.length;s.dispatchEvent(new Event('change',{bubbles:true}));}b[0].addEventListener('click',function(){move(-1)});b[1].addEventListener('click',function(){move(1)});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();
 </script>
+<script src="./raiox-voice.js?v=1" defer></script>
 </body>
 </html>
