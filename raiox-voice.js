@@ -2,18 +2,18 @@
 const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
 let listening=false,recognition=null;
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
-const panel=document.createElement('aside');panel.id='raiox-voice-panel';panel.innerHTML='<button id="raiox-voice-toggle" type="button" aria-pressed="false">🎙️ Ativar voz</button><div id="raiox-voice-message" role="status" aria-live="polite">Diga “mostrar casais”, “vendas”, “VGV” ou “ranking”.</div>';
+const panel=document.createElement('aside');panel.id='raiox-voice-panel';panel.innerHTML='<button id="raiox-voice-toggle" type="button" aria-pressed="false">🎙️ Ativar voz</button><div id="raiox-voice-message" role="status" aria-live="polite" hidden>Pronto para ouvir.</div>';
 const css=document.createElement('style');css.textContent=`
 #voice-stage{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2147482999;width:min(900px,90vw);padding:35px;background:linear-gradient(130deg,#09172e,#242052);border:2px solid #e4b958;border-radius:25px;box-shadow:0 24px 90px #000c;color:#fff;text-align:center;font-family:system-ui,sans-serif}#voice-stage h2{font-size:clamp(30px,5vw,65px);color:#ffdc8b;margin:15px 0}#voice-stage p{font-size:clamp(20px,3vw,40px);line-height:1.4}#voice-stage button{float:right;background:#263a69;color:white;border:1px solid #9cb2e5;border-radius:10px;padding:10px;cursor:pointer}
 
-#raiox-voice-panel{position:fixed;right:18px;top:18px;z-index:2147483000;display:flex;flex-direction:column;align-items:flex-end;gap:8px;max-width:min(380px,calc(100vw - 28px));font-family:system-ui,Arial,sans-serif}
+#raiox-voice-panel{position:fixed;right:18px;bottom:18px;top:auto;z-index:2147483000;display:flex;flex-direction:column;align-items:flex-end;gap:8px;width:auto;max-width:min(310px,calc(100vw - 28px));font-family:system-ui,Arial,sans-serif;pointer-events:none}#raiox-voice-panel>*{pointer-events:auto}
 #raiox-voice-toggle{border:2px solid #88a8ff;background:#1b3164;color:white;border-radius:999px;padding:13px 20px;font-size:15px;font-weight:800;box-shadow:0 8px 28px #0009;cursor:pointer;touch-action:manipulation;pointer-events:auto}
 #raiox-voice-toggle[aria-pressed=true]{background:#9b243b;border-color:#ffb0b7;animation:raiox-voice-pulse 1.5s infinite}
-#raiox-voice-message{background:#101b39;color:#e9f0ff;border:1px solid #4c6099;border-radius:12px;padding:10px 14px;font-size:13px;line-height:1.45;box-shadow:0 6px 22px #0008;max-height:90px;overflow:auto}
+#raiox-voice-message[hidden]{display:none!important}#raiox-voice-message{background:#101b39;color:#e9f0ff;border:1px solid #4c6099;border-radius:12px;padding:10px 14px;font-size:13px;line-height:1.45;box-shadow:0 6px 22px #0008;max-height:90px;overflow:auto}
 @keyframes raiox-voice-pulse{50%{box-shadow:0 0 0 9px #e13c532c}}
-@media(max-width:600px){#raiox-voice-panel{right:10px;top:10px}#raiox-voice-toggle{font-size:13px;padding:11px 15px}}
+@media(max-width:600px){#raiox-voice-panel{right:10px;bottom:12px;top:auto}#raiox-voice-toggle{font-size:13px;padding:11px 15px}}
 `;
-function msg(s){const e=document.getElementById('raiox-voice-message');if(e)e.textContent=s}
+function msg(s){const e=document.getElementById('raiox-voice-message');if(e){e.textContent=s;e.hidden=!listening}}
 function btn(){return document.getElementById('raiox-voice-toggle')}
 function activate(section){const cinema=document.getElementById('cin');if(cinema&&!cinema.classList.contains('hide')){const enter=document.getElementById('enter');if(enter)enter.click();else cinema.classList.add('hide')}const b=document.querySelector('.nav [data-go="'+section+'"]');if(b){b.click();return true}return false}
 function focusEl(el){if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});el.style.outline='3px solid #f3c668';el.style.outlineOffset='4px';setTimeout(()=>{el.style.outline='';el.style.outlineOffset=''},4200)}
