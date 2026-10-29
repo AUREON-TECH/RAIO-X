@@ -412,6 +412,19 @@
         $('fxValidation').textContent=consistent?'✓ '+month.label.toUpperCase()+' • DADOS CONFERIDOS':'⚠ SOMA DIÁRIA DIFERE DO TOTAL MENSAL';
         $('fxValidation').className='fx-validate '+(consistent?'ok':'bad');
       }
+      if(!rows.length || !consistent){
+        const conv=p.c?p.s/p.c*100:0,ticket=p.s?p.v/p.s:0;
+        if($('fxValidation')){$('fxValidation').textContent='ℹ HISTÓRICO DIÁRIO INDIVIDUAL INDISPONÍVEL';$('fxValidation').className='fx-validate';}
+        if($('fxKpis'))$('fxKpis').innerHTML=[['Volume',p.c,'total mensal oficial'],['Vendas',p.s,conv.toFixed(1).replace('.',',')+'% conversão'],['VGV',fmtMoneyFull(p.v),fmtMoneyFull(ticket)+' ticket'],['Constância','—','sem detalhamento diário']].map(x=>'<div class="fx-kpi"><small>'+x[0]+'</small><b>'+x[1]+'</b><span>'+x[2]+'</span></div>').join('');
+        if($('fxChart'))$('fxChart').innerHTML='<div class="current-month-empty"><b>'+esc(month.label)+' • '+esc(p.n)+'</b>Os totais mensais estão disponíveis, mas o histórico diário individual ainda não foi importado. Não é possível calcular constância ou dias zerados.</div>';
+        if($('fxDriver'))$('fxDriver').innerHTML='<small>LEITURA MENSAL</small><h3>Resultado consolidado</h3><p>'+fmtInt(p.c)+' casais, '+fmtInt(p.s)+' vendas e '+conv.toFixed(1).replace('.',',')+'% de conversão.</p>';
+        if($('fxPositive'))$('fxPositive').innerHTML='<div class="fx-insight positive"><b>Resultado mensal</b><p>'+fmtInt(p.s)+' vendas registradas.</p></div>';
+        if($('fxNegative'))$('fxNegative').innerHTML='<div class="fx-insight unknown"><b>Constância não avaliada</b><p>Não há distribuição diária confiável para identificar dias sem venda.</p></div>';
+        if($('fxUnknown'))$('fxUnknown').innerHTML='<div class="fx-insight unknown"><b>Próximo passo</b><p>Importar registros diários individuais para liberar análise de constância.</p></div>';
+        if($('fxDaily'))$('fxDaily').innerHTML='';
+        if($('fxConclusion'))$('fxConclusion').innerHTML='<h3>Conclusão mensal</h3><p>'+esc(p.n)+' registrou '+fmtInt(p.c)+' casais, '+fmtInt(p.s)+' vendas e '+fmtMoneyFull(p.v)+' em VGV. A análise diária depende da importação do histórico.</p>';
+        return;
+      }
       const active=rows.filter(r=>num(r[0])>0).length,conv=p.c?p.s/p.c*100:0,ticket=p.s?p.v/p.s:0;
       if($('fxKpis'))$('fxKpis').innerHTML=[
         ['Volume',p.c,(p.c/Math.max(1,active)).toFixed(1).replace('.',',')+' por dia ativo'],
