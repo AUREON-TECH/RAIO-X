@@ -31,6 +31,32 @@ function command(raw){
  const rank=metric=>{activate('rank');const el=document.getElementById('rm');if(el&&[...el.options].some(o=>o.value===metric)){el.value=metric;el.dispatchEvent(new Event('change',{bubbles:true}))}};
  if(/fechar|esconder destaque/.test(s)){document.getElementById('voice-stage')?.remove();msg('Destaque fechado');return}
  if(/ajuda|comandos|o que voce faz/.test(s)){spotlight('COMANDOS DE VOZ','Mostrar casais, vendas, VGV, conversão, quanto falta para a meta, ranking por vendas, quem lidera, resultado do Paulo, projeções e custos.');return}
+ if(person&&/mostrar|mostra|abre|abrir|resultado|dados|individual|como|quanto|fez|relatorio|resumo|fala|fale/.test(s)){
+  const report=window.raioxVoiceData?.people?.find(p=>norm(p.name)===norm(person));
+  if(report){
+   const d=window.raioxVoiceData;
+   const cv=report.couples?report.sales/report.couples*100:0;
+   const rank=[...d.people].sort((a,b)=>b.couples-a.couples||b.sales-a.sales).findIndex(p=>p.name===report.name)+1;
+   let box=document.getElementById('voice-stage');if(!box){box=document.createElement('section');box.id='voice-stage';document.body.appendChild(box)}
+   box.replaceChildren();
+   box.style.cssText='width:min(1050px,94vw);max-height:88vh;overflow:auto;padding:clamp(18px,3vw,40px);text-align:left';
+   const close=document.createElement('button');close.textContent='✕ Fechar relatório';close.onclick=()=>box.remove();
+   const title=document.createElement('h2');title.textContent=report.name;title.style.cssText='font-size:clamp(24px,4vw,48px);margin:12px 0';
+   const sub=document.createElement('div');sub.textContent='RAIO X • RELATÓRIO INDIVIDUAL • '+d.month;sub.style.cssText='color:#80eaff;font-size:13px;font-weight:800;letter-spacing:1px';
+   const grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:22px 0';
+   const fmt=n=>new Intl.NumberFormat('pt-BR',{maximumFractionDigits:0}).format(n||0);
+   const cash=n=>'R$ '+fmt(n);
+   const cards=[['CASAIS',fmt(report.couples)],['VENDAS',fmt(report.sales)],['VGV',cash(report.vgv)],['CONVERSÃO',cv.toFixed(1).replace('.',',')+'%'],['QUALIFICADOS',fmt(report.q)],['DIAS ATIVOS',fmt(report.days)],['TICKET MÉDIO',cash(report.sales?report.vgv/report.sales:0)],['POSIÇÃO POR CASAIS',rank+'º']];
+   cards.forEach(([k,v])=>{const card=document.createElement('div');card.style.cssText='padding:18px;background:#15284b;border:1px solid #3c6095;border-radius:14px';const label=document.createElement('small');label.textContent=k;label.style.color='#9fc4ed';const val=document.createElement('div');val.textContent=v;val.style.cssText='font-size:clamp(20px,2.5vw,32px);font-weight:800;margin-top:8px;overflow-wrap:anywhere';card.append(label,val);grid.append(card)});
+   const next=report.couples<22?22:report.couples<35?35:report.couples<50?50:0;
+   const summary=document.createElement('p');summary.style.cssText='font-size:clamp(16px,2vw,23px);line-height:1.5;text-align:left';
+   summary.textContent=report.name+' registrou '+fmt(report.couples)+' casais, '+fmt(report.sales)+' vendas e '+cash(report.vgv)+' em VGV bruto. Conversão de '+cv.toFixed(1).replace('.',',')+'%. '+(next?'Faltam '+(next-report.couples)+' casais para a meta de '+next+'.':'Meta de 50 casais atingida!');
+   const foot=document.createElement('small');foot.textContent='Resultados mensais oficiais • vendas brutas incluem canceladas';foot.style.color='#b8c8e8';
+   box.append(close,sub,title,grid,summary,foot);
+   activate('ind');const sel=document.getElementById('sel');if(sel){sel.value=person;sel.dispatchEvent(new Event('change',{bubbles:true}))}
+   msg('✓ Relatório completo de '+person);return
+  }
+ }
  if(person&&/mostrar|mostra|abre|abrir|resultado|dados|individual|como|quanto|fez/.test(s)){activate('ind');const sel=document.getElementById('sel');sel.value=person;sel.dispatchEvent(new Event('change',{bubbles:true}));msg('✓ Resultado de '+person);setTimeout(()=>focusEl(document.getElementById('ik')),300);return}
  if(/quanto falta|falta quanto|restante|bater a meta/.test(s)){activate('dash');spotlight('DISTÂNCIA DA META',Math.max(0,589-number(value('casais')))+' casais • '+Math.max(0,120-number(value('vendas')))+' vendas • R$ '+new Intl.NumberFormat('pt-BR').format(Math.max(0,12000000-number(value('vgv'))))+' de VGV');return}
  if(/quem lidera|primeiro lugar|quem esta em primeiro|top 3/.test(s)){rank('couples');const names=[...document.querySelectorAll('#rb tr')].slice(0,/top 3/.test(s)?3:1).map(tr=>tr.querySelectorAll('td')[1]?.innerText?.split('\n')[0]).filter(Boolean);spotlight('LIDERANÇA',names.join(' • ')||'Confira o ranking');return}
