@@ -404,9 +404,12 @@
     const mm=month.ref_month.slice(5,7);
     const render=()=>{
       const p=people.find(x=>x.n===sel.value)||people[0];if(!p)return;
-      const rows=p.daily||[];
+      const imported=window.raioxDailyImport?.[month.ref_month]?.[p.n.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toUpperCase().trim()];
+      const rows=imported?.rows||p.daily||[];
+      const sourceChecked=!!imported;
+
       const sum=rows.reduce((a,r)=>{a.c+=num(r[0]);a.s+=num(r[1]);a.v+=num(r[2]);a.q+=num(r[3]);a.nq+=num(r[4]);return a;},{c:0,s:0,v:0,q:0,nq:0});
-      const consistent=Math.abs(sum.c-p.c)<.01&&Math.abs(sum.s-p.s)<.01;
+      const consistent=Math.abs(sum.c-p.c)<.01&&(sourceChecked?Math.abs(sum.v-p.v)<.01:Math.abs(sum.s-p.s)<.01);
       if($('fxName'))$('fxName').textContent=p.n;
       if($('fxValidation')){
         $('fxValidation').textContent=consistent?'✓ '+month.label.toUpperCase()+' • DADOS CONFERIDOS':'⚠ SOMA DIÁRIA DIFERE DO TOTAL MENSAL';
@@ -432,7 +435,7 @@
         ['VGV',fmtMoneyFull(p.v),fmtMoneyFull(ticket)+' ticket'],
         ['Constância',active+'/'+Math.max(1,rows.length),'dias com volume']
       ].map(x=>'<div class="fx-kpi"><small>'+x[0]+'</small><b>'+x[1]+'</b><span>'+x[2]+'</span></div>').join('');
-      if($('fxChart'))$('fxChart').innerHTML='<div class="current-month-empty"><b>'+esc(month.label)+' • '+esc(p.n)+'</b>Histórico diário carregado: '+rows.length+' dia(s).</div>';
+      if($('fxChart'))$('fxChart').innerHTML='<div class="current-month-empty"><b>'+esc(month.label)+' • '+esc(p.n)+'</b>Histórico diário conferido: '+active+' dia(s) com casais em '+rows.length+' dias. '+(sourceChecked?'Vendas diárias representam atendimentos com valor; o total mensal de contratos permanece oficial.':'')+'</div>';
       if($('fxDriver'))$('fxDriver').innerHTML='<small>LEITURA PRINCIPAL</small><h3>'+((conv>=20)?'Conversão':'Constância')+'</h3><p>'+fmtInt(p.c)+' de volume, '+fmtInt(p.s)+' vendas e '+conv.toFixed(1).replace('.',',')+'% de conversão.</p>';
       if($('fxPositive'))$('fxPositive').innerHTML='<div class="fx-insight positive"><b>Dias ativos</b><p>'+active+' dias com volume.</p></div>';
       if($('fxNegative'))$('fxNegative').innerHTML='<div class="fx-insight negative"><b>Dias sem venda</b><p>'+rows.filter(r=>num(r[0])>0&&num(r[1])===0).length+' dias tiveram volume e nenhuma venda.</p></div>';
@@ -440,7 +443,7 @@
       if($('fxDaily'))$('fxDaily').innerHTML=rows.map((r,i)=>'<div class="fx-day"><div class="fx-day-top"><b>'+String(i+1).padStart(2,'0')+'/'+mm+'</b></div><div class="fx-day-metrics"><div><small>Volume</small><b>'+fmtInt(r[0])+'</b></div><div><small>Vendas</small><b>'+fmtInt(r[1])+'</b></div><div><small>VGV</small><b>'+fmtMoneyFull(r[2])+'</b></div></div></div>').join('');
       if($('fxConclusion'))$('fxConclusion').innerHTML='<h3>Conclusão para conversa</h3><p>'+esc(p.n)+' fechou '+esc(month.label)+' com '+fmtInt(p.c)+' de volume, '+fmtInt(p.s)+' vendas e '+fmtMoneyFull(p.v)+' em VGV.</p>';
     };
-    sel.onchange=render;render();
+    sel.onchange=render;window.raioxRefreshFx=render;render();
   }
   function dynamicProfile(month){
     const empty='<div class="current-month-empty"><b>Perfil de casais • '+esc(month.label)+'</b>Os registros mensais de performance não incluem profissão, idade, renda ou veículo. Esta aba ficará vazia até a base de perfil deste mês ser carregada.</div>';
