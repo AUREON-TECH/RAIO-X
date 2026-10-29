@@ -404,7 +404,7 @@
     const mm=month.ref_month.slice(5,7);
     const render=()=>{
       const p=people.find(x=>x.n===sel.value)||people[0];if(!p)return;
-      const imported=window.raioxDailyImport?.[month.ref_month]?.[p.n.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toUpperCase().trim()];
+      const imported=window.raioxDailyImport?.[month.ref_month]?.[p.n.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().trim()];
       const rows=imported?.rows||p.daily||[];
       const sourceChecked=!!imported;
 
