@@ -30,8 +30,8 @@ function command(raw){
  const person=match.length&&(!match[1]||match[0].score>match[1].score)?match[0].n:null;
  const rank=metric=>{activate('rank');const el=document.getElementById('rm');if(el&&[...el.options].some(o=>o.value===metric)){el.value=metric;el.dispatchEvent(new Event('change',{bubbles:true}))}};
  if(/fechar|esconder destaque/.test(s)){document.getElementById('voice-stage')?.remove();msg('Destaque fechado');return}
- if(/ajuda|comandos|o que voce faz/.test(s)){spotlight('COMANDOS DE VOZ','Mostrar casais, vendas, VGV, conversão, quanto falta para a meta, ranking por vendas, quem lidera, resultado do Paulo, projeções e custos.');return}
- if(person&&/mostrar|mostra|abre|abrir|resultado|dados|individual|como|quanto|fez|relatorio|resumo|fala|fale/.test(s)){
+ if(/ajuda|comandos|o que voce faz/.test(s)){spotlight('COMANDOS DE VOZ','Mostrar casais, vendas, VGV, conversão, quanto falta para a meta, ranking por vendas, quem lidera, relatório da Suene, me fala sobre Paulo Victor, projeções e custos.');return}
+ if(person&&/mostrar|mostra|abre|abrir|resultado|dados|individual|como|quanto|fez|relatorio|resumo|fala|fale|quem e|conte|me diz|me diga/.test(s)){
   const report=window.raioxVoiceData?.people?.find(p=>norm(p.name)===norm(person));
   if(report){
    const d=window.raioxVoiceData;
