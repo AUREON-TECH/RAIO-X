@@ -499,6 +499,7 @@
     if(!selected.length){currentMonthEmpty(month);return;}
     const allPeople=dynamicPeople(selected,month);
     const people=allPeople.filter(p=>!(month.ref_month==='2026-10-01' && /(?:manara\s+alexandre\s+sousa|clacion\s+de\s+souza\s+braga|gabriell?a\s+furtado)/i.test(p.n)));
+    window.raioxVoiceData={month:month.label,refMonth:month.ref_month,people:people.map(p=>({name:p.n,couples:p.c,sales:p.s,vgv:p.v,q:p.q,nq:p.nq,gifts:p.g,days:p.d,weekly:p.w,projection:p.p})),updatedAt:Date.now()};
     dynamicCentral(month,allPeople);
     dynamicRank(month,people);
     dynamicIndividual(month,people);
