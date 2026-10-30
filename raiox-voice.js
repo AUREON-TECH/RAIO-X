@@ -14,6 +14,34 @@ const css=document.createElement('style');css.textContent=`
 @keyframes raiox-voice-pulse{50%{box-shadow:0 0 0 9px #e13c532c}}
 @media(max-width:600px){#raiox-voice-panel{right:10px;bottom:12px;top:auto}#raiox-voice-toggle{font-size:13px;padding:11px 15px}}
 `;
+
+// Assistente de boas-vindas: voz masculina quando disponível no dispositivo.
+let welcomeSpoken=false;
+function chooseVoice(){
+ const voices=window.speechSynthesis?.getVoices?.()||[];
+ const pt=voices.filter(v=>/^pt[-_]/i.test(v.lang));
+ return pt.find(v=>/antonio|daniel|felipe|ricardo|male|masculin|paulo|thiago/i.test(v.name))||pt.find(v=>/br/i.test(v.lang))||pt[0]||null;
+}
+function speak(text){
+ if(!('speechSynthesis' in window))return false;
+ try{
+  window.speechSynthesis.cancel();
+  const utterance=new SpeechSynthesisUtterance(text);
+  utterance.lang='pt-BR';utterance.rate=.94;utterance.pitch=.78;utterance.volume=.9;
+  const voice=chooseVoice();if(voice)utterance.voice=voice;
+  window.speechSynthesis.speak(utterance);
+  return true;
+ }catch(_){return false}
+}
+function welcome(){
+ if(welcomeSpoken||sessionStorage.getItem('raiox-voice-welcomed'))return;
+ welcomeSpoken=true;sessionStorage.setItem('raiox-voice-welcomed','1');
+ const data=window.raioxVoiceData;
+ const phrase='Bem-vindo ao Raio X. Sistemas de performance operacionais. '+(data?.month?'Resultados de '+data.month+' disponíveis. ':'')+'Estou à disposição. Diga o nome de um profissional ou peça uma análise.';
+ speak(phrase);
+ msg('🤖 Bem-vindo ao RAIO X. Estou pronto para ajudar.');
+}
+
 function msg(s){const e=document.getElementById('raiox-voice-message');if(e){e.textContent=s;e.hidden=false}}
 function btn(){return document.getElementById('raiox-voice-toggle')}
 function syncSide(){const side=document.getElementById('raiox-voice-side-toggle');if(side){side.textContent=listening?'🔴 DESLIGAR VOZ':'🎙️ ATIVAR COMANDO DE VOZ';side.setAttribute('aria-pressed',String(listening))}}
@@ -22,6 +50,8 @@ function focusEl(el){if(!el)return;el.scrollIntoView({behavior:'smooth',block:'c
 function findKpi(word){const candidates=[...document.querySelectorAll('#dk > *,#dk .kpi,#dk .card,.kpi-card,.hero-kpi,.stat-card')];return candidates.find(el=>{const s=norm(el.textContent);return word==='conversao'?s.includes('conversao'):word==='vgv'?s.includes('vgv'):word==='casais'?s.includes('casais'):word==='vendas'?s.includes('vendas'):false})}
 function command(raw){
  const s=norm(raw);
+ if(/bom dia|boa tarde|boa noite|ola raio|oi raio|quem e voce/.test(s)){speak('Olá. Eu sou o assistente do Raio X. Posso consultar casais, vendas, VGV, metas, rankings e resultados individuais. Como posso ajudar?');msg('🤖 Estou à disposição.');return}
+ if(/repete|repetir|fale de novo/.test(s)){speak('Claro. Diga o nome do profissional e o indicador que deseja consultar.');return}
  const spotlight=(title,description)=>{let box=document.getElementById('voice-stage');if(!box){box=document.createElement('section');box.id='voice-stage';document.body.appendChild(box)}box.replaceChildren();const close=document.createElement('button');close.textContent='✕ Fechar';close.onclick=()=>box.remove();const h=document.createElement('h2');h.textContent=title;const p=document.createElement('p');p.textContent=description;box.append(close,h,p);msg('✓ '+title)};
  const kpis=[...document.querySelectorAll('#dk .kpi')].map(e=>({label:norm(e.querySelector('small')?.textContent),value:e.querySelector('b')?.textContent||''}));
  const value=label=>kpis.find(k=>k.label===label)?.value||'0';
@@ -100,8 +130,8 @@ function command(raw){
  for(const [re,target] of commands)if(re.test(s)){activate(target);msg('✓ Abrindo '+target);setTimeout(()=>focusEl(document.getElementById(target)),300);return}
  msg('Ouvi: “'+raw+'”. Diga “ajuda” para ver os comandos.');
 }
-function stop(){listening=false;syncSide();if(btn()){btn().setAttribute('aria-pressed','false');btn().textContent='🎙️ Ativar voz'}try{recognition?.stop()}catch(_){}msg('Microfone desligado. Toque para ativar novamente.')}
-function start(){if(!SpeechRecognition){msg('Este navegador não oferece reconhecimento de voz. Tente Chrome ou Edge com permissão de microfone.');return}
+function stop(){window.speechSynthesis?.cancel();listening=false;syncSide();if(btn()){btn().setAttribute('aria-pressed','false');btn().textContent='🎙️ Ativar voz'}try{recognition?.stop()}catch(_){}msg('Microfone desligado. Toque para ativar novamente.')}
+function start(){welcome();if(!SpeechRecognition){msg('Este navegador não oferece reconhecimento de voz. Tente Chrome ou Edge com permissão de microfone.');return}
 if(!window.isSecureContext){msg('O microfone exige HTTPS. Abra a versão publicada do RAIO X.');return}
 if(!recognition){recognition=new SpeechRecognition();recognition.lang='pt-BR';recognition.continuous=true;recognition.interimResults=false;
 recognition.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)command(e.results[i][0].transcript)};
@@ -110,6 +140,6 @@ recognition.onend=()=>{if(listening){try{recognition.start()}catch(e){msg('Não 
 }
 listening=true;syncSide();btn().setAttribute('aria-pressed','true');btn().textContent='🔴 Desligar voz';msg('🎙️ Escutando. Diga “mostrar casais”, “vendas”, “VGV”, “ranking” ou “projeções”.');try{recognition.start()}catch(e){stop();msg('Falha ao iniciar microfone: '+e.message)}
 }
-function init(){document.head.appendChild(css);document.body.appendChild(panel);btn().addEventListener('click',()=>listening?stop():start());document.getElementById('raiox-voice-help').addEventListener('click',()=>{const question=prompt('Pergunte ao RAIO X. Ex.: relatório Josiene, vendas Suene, ranking por VGV');if(question?.trim())command(question)});const side=document.getElementById('raiox-voice-side-toggle');if(side)side.addEventListener('click',()=>listening?stop():start());const sideHelp=document.getElementById('raiox-voice-side-help');if(sideHelp)sideHelp.addEventListener('click',()=>command('ajuda'))}
+function init(){document.head.appendChild(css);document.body.appendChild(panel);const enter=document.getElementById('enter');if(enter)enter.addEventListener('click',welcome,{once:true});btn().addEventListener('click',()=>listening?stop():start());document.getElementById('raiox-voice-help').addEventListener('click',()=>{const question=prompt('Pergunte ao RAIO X. Ex.: relatório Josiene, vendas Suene, ranking por VGV');if(question?.trim())command(question)});const side=document.getElementById('raiox-voice-side-toggle');if(side)side.addEventListener('click',()=>listening?stop():start());const sideHelp=document.getElementById('raiox-voice-side-help');if(sideHelp)sideHelp.addEventListener('click',()=>command('ajuda'))}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
