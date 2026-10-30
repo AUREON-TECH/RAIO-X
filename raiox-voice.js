@@ -16,6 +16,7 @@ const css=document.createElement('style');css.textContent=`
 `;
 function msg(s){const e=document.getElementById('raiox-voice-message');if(e){e.textContent=s;e.hidden=false}}
 function btn(){return document.getElementById('raiox-voice-toggle')}
+function syncSide(){const side=document.getElementById('raiox-voice-side-toggle');if(side){side.textContent=listening?'🔴 DESLIGAR VOZ':'🎙️ ATIVAR COMANDO DE VOZ';side.setAttribute('aria-pressed',String(listening))}}
 function activate(section){const cinema=document.getElementById('cin');if(cinema&&!cinema.classList.contains('hide')){const enter=document.getElementById('enter');if(enter)enter.click();else cinema.classList.add('hide')}const b=document.querySelector('.nav [data-go="'+section+'"]');if(b){b.click();return true}return false}
 function focusEl(el){if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});el.style.outline='3px solid #f3c668';el.style.outlineOffset='4px';setTimeout(()=>{el.style.outline='';el.style.outlineOffset=''},4200)}
 function findKpi(word){const candidates=[...document.querySelectorAll('#dk > *,#dk .kpi,#dk .card,.kpi-card,.hero-kpi,.stat-card')];return candidates.find(el=>{const s=norm(el.textContent);return word==='conversao'?s.includes('conversao'):word==='vgv'?s.includes('vgv'):word==='casais'?s.includes('casais'):word==='vendas'?s.includes('vendas'):false})}
@@ -95,7 +96,7 @@ function command(raw){
  for(const [re,target] of commands)if(re.test(s)){activate(target);msg('✓ Abrindo '+target);setTimeout(()=>focusEl(document.getElementById(target)),300);return}
  msg('Ouvi: “'+raw+'”. Diga “ajuda” para ver os comandos.');
 }
-function stop(){listening=false;if(btn()){btn().setAttribute('aria-pressed','false');btn().textContent='🎙️ Ativar voz'}try{recognition?.stop()}catch(_){}msg('Microfone desligado. Toque para ativar novamente.')}
+function stop(){listening=false;syncSide();if(btn()){btn().setAttribute('aria-pressed','false');btn().textContent='🎙️ Ativar voz'}try{recognition?.stop()}catch(_){}msg('Microfone desligado. Toque para ativar novamente.')}
 function start(){if(!SpeechRecognition){msg('Este navegador não oferece reconhecimento de voz. Tente Chrome ou Edge com permissão de microfone.');return}
 if(!window.isSecureContext){msg('O microfone exige HTTPS. Abra a versão publicada do RAIO X.');return}
 if(!recognition){recognition=new SpeechRecognition();recognition.lang='pt-BR';recognition.continuous=true;recognition.interimResults=false;
@@ -103,8 +104,8 @@ recognition.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++)if(e.res
 recognition.onerror=e=>{if(['not-allowed','service-not-allowed','audio-capture'].includes(e.error)){stop();msg('Permita o acesso ao microfone nas configurações do navegador.')}else msg('Reconhecimento: '+e.error+'. Você pode tentar novamente.')};
 recognition.onend=()=>{if(listening){try{recognition.start()}catch(e){msg('Não foi possível continuar a escuta: '+e.message)}}};
 }
-listening=true;btn().setAttribute('aria-pressed','true');btn().textContent='🔴 Desligar voz';msg('🎙️ Escutando. Diga “mostrar casais”, “vendas”, “VGV”, “ranking” ou “projeções”.');try{recognition.start()}catch(e){stop();msg('Falha ao iniciar microfone: '+e.message)}
+listening=true;syncSide();btn().setAttribute('aria-pressed','true');btn().textContent='🔴 Desligar voz';msg('🎙️ Escutando. Diga “mostrar casais”, “vendas”, “VGV”, “ranking” ou “projeções”.');try{recognition.start()}catch(e){stop();msg('Falha ao iniciar microfone: '+e.message)}
 }
-function init(){document.head.appendChild(css);document.body.appendChild(panel);btn().addEventListener('click',()=>listening?stop():start());document.getElementById('raiox-voice-help').addEventListener('click',()=>command('ajuda'))}
+function init(){document.head.appendChild(css);document.body.appendChild(panel);btn().addEventListener('click',()=>listening?stop():start());document.getElementById('raiox-voice-help').addEventListener('click',()=>command('ajuda'));const side=document.getElementById('raiox-voice-side-toggle');if(side)side.addEventListener('click',()=>listening?stop():start());const sideHelp=document.getElementById('raiox-voice-side-help');if(sideHelp)sideHelp.addEventListener('click',()=>command('ajuda'))}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
