@@ -26,22 +26,28 @@ function command(raw){
  const value=label=>kpis.find(k=>k.label===label)?.value||'0';
  const number=s=>Number(String(s).replace(/[^\d]/g,''))||0;
  const people=[...document.querySelectorAll('#sel option')].map(o=>o.value);
- const words=s.split(/\s+/).filter(w=>w.length>=3&&!/^(raio|mostrar|mostra|abre|abrir|resultado|quero|voce|favor|casais|vendas|dados|sobre|profissional|captador|individual|pode|quanto|fez|como|esta|dele|dela)$/.test(w));
- const match=people.map(n=>({n,score:words.filter(w=>norm(n).includes(w)).length})).filter(x=>x.score).sort((x,y)=>y.score-x.score);
+ const aliases={josiene:'josyene',josiane:'josyene',joziene:'josyene',joziane:'josyene',josi:'josyene',jozyene:'josyene',sueni:'suene',sueli:'suene',paulo:'paulo',marcio:'marcio',marcío:'marcio',weina:'weena',uena:'weena',nina:'weena',taina:'taina',tainá:'taina',cassio:'cassio'};
+ const canonical=w=>aliases[w]||w;
+ const ignored=new Set('raio x me mostra mostrar mostre abre abrir quero queria resultado relatorio resumo desempenho performance dados sobre profissional captador individual pode por favor quanto quantos quantas como esta ta dele dela do da de dos das o a os as um uma para quem fale fala me diga diz diz me quero saber vendas venda casais casal vgv conversao conversão eficiencia qualificados qualificado nq q ticket medio media dias ativos custo custos brindes meta metas projecao projeções projecoes fx ranking posicao colocacao'.split(' '));
+ const tokens=s.replace(/[^a-z0-9 ]/g,' ').split(/\\s+/).filter(w=>w.length>=3&&!ignored.has(w)).map(canonical);
+ const editDistance=(a,b)=>{if(Math.abs(a.length-b.length)>2)return 9;let prev=Array.from({length:b.length+1},(_,i)=>i);for(let i=1;i<=a.length;i++){let curr=[i];for(let j=1;j<=b.length;j++)curr[j]=Math.min(curr[j-1]+1,prev[j]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));prev=curr}return prev[b.length]};
+ const scoreName=n=>{const parts=norm(n).split(/\\s+/).map(canonical);return tokens.reduce((sum,t)=>{let best=0;for(const p of parts){if(t===p)best=Math.max(best,10);else if(t.length>=4&&p.startsWith(t))best=Math.max(best,7);else if(t.length>=4&&editDistance(t,p)<=1)best=Math.max(best,6)}return sum+best},0)};
+ const match=people.map(n=>({n,score:scoreName(n)})).filter(x=>x.score>=6).sort((a,b)=>b.score-a.score);
  const person=match.length&&(!match[1]||match[0].score>match[1].score)?match[0].n:null;
  const rank=metric=>{activate('rank');const el=document.getElementById('rm');if(el&&[...el.options].some(o=>o.value===metric)){el.value=metric;el.dispatchEvent(new Event('change',{bubbles:true}))}};
- if(/desligar voz|parar de ouvir|desativar voz/.test(s)){document.getElementById('voice-stage')?.remove();stop();return}\n if(/fechar|esconder destaque/.test(s)){document.getElementById('voice-stage')?.remove();msg('Destaque fechado');return}
+ if(/desligar voz|parar de ouvir|desativar voz/.test(s)){document.getElementById('voice-stage')?.remove();stop();return}
+ if(/fechar|esconder destaque/.test(s)){document.getElementById('voice-stage')?.remove();msg('Destaque fechado');return}
  if(/ajuda|comandos|o que voce faz/.test(s)){
   let box=document.getElementById('voice-stage');if(!box){box=document.createElement('section');box.id='voice-stage';document.body.appendChild(box)}
   box.replaceChildren();box.removeAttribute('style');box.classList.add('voice-help-compact');
   const top=document.createElement('div');top.className='voice-help-top';
   const title=document.createElement('h2');title.textContent='🎙️ Comandos do RAIO X';
   const close=document.createElement('button');close.textContent='✕ Fechar';close.onclick=()=>box.remove();top.append(title,close);box.append(top);
-  const intro=document.createElement('p');intro.textContent='Fale naturalmente. Exemplos: “relatório da Suene” ou “quanto falta para a meta?”.';box.append(intro);
+  const intro=document.createElement('p');intro.textContent='Diga ASSUNTO + NOME. Ex.: “relatório Josyene”, “vendas Josiene”, “casais Paulo”.';box.append(intro);
   const groups=[
     ['📊 Central e metas',['Mostrar casais','Mostrar vendas','Mostrar VGV','Mostrar conversão','Quanto falta para a meta']],
     ['🏆 Ranking',['Abrir ranking','Ranking por vendas','Ranking por VGV','Quem lidera','Top 3']],
-    ['👤 Individual e FX',['Relatório da Suene','Me fala sobre Paulo Victor','Resultado do Marlon','Abrir individual','Abrir FX']],
+    ['👤 Pessoa + assunto',['Relatório Josyene','Vendas Josiene','Casais Paulo','VGV Suene','Conversão Marlon','FX Ricardo']],
     ['🧠 Análise',['Abrir diagnóstico','Mostrar perfil de casais','Mostrar projeções','Mostrar custos','Abrir gestão']],
     ['🧭 Navegação',['Voltar ao início','Fechar destaque','Desligar voz']]
   ];
@@ -49,7 +55,7 @@ function command(raw){
   groups.forEach(([label,commands])=>{const section=document.createElement('section');section.className='voice-help-group';const h=document.createElement('h3');h.textContent=label;section.append(h);commands.forEach(item=>{const line=document.createElement('div');line.textContent='“'+item+'”';section.append(line)});grid.append(section)});
   box.append(grid);msg('✓ Comandos organizados por área');return
  }
- if(person&&/mostrar|mostra|abre|abrir|resultado|dados|individual|como|quanto|fez|relatorio|resumo|fala|fale|quem e|conte|me diz|me diga/.test(s)){
+ if(person&&/mostrar|mostra|abre|abrir|resultado|dados|individual|como|quanto|fez|relatorio|resumo|fala|fale|quem e|conte|me diz|me diga|vendas|casais|vgv|conversao|qualificados|dias|meta|ticket|fx|desempenho|performance/.test(s)){
   const report=window.raioxVoiceData?.people?.find(p=>norm(p.name)===norm(person));
   if(report){
    const d=window.raioxVoiceData;
