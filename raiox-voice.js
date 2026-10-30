@@ -27,7 +27,7 @@ function speak(text){
  try{
   window.speechSynthesis.cancel();
   const utterance=new SpeechSynthesisUtterance(text);
-  utterance.lang='pt-BR';utterance.rate=.94;utterance.pitch=.78;utterance.volume=.9;
+  utterance.lang='pt-BR';utterance.rate=1.18;utterance.pitch=.94;utterance.volume=1;
   const voice=chooseVoice();if(voice)utterance.voice=voice;
   window.speechSynthesis.speak(utterance);
   return true;
@@ -37,7 +37,7 @@ function welcome(){
  if(welcomeSpoken||sessionStorage.getItem('raiox-voice-welcomed'))return;
  welcomeSpoken=true;sessionStorage.setItem('raiox-voice-welcomed','1');
  const data=window.raioxVoiceData;
- const phrase='Bem-vindo ao Raio X. Sistemas de performance operacionais. '+(data?.month?'Resultados de '+data.month+' disponíveis. ':'')+'Estou à disposição. Diga o nome de um profissional ou peça uma análise.';
+ const phrase='Olá! Bem-vindo ao Raio X. '+(data?.month?'Já tenho os resultados de '+data.month+'. ':'')+'Pode falar comigo. Quer ver a meta, o ranking ou o resultado de alguém?';
  speak(phrase);
  msg('🤖 Bem-vindo ao RAIO X. Estou pronto para ajudar.');
 }
@@ -52,7 +52,7 @@ function command(raw){
  const s=norm(raw);
  if(/bom dia|boa tarde|boa noite|ola raio|oi raio|quem e voce/.test(s)){speak('Olá. Eu sou o assistente do Raio X. Posso consultar casais, vendas, VGV, metas, rankings e resultados individuais. Como posso ajudar?');msg('🤖 Estou à disposição.');return}
  if(/repete|repetir|fale de novo/.test(s)){speak('Claro. Diga o nome do profissional e o indicador que deseja consultar.');return}
- const spotlight=(title,description)=>{let box=document.getElementById('voice-stage');if(!box){box=document.createElement('section');box.id='voice-stage';document.body.appendChild(box)}box.replaceChildren();const close=document.createElement('button');close.textContent='✕ Fechar';close.onclick=()=>box.remove();const h=document.createElement('h2');h.textContent=title;const p=document.createElement('p');p.textContent=description;box.append(close,h,p);msg('✓ '+title)};
+ const spotlight=(title,description)=>{let box=document.getElementById('voice-stage');if(!box){box=document.createElement('section');box.id='voice-stage';document.body.appendChild(box)}box.replaceChildren();const close=document.createElement('button');close.textContent='✕ Fechar';close.onclick=()=>box.remove();const h=document.createElement('h2');h.textContent=title;const p=document.createElement('p');p.textContent=description;box.append(close,h,p);msg('✓ '+title);speak(title+'. '+description)};
  const kpis=[...document.querySelectorAll('#dk .kpi')].map(e=>({label:norm(e.querySelector('small')?.textContent),value:e.querySelector('b')?.textContent||''}));
  const value=label=>kpis.find(k=>k.label===label)?.value||'0';
  const number=s=>Number(String(s).replace(/[^\d]/g,''))||0;
@@ -113,22 +113,22 @@ function command(raw){
    const foot=document.createElement('small');foot.textContent='Resultados mensais oficiais • vendas brutas incluem canceladas';foot.style.color='#b8c8e8';
    box.append(close,sub,title,grid,summary,foot);
    activate('ind');const sel=document.getElementById('sel');if(sel){sel.value=person;sel.dispatchEvent(new Event('change',{bubbles:true}))}
-   msg('✓ Relatório completo de '+person);return
+   msg('✓ Relatório completo de '+selectedPerson);speak(summary.textContent);return
   }
  }
  if(person&&/mostrar|mostra|abre|abrir|resultado|dados|individual|como|quanto|fez/.test(s)){activate('ind');const sel=document.getElementById('sel');sel.value=person;sel.dispatchEvent(new Event('change',{bubbles:true}));msg('✓ Resultado de '+person);setTimeout(()=>focusEl(document.getElementById('ik')),300);return}
  if(/quanto falta|falta quanto|restante|bater a meta/.test(s)){activate('dash');spotlight('DISTÂNCIA DA META',Math.max(0,589-number(value('casais')))+' casais • '+Math.max(0,120-number(value('vendas')))+' vendas • R$ '+new Intl.NumberFormat('pt-BR').format(Math.max(0,12000000-number(value('vgv'))))+' de VGV');return}
  if(/quem lidera|primeiro lugar|quem esta em primeiro|top 3/.test(s)){rank('couples');const names=[...document.querySelectorAll('#rb tr')].slice(0,/top 3/.test(s)?3:1).map(tr=>tr.querySelectorAll('td')[1]?.innerText?.split('\n')[0]).filter(Boolean);spotlight('LIDERANÇA',names.join(' • ')||'Confira o ranking');return}
- if(/ranking|classificacao|colocacao/.test(s)){rank(/vgv|faturamento/.test(s)?'vgv':/vendas/.test(s)?'sales':/conversao/.test(s)?'conversion':'couples');msg('✓ Ranking aberto e classificado');return}
- if(/abrir fx|mostrar fx|analise fx|analisar fx/.test(s)){activate('fx');msg('✓ FX aberto');return}
+ if(/ranking|classificacao|colocacao/.test(s)){rank(/vgv|faturamento/.test(s)?'vgv':/vendas/.test(s)?'sales':/conversao/.test(s)?'conversion':'couples');msg('✓ Ranking aberto e classificado');speak('Pronto, abri o ranking.');return}
+ if(/abrir fx|mostrar fx|analise fx|analisar fx/.test(s)){activate('fx');msg('✓ FX aberto');speak('Abri a análise individual FX.');return}
  if(/conversao|eficiencia/.test(s)){activate('dash');const c=number(value('casais')),v=number(value('vendas'));spotlight('CONVERSÃO',c?(100*v/c).toFixed(1).replace('.',',')+'% • '+v+' vendas em '+c+' casais':'Sem dados de casais');return}
- if(/perfil de casais|perfil dos casais/.test(s)){activate('perfil');msg('✓ Perfil de casais aberto');return}
+ if(/perfil de casais|perfil dos casais/.test(s)){activate('perfil');msg('✓ Perfil de casais aberto');speak('Aqui está o perfil de casais.');return}
  if(/casais|casal|atendimentos/.test(s)){activate('dash');spotlight('CASAIS',value('casais')+' casais • Meta: 589');return}
  if(/vendas|contratos/.test(s)){activate('dash');spotlight('VENDAS',value('vendas')+' vendas brutas • Meta: 120');return}
  if(/vgv|vgb|faturamento|valor vendido/.test(s)){activate('dash');spotlight('VGV BRUTO',value('vgv')+' • Meta: R$ 12.000.000');return}
  const commands=[[/projecao|projetar/,'proj'],[/brindes|custos/,'custos'],[/perfil|qualificados/,'perfil'],[/diagnostico/,'diag'],[/gestao/,'gestao'],[/individual|profissional/,'ind'],[/inicio|central|painel|voltar/,'dash']];
- for(const [re,target] of commands)if(re.test(s)){activate(target);msg('✓ Abrindo '+target);setTimeout(()=>focusEl(document.getElementById(target)),300);return}
- msg('Ouvi: “'+raw+'”. Diga “ajuda” para ver os comandos.');
+ for(const [re,target] of commands)if(re.test(s)){activate(target);msg('✓ Abrindo '+target);speak('Certo, abrindo '+target+'.');setTimeout(()=>focusEl(document.getElementById(target)),300);return}
+ msg('Ouvi: “'+raw+'”. Pode dizer assunto e nome, por exemplo: vendas Josiene.');speak('Não entendi essa consulta. Pode tentar assunto e nome?');
 }
 function stop(){window.speechSynthesis?.cancel();listening=false;syncSide();if(btn()){btn().setAttribute('aria-pressed','false');btn().textContent='🎙️ Ativar voz'}try{recognition?.stop()}catch(_){}msg('Microfone desligado. Toque para ativar novamente.')}
 function start(){welcome();if(!SpeechRecognition){msg('Este navegador não oferece reconhecimento de voz. Tente Chrome ou Edge com permissão de microfone.');return}
