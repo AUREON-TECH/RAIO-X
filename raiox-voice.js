@@ -6,6 +6,7 @@ const panel=document.createElement('aside');panel.id='raiox-voice-panel';panel.i
 const css=document.createElement('style');css.textContent=`
 #voice-stage{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2147482999;width:min(900px,90vw);padding:35px;background:linear-gradient(130deg,#09172e,#242052);border:2px solid #e4b958;border-radius:25px;box-shadow:0 24px 90px #000c;color:#fff;text-align:center;font-family:system-ui,sans-serif}#voice-stage h2{font-size:clamp(30px,5vw,65px);color:#ffdc8b;margin:15px 0}#voice-stage p{font-size:clamp(20px,3vw,40px);line-height:1.4}#voice-stage button{float:right;background:#263a69;color:white;border:1px solid #9cb2e5;border-radius:10px;padding:10px;cursor:pointer}
 
+#voice-stage.voice-help-compact{width:min(850px,calc(100vw - 28px));max-height:min(80vh,740px);overflow:auto;padding:clamp(16px,2vw,26px);text-align:left;border-radius:18px}#voice-stage.voice-help-compact .voice-help-top{display:flex;align-items:center;justify-content:space-between;gap:10px}#voice-stage.voice-help-compact h2{font-size:clamp(19px,2.4vw,28px);margin:0;color:#ffdc8b}#voice-stage.voice-help-compact .voice-help-top button{float:none;flex-shrink:0;font-size:12px}#voice-stage.voice-help-compact>p{font-size:13px;line-height:1.5;margin:12px 0 16px;color:#bfcce7}#voice-stage.voice-help-compact .voice-help-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}#voice-stage.voice-help-compact .voice-help-group{background:#142547;border:1px solid #354c78;border-radius:12px;padding:12px 15px}#voice-stage.voice-help-compact h3{font-size:14px;color:#79e7f7;margin:0 0 9px}#voice-stage.voice-help-compact .voice-help-group div{font-size:12px;color:#e6edff;line-height:1.8}@media(max-width:560px){#voice-stage.voice-help-compact{max-height:76vh}#voice-stage.voice-help-compact .voice-help-grid{grid-template-columns:1fr}}
 #raiox-voice-panel{position:fixed;right:18px;bottom:18px;top:auto;z-index:2147483000;display:flex;flex-direction:column;align-items:flex-end;gap:8px;width:auto;max-width:min(310px,calc(100vw - 28px));font-family:system-ui,Arial,sans-serif;pointer-events:none}#raiox-voice-panel>*{pointer-events:auto}
 #raiox-voice-toggle{border:2px solid #88a8ff;background:#1b3164;color:white;border-radius:999px;padding:13px 20px;font-size:15px;font-weight:800;box-shadow:0 8px 28px #0009;cursor:pointer;touch-action:manipulation;pointer-events:auto}
 #raiox-voice-toggle[aria-pressed=true]{background:#9b243b;border-color:#ffb0b7;animation:raiox-voice-pulse 1.5s infinite}
@@ -29,8 +30,25 @@ function command(raw){
  const match=people.map(n=>({n,score:words.filter(w=>norm(n).includes(w)).length})).filter(x=>x.score).sort((x,y)=>y.score-x.score);
  const person=match.length&&(!match[1]||match[0].score>match[1].score)?match[0].n:null;
  const rank=metric=>{activate('rank');const el=document.getElementById('rm');if(el&&[...el.options].some(o=>o.value===metric)){el.value=metric;el.dispatchEvent(new Event('change',{bubbles:true}))}};
- if(/fechar|esconder destaque/.test(s)){document.getElementById('voice-stage')?.remove();msg('Destaque fechado');return}
- if(/ajuda|comandos|o que voce faz/.test(s)){spotlight('COMANDOS DE VOZ','Mostrar casais, vendas, VGV, conversão, quanto falta para a meta, ranking por vendas, quem lidera, relatório da Suene, me fala sobre Paulo Victor, projeções e custos.');return}
+ if(/desligar voz|parar de ouvir|desativar voz/.test(s)){document.getElementById('voice-stage')?.remove();stop();return}\n if(/fechar|esconder destaque/.test(s)){document.getElementById('voice-stage')?.remove();msg('Destaque fechado');return}
+ if(/ajuda|comandos|o que voce faz/.test(s)){
+  let box=document.getElementById('voice-stage');if(!box){box=document.createElement('section');box.id='voice-stage';document.body.appendChild(box)}
+  box.replaceChildren();box.removeAttribute('style');box.classList.add('voice-help-compact');
+  const top=document.createElement('div');top.className='voice-help-top';
+  const title=document.createElement('h2');title.textContent='🎙️ Comandos do RAIO X';
+  const close=document.createElement('button');close.textContent='✕ Fechar';close.onclick=()=>box.remove();top.append(title,close);box.append(top);
+  const intro=document.createElement('p');intro.textContent='Fale naturalmente. Exemplos: “relatório da Suene” ou “quanto falta para a meta?”.';box.append(intro);
+  const groups=[
+    ['📊 Central e metas',['Mostrar casais','Mostrar vendas','Mostrar VGV','Mostrar conversão','Quanto falta para a meta']],
+    ['🏆 Ranking',['Abrir ranking','Ranking por vendas','Ranking por VGV','Quem lidera','Top 3']],
+    ['👤 Individual e FX',['Relatório da Suene','Me fala sobre Paulo Victor','Resultado do Marlon','Abrir individual','Abrir FX']],
+    ['🧠 Análise',['Abrir diagnóstico','Mostrar perfil de casais','Mostrar projeções','Mostrar custos','Abrir gestão']],
+    ['🧭 Navegação',['Voltar ao início','Fechar destaque','Desligar voz']]
+  ];
+  const grid=document.createElement('div');grid.className='voice-help-grid';
+  groups.forEach(([label,commands])=>{const section=document.createElement('section');section.className='voice-help-group';const h=document.createElement('h3');h.textContent=label;section.append(h);commands.forEach(item=>{const line=document.createElement('div');line.textContent='“'+item+'”';section.append(line)});grid.append(section)});
+  box.append(grid);msg('✓ Comandos organizados por área');return
+ }
  if(person&&/mostrar|mostra|abre|abrir|resultado|dados|individual|como|quanto|fez|relatorio|resumo|fala|fale|quem e|conte|me diz|me diga/.test(s)){
   const report=window.raioxVoiceData?.people?.find(p=>norm(p.name)===norm(person));
   if(report){
@@ -61,8 +79,8 @@ function command(raw){
  if(/quanto falta|falta quanto|restante|bater a meta/.test(s)){activate('dash');spotlight('DISTÂNCIA DA META',Math.max(0,589-number(value('casais')))+' casais • '+Math.max(0,120-number(value('vendas')))+' vendas • R$ '+new Intl.NumberFormat('pt-BR').format(Math.max(0,12000000-number(value('vgv'))))+' de VGV');return}
  if(/quem lidera|primeiro lugar|quem esta em primeiro|top 3/.test(s)){rank('couples');const names=[...document.querySelectorAll('#rb tr')].slice(0,/top 3/.test(s)?3:1).map(tr=>tr.querySelectorAll('td')[1]?.innerText?.split('\n')[0]).filter(Boolean);spotlight('LIDERANÇA',names.join(' • ')||'Confira o ranking');return}
  if(/ranking|classificacao|colocacao/.test(s)){rank(/vgv|faturamento/.test(s)?'vgv':/vendas/.test(s)?'sales':/conversao/.test(s)?'conversion':'couples');msg('✓ Ranking aberto e classificado');return}
- if(/conversao|eficiencia/.test(s)){activate('dash');const c=number(value('casais')),v=number(value('vendas'));spotlight('CONVERSÃO',c?(100*v/c).toFixed(1).replace('.',',')+'% • '+v+' vendas em '+c+' casais':'Sem dados de casais');return}
- if(/casais|casal|atendimentos/.test(s)){activate('dash');spotlight('CASAIS',value('casais')+' casais • Meta: 589');return}
+ if(/abrir fx|mostrar fx|analise fx|analisar fx/.test(s)){activate('fx');msg('✓ FX aberto');return}\n if(/conversao|eficiencia/.test(s)){activate('dash');const c=number(value('casais')),v=number(value('vendas'));spotlight('CONVERSÃO',c?(100*v/c).toFixed(1).replace('.',',')+'% • '+v+' vendas em '+c+' casais':'Sem dados de casais');return}
+ if(/perfil de casais|perfil dos casais/.test(s)){activate('perfil');msg('✓ Perfil de casais aberto');return}\n if(/casais|casal|atendimentos/.test(s)){activate('dash');spotlight('CASAIS',value('casais')+' casais • Meta: 589');return}
  if(/vendas|contratos/.test(s)){activate('dash');spotlight('VENDAS',value('vendas')+' vendas brutas • Meta: 120');return}
  if(/vgv|vgb|faturamento|valor vendido/.test(s)){activate('dash');spotlight('VGV BRUTO',value('vgv')+' • Meta: R$ 12.000.000');return}
  const commands=[[/projecao|projetar/,'proj'],[/brindes|custos/,'custos'],[/perfil|qualificados/,'perfil'],[/diagnostico/,'diag'],[/gestao/,'gestao'],[/individual|profissional/,'ind'],[/inicio|central|painel|voltar/,'dash']];
