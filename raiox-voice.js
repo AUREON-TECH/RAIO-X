@@ -62,6 +62,8 @@ function command(raw){
   const report=window.raioxVoiceData?.people?.find(p=>norm(p.name)===norm(selectedPerson));
   if(report){
    const d=window.raioxVoiceData;
+   const topic=/vendas/.test(s)?'VENDAS':/casais/.test(s)?'CASAIS':/vgv/.test(s)?'VGV':null;
+   if(topic){spotlight(topic+' • '+report.name,String(topic==='VENDAS'?report.sales:topic==='CASAIS'?report.couples:report.vgv));return}
    const cv=report.couples?report.sales/report.couples*100:0;
    const rank=[...d.people].sort((a,b)=>b.couples-a.couples||b.sales-a.sales).findIndex(p=>p.name===report.name)+1;
    let box=document.getElementById('voice-stage');if(!box){box=document.createElement('section');box.id='voice-stage';document.body.appendChild(box)}
