@@ -2,7 +2,7 @@
 const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
 let listening=false,recognition=null;
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
-const panel=document.createElement('aside');panel.id='raiox-voice-panel';panel.innerHTML='<button id="raiox-voice-toggle" type="button" aria-pressed="false">🎙️ Ativar voz</button><button id="raiox-voice-help" type="button">📋 Comandos</button><div id="raiox-voice-message" role="status" aria-live="polite" hidden>Pronto para ouvir.</div>';
+const panel=document.createElement('aside');panel.id='raiox-voice-panel';panel.innerHTML='<button id="raiox-voice-toggle" type="button" aria-pressed="false">🎙️ Falar</button><button id="raiox-voice-help" type="button">💬 Conversar</button><div id="raiox-voice-message" role="status" aria-live="polite" hidden>Pronto para ouvir.</div>';
 const css=document.createElement('style');css.textContent=`
 #voice-stage{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2147482999;width:min(900px,90vw);padding:35px;background:linear-gradient(130deg,#09172e,#242052);border:2px solid #e4b958;border-radius:25px;box-shadow:0 24px 90px #000c;color:#fff;text-align:center;font-family:system-ui,sans-serif}#voice-stage h2{font-size:clamp(30px,5vw,65px);color:#ffdc8b;margin:15px 0}#voice-stage p{font-size:clamp(20px,3vw,40px);line-height:1.4}#voice-stage button{float:right;background:#263a69;color:white;border:1px solid #9cb2e5;border-radius:10px;padding:10px;cursor:pointer}
 
@@ -35,6 +35,8 @@ function command(raw){
  const scoreName=n=>{const parts=norm(n).split(/\s+/).map(canonical);return tokens.reduce((sum,t)=>{let best=0;for(const p of parts){if(t===p)best=Math.max(best,10);else if(t.length>=4&&p.startsWith(t))best=Math.max(best,7);else if(t.length>=4&&editDistance(t,p)<=1)best=Math.max(best,6)}return sum+best},0)};
  const match=people.map(n=>({n,score:scoreName(n)})).filter(x=>x.score>=6).sort((a,b)=>b.score-a.score);
  const person=match.length&&(!match[1]||match[0].score>match[1].score)?match[0].n:null;
+ if(person)window.raioxLastVoicePerson=person;
+ const selectedPerson=person||(/\b(dele|dela|ele|ela)\b/.test(s)?window.raioxLastVoicePerson:null);
  const rank=metric=>{activate('rank');const el=document.getElementById('rm');if(el&&[...el.options].some(o=>o.value===metric)){el.value=metric;el.dispatchEvent(new Event('change',{bubbles:true}))}};
  if(/desligar voz|parar de ouvir|desativar voz/.test(s)){document.getElementById('voice-stage')?.remove();stop();return}
  if(/fechar|esconder destaque/.test(s)){document.getElementById('voice-stage')?.remove();msg('Destaque fechado');return}
@@ -56,8 +58,8 @@ function command(raw){
   groups.forEach(([label,commands])=>{const section=document.createElement('section');section.className='voice-help-group';const h=document.createElement('h3');h.textContent=label;section.append(h);commands.forEach(item=>{const line=document.createElement('div');line.textContent='“'+item+'”';section.append(line)});grid.append(section)});
   box.append(grid);msg('✓ Comandos organizados por área');return
  }
- if(person&&/mostrar|mostra|abre|abrir|resultado|dados|individual|como|quanto|fez|relatorio|resumo|fala|fale|quem e|conte|me diz|me diga|vendas|casais|vgv|conversao|qualificados|dias|meta|ticket|fx|desempenho|performance/.test(s)){
-  const report=window.raioxVoiceData?.people?.find(p=>norm(p.name)===norm(person));
+ if(selectedPerson&&/mostrar|mostra|abre|abrir|resultado|dados|individual|como|quanto|fez|relatorio|resumo|fala|fale|quem e|conte|me diz|me diga|vendas|casais|vgv|conversao|qualificados|dias|meta|ticket|fx|desempenho|performance|dele|dela|ele|ela/.test(s)){
+  const report=window.raioxVoiceData?.people?.find(p=>norm(p.name)===norm(selectedPerson));
   if(report){
    const d=window.raioxVoiceData;
    const cv=report.couples?report.sales/report.couples*100:0;
@@ -106,6 +108,6 @@ recognition.onend=()=>{if(listening){try{recognition.start()}catch(e){msg('Não 
 }
 listening=true;syncSide();btn().setAttribute('aria-pressed','true');btn().textContent='🔴 Desligar voz';msg('🎙️ Escutando. Diga “mostrar casais”, “vendas”, “VGV”, “ranking” ou “projeções”.');try{recognition.start()}catch(e){stop();msg('Falha ao iniciar microfone: '+e.message)}
 }
-function init(){document.head.appendChild(css);document.body.appendChild(panel);btn().addEventListener('click',()=>listening?stop():start());document.getElementById('raiox-voice-help').addEventListener('click',()=>command('ajuda'));const side=document.getElementById('raiox-voice-side-toggle');if(side)side.addEventListener('click',()=>listening?stop():start());const sideHelp=document.getElementById('raiox-voice-side-help');if(sideHelp)sideHelp.addEventListener('click',()=>command('ajuda'))}
+function init(){document.head.appendChild(css);document.body.appendChild(panel);btn().addEventListener('click',()=>listening?stop():start());document.getElementById('raiox-voice-help').addEventListener('click',()=>{const question=prompt('Pergunte ao RAIO X. Ex.: relatório Josiene, vendas Suene, ranking por VGV');if(question?.trim())command(question)});const side=document.getElementById('raiox-voice-side-toggle');if(side)side.addEventListener('click',()=>listening?stop():start());const sideHelp=document.getElementById('raiox-voice-side-help');if(sideHelp)sideHelp.addEventListener('click',()=>command('ajuda'))}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
