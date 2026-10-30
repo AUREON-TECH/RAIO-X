@@ -42,14 +42,14 @@ function welcome(){
  msg('🤖 Bem-vindo ao RAIO X. Estou pronto para ajudar.');
 }
 
-function msg(s){const e=document.getElementById('raiox-voice-message');if(e){e.textContent=s;e.hidden=false}}
+function msg(s){const e=document.getElementById('raiox-voice-message');if(e){e.textContent=s;e.hidden=false}const log=document.getElementById('raiox-chat-history');if(log){const line=document.createElement('p');line.textContent=s;log.appendChild(line);log.scrollTop=log.scrollHeight}}
 function btn(){return document.getElementById('raiox-voice-toggle')}
 function syncSide(){const side=document.getElementById('raiox-voice-side-toggle');if(side){side.textContent=listening?'🔴 DESLIGAR VOZ':'🎙️ ATIVAR COMANDO DE VOZ';side.setAttribute('aria-pressed',String(listening))}}
 function activate(section){const cinema=document.getElementById('cin');if(cinema&&!cinema.classList.contains('hide')){const enter=document.getElementById('enter');if(enter)enter.click();else cinema.classList.add('hide')}const b=document.querySelector('.nav [data-go="'+section+'"]');if(b){b.click();return true}return false}
 function focusEl(el){if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});el.style.outline='3px solid #f3c668';el.style.outlineOffset='4px';setTimeout(()=>{el.style.outline='';el.style.outlineOffset=''},4200)}
 function findKpi(word){const candidates=[...document.querySelectorAll('#dk > *,#dk .kpi,#dk .card,.kpi-card,.hero-kpi,.stat-card')];return candidates.find(el=>{const s=norm(el.textContent);return word==='conversao'?s.includes('conversao'):word==='vgv'?s.includes('vgv'):word==='casais'?s.includes('casais'):word==='vendas'?s.includes('vendas'):false})}
 function command(raw){
- const s=norm(raw);
+ const s=norm(raw);const log=document.getElementById('raiox-chat-history');if(log){const line=document.createElement('p');line.textContent='Você: '+raw;log.appendChild(line)}
  if(/bom dia|boa tarde|boa noite|ola raio|oi raio|quem e voce/.test(s)){speak('Olá. Eu sou o assistente do Raio X. Posso consultar casais, vendas, VGV, metas, rankings e resultados individuais. Como posso ajudar?');msg('🤖 Estou à disposição.');return}
  if(/repete|repetir|fale de novo/.test(s)){speak('Claro. Diga o nome do profissional e o indicador que deseja consultar.');return}
  const spotlight=(title,description)=>{let box=document.getElementById('voice-stage');if(!box){box=document.createElement('section');box.id='voice-stage';document.body.appendChild(box)}box.replaceChildren();const close=document.createElement('button');close.textContent='✕ Fechar';close.onclick=()=>box.remove();const h=document.createElement('h2');h.textContent=title;const p=document.createElement('p');p.textContent=description;box.append(close,h,p);msg('✓ '+title);speak(title+'. '+description)};
