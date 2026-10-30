@@ -91,7 +91,6 @@
 <aside>
   <div class="brand"><div class="bm">X</div><div><b>RAIO X</b><small>RELATÓRIO DE PERFORMANCE</small></div></div>
   <a class="nav-home" id="backToEntry" href="./#home">← VOLTAR AO INÍCIO</a>
-  <div id="raiox-voice-sidebar" style="display:grid;gap:8px;margin:14px 12px 18px"><button id="raiox-voice-side-toggle" type="button" style="display:block;width:100%;padding:14px 10px;border-radius:12px;background:linear-gradient(110deg,#0b9ed6,#5b48df);color:#fff;font-size:15px;font-weight:900;border:1px solid #6eeaff;cursor:pointer">🎙️ ATIVAR COMANDO DE VOZ</button><button id="raiox-voice-side-help" type="button" style="display:block;width:100%;padding:9px;border-radius:10px;background:#152b50;color:#e8f4ff;border:1px solid #536b9f;font-weight:700;cursor:pointer">📋 Ver comandos</button></div>
   <div class="nav-label">FLUXO OPERACIONAL</div>
   <nav class="nav">
     <button class="active" data-go="dash">01 · Central</button>
@@ -344,7 +343,7 @@ if ("serviceWorker" in navigator) { window.addEventListener("load", () => naviga
 <script id="individual-navigation-v5">
 (function(){function init(){var s=document.getElementById('sel');if(!s||document.querySelector('#ind .individual-stepper'))return;var controls=document.createElement('div');controls.className='individual-stepper';controls.innerHTML='<button type="button" aria-label="Profissional anterior">◀ Anterior</button><button type="button" aria-label="Próximo profissional">Próximo ▶</button>';s.insertAdjacentElement('afterend',controls);var b=controls.querySelectorAll('button');function move(n){if(!s.options.length)return;s.selectedIndex=(s.selectedIndex+n+s.options.length)%s.options.length;s.dispatchEvent(new Event('change',{bubbles:true}));}b[0].addEventListener('click',function(){move(-1)});b[1].addEventListener('click',function(){move(1)});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();
 </script>
-<script src="./raiox-voice.js?v=9" defer></script>
+<script src="./raiox-voice.js?v=10" defer></script>
 <script src="./fx-daily-import.js?v=1" defer></script>
 </body>
 </html>
