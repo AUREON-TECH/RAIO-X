@@ -245,6 +245,11 @@
     <div class="attention-people" id="diagPeopleAttention"></div>
   </div>
 
+  <div class="diag-grid" id="diagStrengthsRisks" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:14px 0">
+    <div class="card pad" style="min-width:0;border-left:3px solid #3ecb91"><h3 style="color:#74e4b7;margin:0 0 10px">✓ Pontos positivos</h3><div id="diagPositiveList" aria-live="polite">Selecione um profissional para analisar os pontos fortes.</div></div>
+    <div class="card pad" style="min-width:0;border-left:3px solid #f1a46b"><h3 style="color:#ffbd88;margin:0 0 10px">△ Pontos negativos / atenção</h3><div id="diagNegativeList" aria-live="polite">Selecione um profissional para analisar os riscos.</div></div>
+  </div>
+  <style>@media(max-width:720px){#diagStrengthsRisks{grid-template-columns:minmax(0,1fr)!important}}</style>
   <div class="diag-grid attention-detail-grid">
     <div class="diag-panel weak attention-focus">
       <div class="diag-panel-head">
