@@ -373,7 +373,7 @@ if ("serviceWorker" in navigator) { window.addEventListener("load", () => naviga
  const tbody=root.querySelector('tbody'), metric=document.getElementById('incomeSortMetric'),direction=document.getElementById('incomeSortDirection');
  const rows=Array.from(tbody.rows);
  const num=s=>Number(String(s).replace(/[^\d]/g,''))||0;
- rows.forEach(row=>{row.dataset.vgv=String(num(row.cells[6].textContent));row.dataset.conversion=String(Number(row.cells[6].textContent.replace('%','').replace(',','.')));});
+ rows.forEach(row=>{row.dataset.vgv=String(num(row.cells[6].textContent));row.dataset.conversion=String(Number(row.cells[5].textContent.replace('%','').replace(',','.')));});
  function sort(){
  const key=metric.value,sign=direction.value==='asc'?1:-1;
  rows.sort((a,b)=>sign*(Number(a.dataset[key])-Number(b.dataset[key]))||Number(a.dataset.income)-Number(b.dataset.income));
