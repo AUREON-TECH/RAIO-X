@@ -380,12 +380,12 @@
       if(p.c>=avgC)positives.push('Volume: '+fmtInt(p.c)+' casais, na média ou acima da média de '+avgC.toFixed(1).replace('.',',')+'.');
       else negatives.push('Volume: '+fmtInt(p.c)+' casais, abaixo da média de '+avgC.toFixed(1).replace('.',',')+'.');
       if(p.c>0){
-        if(conv>=avgConv)positives.push('Conversão: '+conv.toFixed(1).replace('.',',')+'%, igual ou superior à média de '+avgConv.toFixed(1).replace('.',',')+'%.');
-        else negatives.push('Conversão: '+conv.toFixed(1).replace('.',',')+'%, abaixo da média de '+avgConv.toFixed(1).replace('.',',')+'%.');
+        if(conv>=avgConv)positives.push('Vendas por 100 casais: '+conv.toFixed(1).replace('.',',')+', igual ou superior à média de '+avgConv.toFixed(1).replace('.',',')+'.');
+        else negatives.push('Vendas por 100 casais: '+conv.toFixed(1).replace('.',',')+', abaixo da média de '+avgConv.toFixed(1).replace('.',',')+'.');
         if(p.q>p.nq)positives.push('Qualificação: '+fmtInt(p.q)+' Q contra '+fmtInt(p.nq)+' NQ.');
         else if(p.nq>p.q)negatives.push('Qualificação: '+fmtInt(p.nq)+' NQ contra '+fmtInt(p.q)+' Q.');
       }else negatives.push('Sem casais registrados no período selecionado.');
-      if(p.s>0)positives.push('Resultado comercial: '+fmtInt(p.s)+' vendas e '+fmtMoneyFull(p.v)+' em VGV.');
+      if(p.s>0)positives.push('Resultado comercial: '+fmtInt(p.s)+' cotas vendidas e '+fmtMoneyFull(p.v)+' em VGV. Cada cota conta como uma venda; cada casal conta uma vez.');
       else if(p.c>0)negatives.push('Nenhuma venda registrada entre '+fmtInt(p.c)+' casais.');
       const insightHtml=arr=>arr.length?arr.map(t=>'<p style="padding:9px 0;border-bottom:1px solid #354365;margin:0;line-height:1.5">'+esc(t)+'</p>').join(''):'<p style="opacity:.75">Sem evidências suficientes para classificar outros indicadores.</p>';
       if($('diagPositiveList'))$('diagPositiveList').innerHTML=insightHtml(positives);
