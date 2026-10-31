@@ -260,6 +260,15 @@
 <section id="perfil" class="sec">
   <div class="stage-context"><span class="eye">INTELIGÊNCIA DE PERFIL</span><h3>Entenda quem entra, quem compra, exceções, renda, profissão, carro e qualidade dos casais.</h3><div class="stage-context-meta"><span>BASE OFICIAL DO MÊS</span><span>DECISÃO ORIENTADA POR DADOS</span></div></div>
   <div class="card hero"><div class="eye">PERFIL DO MÊS</div><h3>Carregando dados oficiais...</h3><p>O perfil será calculado a partir da base do mês selecionado.</p></div>
+  <div class="card pad" id="incomePurchaseAnalysis" style="margin-top:14px">
+    <div class="title"><h3>Compras por faixa de renda</h3><span class="mini">Casais em sala • vendas • eficiência</span></div>
+    <p style="color:#a8bad8;font-size:13px;margin:8px 0 14px">Comparativo de renda familiar mensal. Os resultados serão preenchidos somente quando houver registros individuais de renda e compra.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px">
+      <article style="border:1px solid #3c547e;border-radius:14px;padding:15px;background:#101f3c"><strong style="color:#90dfff">R$ 15.000 a R$ 20.000</strong><div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px"><div><small>ENTRARAM EM SALA</small><h3 id="income15entered">—</h3></div><div><small>COMPRARAM</small><h3 id="income15bought">—</h3></div><div><small>EFICIÊNCIA</small><h3 id="income15conversion">—</h3></div><div><small>VGV</small><h3 id="income15vgv">—</h3></div></div></article>
+      <article style="border:1px solid #3c547e;border-radius:14px;padding:15px;background:#101f3c"><strong style="color:#90dfff">Até R$ 14.000</strong><div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px"><div><small>ENTRARAM EM SALA</small><h3 id="income14entered">—</h3></div><div><small>COMPRARAM</small><h3 id="income14bought">—</h3></div><div><small>EFICIÊNCIA</small><h3 id="income14conversion">—</h3></div><div><small>VGV</small><h3 id="income14vgv">—</h3></div></div></article>
+    </div>
+    <p id="incomePurchaseStatus" role="status" style="font-size:12px;color:#f1c77e;margin-top:14px">Aguardando dados de renda e compra por casal. Nenhum resultado será estimado.</p>
+  </div>
   <div class="grid tri" style="margin-top:12px">
     <div class="card pad"><div class="title"><h3>Profissões</h3></div><div class="bars" id="pb"></div></div>
     <div class="card pad"><div class="title"><h3>Faixa etária</h3></div><div class="bars" id="ab"></div></div>
