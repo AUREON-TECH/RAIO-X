@@ -118,11 +118,17 @@
 </header>
 
 <section id="dash" class="sec on">
-  <div id="raioxSalaSnapshot" class="card pad" style="margin-bottom:14px;border:1px solid #3c79a0">
-    <div class="title"><h3>Controle de sala • 31/10/2026</h3><span class="mini">Arquivo TSExplorer enviado • fonte distinta do consolidado oficial</span></div>
+  <div id="raioxSalaSnapshot" class="card pad" style="margin-bottom:14px;border:1px solid #3c79a0;max-width:100%;overflow:hidden">
+    <div class="title"><h3>Controle de sala • 31/10/2026</h3><span class="mini">TSExplorer • apuração por cota • fonte diferente do consolidado oficial</span></div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-top:12px">
-      <div><small>ATENDIMENTOS</small><h3>432</h3></div><div><small>REGISTROS COM VENDA</small><h3>72</h3></div><div><small>VGV BRUTO</small><h3>R$ 7.302.302</h3></div><div><small>CONTRATOS ATIVOS*</small><h3>59</h3></div><div><small>CANCELADOS*</small><h3>13</h3></div>
-    </div><p style="font-size:12px;opacity:.8;margin-top:10px">*Contagem por linha de atendimento com status de contrato. Não substitui os KPIs oficiais do banco, que ainda refletem a última importação de performance.</p>
+      <div><small>ATENDIMENTOS</small><h3>432</h3></div>
+      <div><small>CASAIS COM COMPRA</small><h3>72</h3></div>
+      <div><small>COTAS VENDIDAS</small><h3>86</h3></div>
+      <div><small>COTAS ATIVAS</small><h3>71</h3></div>
+      <div><small>COTAS CANCELADAS</small><h3>15</h3></div>
+      <div><small>VGV BRUTO</small><h3>R$ 7.302.302</h3></div>
+    </div>
+    <p style="font-size:12px;opacity:.85;margin-top:10px">Cada atendimento conta uma vez; vendas contam todas as cotas listadas no status do contrato (inclusive múltiplas). 71 ativas + 15 canceladas = 86 cotas. O VGV é bruto, sem dedução de cancelamentos. Os indicadores oficiais do painel abaixo permanecem na última importação até a conciliação.</p>
   </div>
   <div class="grid kpis" id="dk"></div>
 
