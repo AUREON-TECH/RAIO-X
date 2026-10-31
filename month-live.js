@@ -66,7 +66,7 @@
       meta.innerHTML='<div><small>META OFICIAL DO MÊS</small><b>'+esc(month.label).toUpperCase()+'</b></div><div><strong>'+fmtInt(month.goal_couples)+'</strong><span>CASAIS</span></div><div><strong>'+fmtInt(month.goal_sales)+'</strong><span>VENDAS</span></div><div><strong>'+fmtMoneyFull(month.goal_vgv)+'</strong><span>VGV</span></div><i style="--progress:'+Math.min(100,pct(a.vgv,num(month.goal_vgv)))+'%"></i>';
       grid.appendChild(meta);
     }
-    const label=document.querySelector('.mission-label b'); if(label)label.textContent='DADOS OFICIAIS • TEMPO REAL • '+month.label.toUpperCase();
+    const label=document.querySelector('.mission-label b'); if(label)label.textContent='CONSOLIDADO OFICIAL • '+month.label.toUpperCase()+' • ATUALIZAÇÃO CONFORME ÚLTIMA IMPORTAÇÃO';
     const captain=captainScores(rows,month);
     const leader=captain.leaders[0]||null;
     const monthLeader=[...prom].sort((x,y)=>num(y.couples)-num(x.couples)||num(y.sales)-num(x.sales))[0];
