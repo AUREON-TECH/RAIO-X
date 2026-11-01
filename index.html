@@ -171,6 +171,13 @@
 <section id="ind" class="sec">
   <div class="stage-context"><span class="eye">RAIO X INDIVIDUAL</span><h3>Veja resultado, eficiência, projeção e orientação prática de cada profissional em uma única leitura.</h3><div class="stage-context-meta"><span>BASE OFICIAL DO MÊS</span><span>DECISÃO ORIENTADA POR DADOS</span></div></div>
   <div class="title"><div><h3>Performance individual</h3><span class="mini">dados reais + ação</span></div><select id="sel"></select></div>
+  <div class="card pad" id="individualGoalPanel" style="margin:14px 0;max-width:100%;min-width:0">
+    <div class="title"><div><h3>Minha meta • acompanhamento individual</h3><span class="mini" id="myGoalMonth">Mês selecionado</span></div></div>
+    <p style="font-size:13px;opacity:.8">Selecione seu nome para acompanhar as metas definidas pela gestão e os resultados oficiais do mês.</p>
+    <label for="myGoalPerson" style="display:block;margin-bottom:6px">Profissional</label>
+    <select id="myGoalPerson" style="width:100%;max-width:440px;padding:10px;background:#122342;color:#fff;border:1px solid #52709a;border-radius:9px"><option>Carregando profissionais...</option></select>
+    <div id="myGoalContent" aria-live="polite" style="margin-top:14px">Carregando metas...</div>
+  </div>
   <div class="grid kpis" id="ik"></div>
   <div class="card coach"><div class="chead"><div class="px">PX</div><div><div class="eye">PROFESSOR X</div><h3 style="margin:2px 0">Seu treinador de performance</h3></div></div><div class="ccopy" id="cc"></div><div class="cgrid" id="cg"></div></div>
 </section>
