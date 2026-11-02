@@ -738,7 +738,7 @@ function individualPerf(p){
 }
 function renderIndividualGoals(){
   if(!$('individualGoalsEditor')||!state.month)return;
-  const people=workingPeople();
+  const people=workingPeople().filter(p=>!(/felipe da silva ribeiro|raphael bueno da silva|rafael bueno da silva/i.test(norm(p.full_name))));
   const totalGoal=people.reduce((s,p)=>s+Number(goalByPerson(p.id)?.couples_goal||0),0);
   const achieved=people.filter(p=>{const g=Number(goalByPerson(p.id)?.couples_goal||0);return g>0&&individualPerf(p).couples>=g;}).length;
   const withGoal=people.filter(p=>Number(goalByPerson(p.id)?.couples_goal||0)>0).length;
@@ -2309,10 +2309,10 @@ async function newMonth(){
 function setTab(id){
   document.querySelectorAll('.ceo-tab').forEach(s=>s.classList.toggle('on',s.id===id));
   document.querySelectorAll('#ceoNav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
-  $('ceoTitle').textContent=TITLES[id]?.[0]||id;
-  $('ceoSubtitle').textContent=TITLES[id]?.[1]||'';
+  $('ceoTitle').textContent=id==='goals'?'Metas individuais de casais':(TITLES[id]?.[0]||id);
+  $('ceoSubtitle').textContent=id==='goals'?'Defina a meta de casais de cada captador para o mês selecionado.':(TITLES[id]?.[1]||'');
   if(id==='today')renderTodayExecutive();
-  if(id==='goals'){renderMonthGoals();renderTeamGoalDistribution();}
+  if(id==='goals'){renderIndividualGoals();}
   if(id==='people')renderProfessionalProfile();
   if(id==='reports')renderReports();
   if(id==='approvals')loadApprovals();
@@ -2410,6 +2410,7 @@ async function init(){
     if($('agendaDate'))$('agendaDate').value=localDate();
     if($('strategyDate'))$('strategyDate').value=localDate();
     bind();
+    setTab('goals');
     loadBase().catch(err=>{console.error('Falha ao carregar dados do Portal',err);toast('Portal abriu, mas alguns dados não carregaram: '+err.message,true);});
   }catch(err){
     clearTimeout(watchdog);
