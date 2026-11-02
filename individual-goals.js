@@ -37,7 +37,7 @@ async function load(ctx){
  (!g?'<p style="margin-top:12px;color:#f0c884">A gestão ainda não cadastrou uma meta individual para este profissional neste mês.</p>':'');
  };
  sel.onchange=render;render();
- }catch(e){if(id===loadId)root.textContent='Não foi possível carregar as metas individuais. Verifique o acesso e tente atualizar a página.';console.error('RAIO X metas individuais',e)}
+ }catch(e){if(id===loadId){root.textContent=(e&&(/HTTP (401|403)/.test(String(e.message||e))))?'As metas individuais exigem acesso autorizado. Entre com seu usuário aprovado para consultar; somente o gestor pode editar.':'Não foi possível carregar as metas individuais. Confira a conexão e atualize a página.';}console.error('RAIO X metas individuais',e)}
 }
 window.addEventListener('raiox:authenticated',e=>load(e.detail));
 window.addEventListener('raiox:month-changed',e=>load(e.detail));
