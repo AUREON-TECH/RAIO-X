@@ -404,9 +404,9 @@
       if($('projectionTargetTitle'))$('projectionTargetTitle').textContent='Leitura individual • '+areaRole();
       if($('tg'))$('tg').innerHTML=[
         ['Volume',fmtInt(p.c),(p.c/Math.max(1,p.d)).toFixed(1).replace('.',',')+' por dia ativo'],
-        ['Conversão',(p.c?p.s/p.c*100:0).toFixed(1).replace('.',',')+'%',p.s+' vendas'],
+        ['Cotas por casal',(p.c?p.s/p.c*100:0).toFixed(1).replace('.',',')+'%',p.s+' cotas • pode superar 100%'],
         ['VGV',fmtMoneyFull(p.v),p.s?fmtMoneyFull(p.v/p.s)+' por venda':'sem venda']
-      ].map(x=>'<div class="card pad"><div class="eye">'+x[0]+'</div><b style="font-size:23px">'+x[1]+'</b><span class="muted">'+x[2]+'</span></div>').join('');
+      ].map(x=>'<div class="card pad"><div class="eye">'+x[0]+'</div><b style="display:block;font-size:clamp(17px,2vw,23px);line-height:1.4;overflow-wrap:anywhere;margin:8px 0">'+x[1]+'</b><span class="muted">'+x[2]+'</span></div>').join('');
     };
     psel.onchange=render;render();
   }
