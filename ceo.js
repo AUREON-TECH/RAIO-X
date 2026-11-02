@@ -736,9 +736,10 @@ function individualPerf(p){
   const primary=choosePrimaryPerf(p,perf,roleOf(p));
   return primary&&perfMonthMatches()?{research:Number(primary.r||0),couples:Number(primary.c||0),sales:Number(primary.s||0),vgv:Number(primary.v||0)}:{research:0,couples:0,sales:0,vgv:0};
 }
+const COUPLES_ROSTER={"Pedro":"PEDRO HENRIQUE GOMES SANTOS","Suene":"SUENE CINTIA DA SILVA","Larissa":"LARISSA MARIA RIBEIRO","Matheus Esley":"MATHEUS ESLEY SILVA","Ricardo":"RICARDO MALTCHIK","Josyene":"JOSYENE APARECIDA DE FREITAS","Adriano":"EDSON ADRIANO PINTO MOREIRA","Matheus Domingos":"MATHEUS DOMINGOS SANTOS DE SOUZA","Ana Caroline":"ANA CAROLINE DA SILVA LOPES PEREIRA","Jéssica":"JESSICA GONCALVES BARBOSA","André":"ANDRE LUIS CARRIÇO DOS SANTOS","Márcio":"MARCIO VINICIOS MARTINS ALFAIA","Otávio":"OTAVIO JOSE DE OLIVEIRA MARTINS","Weena":"WEENA ALVES MENEZES","Letícia":"LETICIA LEANDRA DE TOLEDO","Tainá":"TAINA JOICE SILVA SOUZA","Cássio":"CASSIO ELEUTERIO ELIAS","Paulo":"PAULO VICTOR ORTIZ","Renan":"RENAN MARCONDES JOHAS","Gabriel":"GABRIEL LOURENCO BICALHO ALESSANDRI","Mônica Beatriz Pereira Lopes":"MONICA BEATRIZ PEREIRA LOPES","Marlon":"MARLON CRUZ GONCALVES"};
 function renderIndividualGoals(){
   if(!$('individualGoalsEditor')||!state.month)return;
-  const people=workingPeople().filter(p=>!(/felipe da silva ribeiro|raphael bueno da silva|rafael bueno da silva/i.test(norm(p.full_name))));
+  const people=workingPeople().filter(p=>Object.keys(COUPLES_ROSTER).some(n=>norm(n)===norm(p.full_name))).sort((a,b)=>COUPLES_ROSTER[Object.keys(COUPLES_ROSTER).find(n=>norm(n)===norm(a.full_name))].localeCompare(COUPLES_ROSTER[Object.keys(COUPLES_ROSTER).find(n=>norm(n)===norm(b.full_name))],'pt-BR'));
   const totalGoal=people.reduce((s,p)=>s+Number(goalByPerson(p.id)?.couples_goal||0),0);
   const achieved=people.filter(p=>{const g=Number(goalByPerson(p.id)?.couples_goal||0);return g>0&&individualPerf(p).couples>=g;}).length;
   const withGoal=people.filter(p=>Number(goalByPerson(p.id)?.couples_goal||0)>0).length;
@@ -750,7 +751,7 @@ function renderIndividualGoals(){
     const g=goalByPerson(p.id)||{}, perf=individualPerf(p), team=teamByPerson(p.id);
     const target=Number(g.couples_goal||0), pctv=target?perf.couples/target*100:0, missing=Math.max(0,target-perf.couples);
     return '<div class="assignment-row individual-goal-row" data-individual-goal="'+p.id+'">'+
-      '<div><b>'+esc(p.full_name)+'</b><span>'+esc(team?.name||'Sem equipe')+' • realizado '+num(perf.couples)+' casais'+(target?' • faltam '+num(missing)+' • '+pct(pctv):' • sem meta')+'</span></div>'+
+      '<div><b>'+esc(COUPLES_ROSTER[Object.keys(COUPLES_ROSTER).find(n=>norm(n)===norm(p.full_name))]||p.full_name)+'</b><span>'+esc(team?.name||'Sem equipe')+' • realizado '+num(perf.couples)+' casais'+(target?' • faltam '+num(missing)+' • '+pct(pctv):' • sem meta')+'</span></div>'+
       '<div class="individual-goal-inputs">'+
       '<label>Pesquisas<input data-pg="research_goal" type="number" min="0" step="1" value="'+Number(g.research_goal||0)+'"></label>'+
       '<label>Casais<input data-pg="couples_goal" type="number" min="0" step="1" value="'+Number(g.couples_goal||0)+'"></label>'+
