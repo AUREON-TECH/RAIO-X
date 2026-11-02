@@ -181,12 +181,8 @@ async function loadPerformanceForMonth(){
   state.performance=null;
   if(!state.month)return;
 
+  // Priorizar o mesmo banco oficial usado pelo dashboard/ranking.
   const legacy=window.XIA_PERFORMANCE||null;
-  if(legacy&&legacyPerformanceMonth(legacy)===state.month.ref_month.slice(0,7)){
-    state.performance=legacy;
-    return;
-  }
-
   try{
     const rows=await rest(
       'raiox_performance_records?select=professional_name,role,researches,couples,sales,vgv,q,nq,gifts,active_days,week_volume,week_sales,week_vgv,daily,updated_on&ref_month=eq.'+
@@ -213,6 +209,7 @@ async function loadPerformanceForMonth(){
     }
   }catch(err){
     console.warn('RAIO X performance history unavailable',err);
+    if(legacy&&legacyPerformanceMonth(legacy)===state.month.ref_month.slice(0,7))state.performance=legacy;
   }
 }
 function operationMonthTotals(){
