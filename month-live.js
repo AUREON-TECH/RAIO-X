@@ -162,6 +162,7 @@
     select.onchange=()=>{
       const u=new URL(location.href);
       u.searchParams.set('month',select.value);
+      try{sessionStorage.setItem('raiox.view.month.v1',select.value)}catch(_){}
       u.searchParams.set('v','91');
       location.assign(u.toString());
     };
@@ -577,7 +578,8 @@
 
       const openMonth=months.find(m=>m.status==='open')||months[0];
       const requested=new URLSearchParams(location.search).get('month')||'';
-      const selectedRef=months.some(m=>m.ref_month===requested)?requested:openMonth.ref_month;
+      const stored=(()=>{try{return sessionStorage.getItem('raiox.view.month.v1')||''}catch(_){return ''}})();
+      const selectedRef=months.some(m=>m.ref_month===requested)?requested:months.some(m=>m.ref_month===stored)?stored:openMonth.ref_month;
       const month=months.find(m=>m.ref_month===selectedRef)||openMonth;
 
       fillMonthSelector(months,month.ref_month);
