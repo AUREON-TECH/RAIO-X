@@ -550,5 +550,41 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </style>
 <script id="raiox-month-menu-sync-v92">
 (function(){function sync(){var m=new URLSearchParams(location.search).get('month')||'2026-11-01';var names={'2026-11-01':'Novembro/2026','2026-10-01':'Outubro/2026','2026-09-01':'Setembro/2026'};var s=document.getElementById('raioxMonthSummary');if(s)s.textContent=names[m]||names['2026-11-01'];document.querySelectorAll('[data-month-ref]').forEach(function(a){if(a.dataset.monthRef===m)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')})}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync);else sync()})();
-</script><script>document.addEventListener('DOMContentLoaded',function(){var p=document.getElementById('octoberManagementDiagnosis');function sync(){if(!p)return;var sel=document.getElementById('monthCurrentSelect');var m=new URLSearchParams(location.search).get('month')||(sel&&sel.value)||'2026-11-01';p.hidden=m!=='2026-10-01'}sync();window.addEventListener('pageshow',sync);document.getElementById('monthCurrentSelect')?.addEventListener('change',sync)})</script><style>#octoberManagementDiagnosis[hidden]{display:none!important}#octoberManagementDiagnosis td,#octoberManagementDiagnosis th{padding:10px;border-bottom:1px solid #293b5a;text-align:left}#octoberManagementDiagnosis article p{font-size:13px;line-height:1.55}</style></body>
+</script><script>document.addEventListener('DOMContentLoaded',function(){var p=document.getElementById('octoberManagementDiagnosis');function sync(){if(!p)return;var sel=document.getElementById('monthCurrentSelect');var m=new URLSearchParams(location.search).get('month')||(sel&&sel.value)||'2026-11-01';p.hidden=m!=='2026-10-01'}sync();window.addEventListener('pageshow',sync);document.getElementById('monthCurrentSelect')?.addEventListener('change',sync)})</script><style>#octoberManagementDiagnosis[hidden]{display:none!important}#octoberManagementDiagnosis td,#octoberManagementDiagnosis th{padding:10px;border-bottom:1px solid #293b5a;text-align:left}#octoberManagementDiagnosis article p{font-size:13px;line-height:1.55}</style><style id="raiox-entry-viewport-v97">
+@media(min-width:901px){
+ #cin.future-cin{height:100dvh!important;min-height:0!important;max-height:100dvh!important;overflow:hidden!important;display:flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important}
+ #cin .future-mission{box-sizing:border-box!important;flex:0 0 auto!important;min-height:0!important;max-width:calc(100vw - 24px)!important;width:min(1480px,calc(100vw - 24px))!important;margin:0 auto!important;padding:8px 12px!important;transform-origin:center center!important}
+ #cin .future-mission .goal-grid{width:100%!important;grid-template-columns:repeat(5,minmax(0,1fr))!important}
+ #cin .future-mission .goal-card{min-width:0!important;min-height:100px!important;padding:10px 12px!important}
+ #cin .future-mission .goal-copy strong{font-size:clamp(18px,2.15vw,30px)!important;white-space:nowrap!important;word-break:normal!important;overflow-wrap:normal!important}
+ #cin .future-mission .entry-actions{margin:5px auto!important}
+ #cin .future-mission .entry-command-dock{gap:8px!important}
+ #cin .future-mission .hero-leader{min-height:55px!important;padding:8px 12px!important}
+ #cin .future-mission .live-grid{margin:3px auto!important}
+ #cin .future-mission .mission-label{margin:5px auto!important}
+ #cin .future-mission .future-mantra{margin:3px auto!important}
+}
+</style>
+<script id="raiox-entry-fit-v97">
+(function(){
+ var scheduled=false;
+ function fit(){
+  scheduled=false;
+  var stage=document.getElementById('cin'),panel=stage&&stage.querySelector('.future-mission');
+  if(!stage||!panel)return;
+  if(window.innerWidth<=900){panel.style.removeProperty('zoom');return;}
+  panel.style.zoom='1';
+  var width=Math.max(1,stage.clientWidth-24),height=Math.max(1,stage.clientHeight-12);
+  var actualW=Math.max(panel.scrollWidth,panel.offsetWidth),actualH=Math.max(panel.scrollHeight,panel.offsetHeight);
+  var factor=Math.min(1,width/actualW,height/actualH);
+  panel.style.zoom=String(Math.max(.52,factor*.985));
+ }
+ function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(fit)}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule);else schedule();
+ window.addEventListener('resize',schedule);
+ window.addEventListener('load',schedule);
+ var stage=document.getElementById('cin');
+ if(stage&&window.MutationObserver){new MutationObserver(schedule).observe(stage,{childList:true,subtree:true,characterData:true});}
+})();
+</script></body>
 </html>
