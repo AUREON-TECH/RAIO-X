@@ -745,7 +745,8 @@ function rosterPerson(alias){
       (key==='adriano' && n.includes('adriano')) ||
       (key==='ana caroline' && n.startsWith('ana carol')) ||
       (key==='jessica' && n.startsWith('jessica') && !n.includes('de lima')) ||
-      (key==='monica beatriz pereira lopes' && n.startsWith('monica'));
+      (key==='monica beatriz pereira lopes' && n.startsWith('monica')) ||
+      (key==='marlon' && n.split(/\\s+/).includes('marlon') && n.split(/\\s+/).includes('cruz'));
   })||null;
 }
 function renderIndividualGoals(){
