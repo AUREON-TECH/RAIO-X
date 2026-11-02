@@ -111,7 +111,7 @@
 <header class="top">
   <div><div class="eye" id="eye">CENTRAL DE MISSÃO</div><h2 id="pt">Performance da Captação</h2><div class="muted" id="ps">Onde estamos, onde podemos chegar e o que fazer hoje.</div><div class="flow-badge" id="flowBadge">ETAPA 01 DE 08 • CENTRAL</div></div>
   <div class="top-actions">
-    <div class="area-switch month-switch"><div><small>MÊS</small><b id="monthCurrentLabel">—</b></div><select id="monthCurrentSelect" aria-label="Escolher mês"><option value="2026-11-01">Novembro/2026</option><option value="2026-10-01">Outubro/2026 • fechado</option><option value="2026-09-01">Setembro/2026 • fechado</option></select></div>
+    <div class="area-switch month-switch"><div><small>MÊS</small><b id="monthCurrentLabel">—</b></div><select id="monthCurrentSelect" aria-label="Escolher mês" style="position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important" tabindex="-1"><option value="2026-11-01">Novembro/2026</option><option value="2026-10-01">Outubro/2026</option><option value="2026-09-01">Setembro/2026</option></select><details class="raiox-month-menu" id="raioxMonthMenu"><summary id="raioxMonthSummary">Novembro/2026</summary><div class="raiox-month-menu-list"><a href="./?month=2026-11-01&v=92" data-month-ref="2026-11-01">Novembro/2026 <small>Atual</small></a><a href="./?month=2026-10-01&v=92" data-month-ref="2026-10-01">Outubro/2026 <small>Histórico</small></a><a href="./?month=2026-09-01&v=92" data-month-ref="2026-09-01">Setembro/2026 <small>Histórico</small></a></div></details></div>
     <div class="area-switch"><div><small>VISÃO DA ÁREA</small><b id="areaCurrent">Promotor de Marketing</b></div><select id="areaSel" aria-label="Escolher área"><option value="promotor">Promotor de Marketing</option><option value="liner">Liner / Consultor</option><option value="closer">Closer / Fechador</option></select><div class="area-quick" aria-label="Trocar visão da área"><a data-area-link="promotor" href="./">Promotor</a><a data-area-link="liner" href="./?area=liner">Liner</a><a data-area-link="closer" href="./?area=closer">Closer</a></div></div>
     <div class="leaders"><div class="chip">CRIADO POR<b>AUREON</b></div><div class="chip">PRODUTO<b>RAIO X</b></div></div>
   </div>
@@ -485,5 +485,19 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  setTimeout(sync,600);
  setTimeout(sync,1800);
 })();
+</script><style id="raiox-month-menu-v92">
+.month-switch{position:relative!important;overflow:visible!important}
+.raiox-month-menu{position:relative;flex:1 1 0;min-width:145px;z-index:60}
+.raiox-month-menu summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#061529;border:1px solid #0e4c72;border-radius:12px;color:#a8f3ff;font-size:12px;font-weight:800;padding:14px;min-height:45px;white-space:nowrap}
+.raiox-month-menu summary::-webkit-details-marker{display:none}
+.raiox-month-menu summary:after{content:"⌄";font-size:18px}
+.raiox-month-menu[open] summary:after{content:"⌃"}
+.raiox-month-menu-list{position:absolute;top:calc(100% + 6px);left:0;right:0;min-width:210px;background:#091b34;border:1px solid #3179aa;border-radius:12px;padding:6px;box-shadow:0 14px 35px #000a;z-index:9999}
+.raiox-month-menu-list a{display:flex;justify-content:space-between;align-items:center;gap:12px;color:#e6faff;padding:13px 10px;text-decoration:none;font-weight:700;font-size:13px;border-radius:8px}
+.raiox-month-menu-list a:hover,.raiox-month-menu-list a[aria-current="page"]{background:#175078}
+.raiox-month-menu-list small{font-size:10px;color:#9dc5e3}
+</style>
+<script id="raiox-month-menu-sync-v92">
+(function(){function sync(){var m=new URLSearchParams(location.search).get('month')||'2026-11-01';var names={'2026-11-01':'Novembro/2026','2026-10-01':'Outubro/2026','2026-09-01':'Setembro/2026'};var s=document.getElementById('raioxMonthSummary');if(s)s.textContent=names[m]||names['2026-11-01'];document.querySelectorAll('[data-month-ref]').forEach(function(a){if(a.dataset.monthRef===m)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')})}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync);else sync()})();
 </script></body>
 </html>
