@@ -353,6 +353,40 @@
       if($('cc'))$('cc').innerHTML='<b>'+esc(p.n)+'</b> está com <b>'+fmtInt(p.c)+'</b> '+(areaRole()==='Promotor de Marketing'?'casais':'atendimentos')+', <b>'+fmtInt(p.s)+'</b> vendas e <b>'+fmtMoneyFull(p.v)+'</b> em VGV no mês '+esc(month.label)+'.';
       if($('cg'))$('cg').innerHTML='<div><small>Conversão</small><b>'+conv.toFixed(1).replace('.',',')+'%</b></div><div><small>Qualificação</small><b>'+qual.toFixed(1).replace('.',',')+'%</b></div><div><small>Dias ativos</small><b>'+fmtInt(p.d)+'</b></div><div><small>Semana</small><b>'+fmtInt(p.w)+'</b></div>';
     };
+    const allCards=$('allIndividualCards'),allSummary=$('allIndividualSummary');
+    if(allCards&&allSummary){
+      const totals=aggregatePeople(people);
+      const avg=people.length?totals.c/people.length:0;
+      const benchmark=25;
+      allSummary.innerHTML='<p style="color:#b9cde5"><b>'+people.length+'</b> profissionais com registros • <b>'+fmtInt(totals.c)+'</b> casais • <b>'+fmtInt(totals.s)+'</b> cotas • <b>'+fmtMoneyFull(totals.v)+'</b> VGV • '+(totals.c?(totals.s/totals.c*100).toFixed(1).replace('.',','):'0')+'% cotas/casal. Média: '+avg.toFixed(1).replace('.',',')+' casais por profissional com registro.</p>';
+      allCards.innerHTML=[...people].sort((a,b)=>b.c-a.c).map((p,i)=>{
+        const rate=p.c?p.s/p.c*100:0,quality=p.c?p.q/p.c*100:0,perDay=p.d?p.c/p.d:0;
+        const strengths=[],weaknesses=[],actions=[];
+        if(p.c>=avg&&p.c>0)strengths.push('Volume acima ou igual à média da equipe ('+avg.toFixed(1).replace('.',',')+' casais).');
+        else if(p.c>0){weaknesses.push('Volume abaixo da média dos profissionais com registro.');actions.push('Revisar abordagem, fluxo do ponto e constância diária.');}
+        if(p.c&&rate>=benchmark)strengths.push('Cotas por atendimento acima da referência de 25%.');
+        else if(p.c){weaknesses.push('Cotas por atendimento: '+rate.toFixed(1).replace('.',',')+'%, abaixo da referência de 25%.');actions.push('Analisar qualificação, objeções e passagem para liner/closer.');}
+        if(p.s>0)strengths.push('Gerou '+fmtInt(p.s)+' cota(s) e '+fmtMoneyFull(p.v)+' de VGV.');
+        else if(p.c>0){weaknesses.push('Nenhuma cota registrada no período.');actions.push('Acompanhar atendimentos sem compra e revisar o perfil dos casais.');}
+        if(p.c&&quality>=75)strengths.push('Qualificação registrada em '+quality.toFixed(1).replace('.',',')+'% dos atendimentos.');
+        else if(p.c&&p.q+p.nq>0){weaknesses.push('Qualificação abaixo de 75% dos atendimentos.');actions.push('Revisar critérios de pesquisa e perfil de entrada.');}
+        if(!p.c){weaknesses.push('Sem atendimentos registrados neste mês.');actions.push('Confirmar escala, função e atualização do lançamento antes de avaliar desempenho.');}
+        if(!strengths.length)strengths.push('Ainda não há evidência suficiente de ponto forte neste mês.');
+        if(!weaknesses.length)weaknesses.push('Nenhum desvio identificado pelos critérios automáticos; manter acompanhamento.');
+        if(!actions.length)actions.push('Manter rotina e compartilhar boas práticas com a equipe.');
+        const list=(arr,color)=>'<ul style="padding-left:18px;margin:8px 0;color:'+color+'">'+arr.map(x=>'<li style="margin:6px 0">'+esc(x)+'</li>').join('')+'</ul>';
+        return '<article style="border:1px solid #304b73;background:#0c1b35;border-radius:14px;padding:16px;min-width:0">'+
+        '<small style="color:#8ecaff">#'+(i+1)+' • '+esc(month.label)+'</small><h4 style="font-size:16px;line-height:1.3;margin:8px 0">'+esc(p.n)+'</h4>'+
+        '<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;font-size:13px">'+
+        '<span>Casais: <b>'+fmtInt(p.c)+'</b></span><span>Cotas: <b>'+fmtInt(p.s)+'</b></span>'+
+        '<span>VGV: <b>'+fmtMoneyFull(p.v)+'</b></span><span>Cotas/casal: <b>'+rate.toFixed(1).replace('.',',')+'%</b></span>'+
+        '<span>Q/NQ: <b>'+fmtInt(p.q)+' / '+fmtInt(p.nq)+'</b></span><span>Casais/dia ativo: <b>'+perDay.toFixed(1).replace('.',',')+'</b></span></div>'+
+        '<h5 style="color:#7fe2b5;margin:14px 0 4px">Pontos positivos</h5>'+list(strengths,'#c4f3dc')+
+        '<h5 style="color:#ffbf86;margin:12px 0 4px">Pontos de atenção</h5>'+list(weaknesses,'#f6d3b5')+
+        '<h5 style="color:#9fd7ff;margin:12px 0 4px">Plano de melhoria</h5>'+list(actions,'#c5ddf8')+
+        '</article>';
+      }).join('');
+    }
     sel.onchange=()=>{render();['psel','dsel','fxSel'].forEach(id=>{const el=$(id);if(el&&[...el.options].some(o=>o.value===sel.value)){el.value=sel.value;el.dispatchEvent(new Event('change'));}});};render();
     return {render,options};
   }
