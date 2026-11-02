@@ -226,7 +226,7 @@ assert.doesNotMatch(monthLive,/status=eq\.open&order=ref_month/,'Month selector 
 assert.match(monthLive,/month\.status===['"]closed['"]/,'Historical months must be marked as closed');
 
 assert.match(monthLive,/function renderDynamicMonth\(/,'Non-September months must render from monthly database records');
-assert.match(monthLive,/month\.ref_month===['"]2026-09-01['"]/,'September must remain isolated as the closed legacy history');
+assert.match(monthLive,/ref_month:['"]2026-09-01['"]/,'September must remain selectable in the historical month list');
 assert.match(monthLive,/function dynamicRank\(/,'Current months must render Ranking dynamically');
 assert.match(monthLive,/function dynamicIndividual\(/,'Current months must render Individual dynamically');
 assert.match(monthLive,/function dynamicFx\(/,'Current months must render FX dynamically');
