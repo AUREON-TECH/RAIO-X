@@ -131,11 +131,11 @@ async function selectMonth(id){
   if(!$('todayDate').value||$('todayDate').value.slice(0,7)!==monthPrefix){
     $('todayDate').value=today.slice(0,7)===monthPrefix?today:state.month.ref_month;
   }
-  await Promise.all([loadTeams(),loadTasks(),loadOne(),loadGoals(),loadAgenda(),loadStrategy()]);
-  await loadToday(); await loadOperationalHistory();
-  fillPeopleSelects();
-  renderTeams(); renderPeople(); renderOneHistory(); renderTasks(); renderAgenda(); renderStrategy(); await renderReports(); await renderProfessionalProfile();
-  if(document.getElementById('xia')?.classList.contains('on'))await renderXIA();
+  const results=await Promise.allSettled([loadTeams(),loadGoals()]);
+  for(const result of results){if(result.status==='rejected')console.error('Falha ao carregar metas ou equipes:',result.reason);}
+  renderIndividualGoals();
+  if(results.some(result=>result.status==='rejected'))toast('Alguns dados não carregaram. Confira o acesso e atualize a página.',true);
+
 }
 async function loadTeams(){
   const [teams,assignments,teamGoals]=await Promise.all([
