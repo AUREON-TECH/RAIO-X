@@ -737,28 +737,36 @@ function individualPerf(p){
   return primary&&perfMonthMatches()?{research:Number(primary.r||0),couples:Number(primary.c||0),sales:Number(primary.s||0),vgv:Number(primary.v||0)}:{research:0,couples:0,sales:0,vgv:0};
 }
 const COUPLES_ROSTER={"Pedro":"PEDRO HENRIQUE GOMES SANTOS","Suene":"SUENE CINTIA DA SILVA","Larissa":"LARISSA MARIA RIBEIRO","Matheus Esley":"MATHEUS ESLEY SILVA","Ricardo":"RICARDO MALTCHIK","Josyene":"JOSYENE APARECIDA DE FREITAS","Adriano":"EDSON ADRIANO PINTO MOREIRA","Matheus Domingos":"MATHEUS DOMINGOS SANTOS DE SOUZA","Ana Caroline":"ANA CAROLINE DA SILVA LOPES PEREIRA","Jéssica":"JESSICA GONCALVES BARBOSA","André":"ANDRE LUIS CARRIÇO DOS SANTOS","Márcio":"MARCIO VINICIOS MARTINS ALFAIA","Otávio":"OTAVIO JOSE DE OLIVEIRA MARTINS","Weena":"WEENA ALVES MENEZES","Letícia":"LETICIA LEANDRA DE TOLEDO","Tainá":"TAINA JOICE SILVA SOUZA","Cássio":"CASSIO ELEUTERIO ELIAS","Paulo":"PAULO VICTOR ORTIZ","Renan":"RENAN MARCONDES JOHAS","Gabriel":"GABRIEL LOURENCO BICALHO ALESSANDRI","Mônica Beatriz Pereira Lopes":"MONICA BEATRIZ PEREIRA LOPES","Marlon":"MARLON CRUZ GONCALVES"};
+function rosterPerson(alias){
+  const key=norm(alias), full=norm(COUPLES_ROSTER[alias]);
+  return workingPeople().find(p=>{
+    const n=norm(p.full_name);
+    return n===full || n===key || (key.length>7 && n.startsWith(key+' ')) ||
+      (key==='adriano' && n.includes('adriano')) ||
+      (key==='ana caroline' && n.startsWith('ana carol')) ||
+      (key==='jessica' && n.startsWith('jessica') && !n.includes('de lima')) ||
+      (key==='monica beatriz pereira lopes' && n.startsWith('monica'));
+  })||null;
+}
 function renderIndividualGoals(){
   if(!$('individualGoalsEditor')||!state.month)return;
-  const people=workingPeople().filter(p=>Object.keys(COUPLES_ROSTER).some(n=>norm(n)===norm(p.full_name))).sort((a,b)=>COUPLES_ROSTER[Object.keys(COUPLES_ROSTER).find(n=>norm(n)===norm(a.full_name))].localeCompare(COUPLES_ROSTER[Object.keys(COUPLES_ROSTER).find(n=>norm(n)===norm(b.full_name))],'pt-BR'));
-  const totalGoal=people.reduce((s,p)=>s+Number(goalByPerson(p.id)?.couples_goal||0),0);
-  const achieved=people.filter(p=>{const g=Number(goalByPerson(p.id)?.couples_goal||0);return g>0&&individualPerf(p).couples>=g;}).length;
-  const withGoal=people.filter(p=>Number(goalByPerson(p.id)?.couples_goal||0)>0).length;
-  if($('individualGoalSummary'))$('individualGoalSummary').innerHTML=[
-    distributionCard('Casais individuais',state.month.goal_couples,totalGoal,v=>num(v)),
-    '<div class="distribution-card"><small>Profissionais com meta</small><b>'+withGoal+' / '+people.length+'</b><span>'+achieved+' já atingiram</span></div>'
-  ].join('');
-  $('individualGoalsEditor').innerHTML=people.map(p=>{
-    const g=goalByPerson(p.id)||{}, perf=individualPerf(p), team=teamByPerson(p.id);
-    const target=Number(g.couples_goal||0), pctv=target?perf.couples/target*100:0, missing=Math.max(0,target-perf.couples);
-    return '<div class="assignment-row individual-goal-row" data-individual-goal="'+p.id+'">'+
-      '<div><b>'+esc(COUPLES_ROSTER[Object.keys(COUPLES_ROSTER).find(n=>norm(n)===norm(p.full_name))]||p.full_name)+'</b><span>'+esc(team?.name||'Sem equipe')+' • realizado '+num(perf.couples)+' casais'+(target?' • faltam '+num(missing)+' • '+pct(pctv):' • sem meta')+'</span></div>'+
-      '<div class="individual-goal-inputs">'+
-      '<label>Pesquisas<input data-pg="research_goal" type="number" min="0" step="1" value="'+Number(g.research_goal||0)+'"></label>'+
-      '<label>Casais<input data-pg="couples_goal" type="number" min="0" step="1" value="'+Number(g.couples_goal||0)+'"></label>'+
-      '<label>Vendas<input data-pg="sales_goal" type="number" min="0" step="1" value="'+Number(g.sales_goal||0)+'"></label>'+
-      '<label>VGV<input data-pg="vgv_goal" type="number" min="0" step="100" value="'+Number(g.vgv_goal||0)+'"></label>'+
-      '<button class="primary small" data-save-person-goal="'+p.id+'">Salvar</button></div></div>';
-  }).join('')||'<div class="approval-empty">Nenhum profissional ativo.</div>';
+  const entries=Object.keys(COUPLES_ROSTER).map(alias=>({alias,name:COUPLES_ROSTER[alias],person:rosterPerson(alias)}));
+  const totalGoal=entries.reduce((sum,e)=>sum+Number(e.person?goalByPerson(e.person.id)?.couples_goal||0:0),0);
+  const totalDone=entries.reduce((sum,e)=>sum+(e.person?individualPerf(e.person).couples:0),0);
+  const withGoal=entries.filter(e=>e.person&&Number(goalByPerson(e.person.id)?.couples_goal||0)>0).length;
+  const status=$('goalsLoadStatus');
+  if(status)status.textContent='Equipe oficial: 22 profissionais • '+entries.filter(e=>e.person).length+' vinculados ao cadastro • '+(22-entries.filter(e=>e.person).length)+' aguardando vínculo.';
+  if($('individualGoalSummary'))$('individualGoalSummary').innerHTML='<div class="rx-goal-totals"><span><b>22</b> profissionais</span><span><b>'+num(totalGoal)+'</b> meta total</span><span><b>'+num(totalDone)+'</b> realizados</span><span><b>'+(totalGoal?pct(totalDone/totalGoal*100):'—')+'</b> progresso</span><span><b>'+withGoal+'</b> metas cadastradas</span></div>';
+  $('individualGoalsEditor').innerHTML=entries.map((e,i)=>{
+    const p=e.person,g=p?goalByPerson(p.id)||{}:{},perf=p?individualPerf(p):{couples:0};
+    const target=Number(g.couples_goal||0),percent=target?Math.min(100,perf.couples/target*100):0;
+    return '<div class="rx-goal-row" '+(p?'data-individual-goal="'+p.id+'"':'')+'>'+
+      '<span class="rx-goal-num">'+(i+1)+'</span><div class="rx-goal-name" title="'+esc(e.name)+'">'+esc(e.name)+'</div>'+
+      '<input aria-label="Meta de casais de '+esc(e.name)+'" data-pg="couples_goal" type="number" min="0" step="1" value="'+target+'" '+(!p?'disabled':'')+'>'+
+      '<strong class="rx-goal-done">'+num(perf.couples)+'</strong>'+
+      '<div class="rx-goal-progress"><span>'+(target?pct(perf.couples/target*100):'—')+'</span><i><em style="width:'+percent+'%"></em></i></div>'+
+      (p?'<button class="primary small" data-save-person-goal="'+p.id+'">Salvar</button>':'<small class="rx-goal-unlinked">Sem vínculo</small>')+'</div>';
+  }).join('');
   document.querySelectorAll('[data-save-person-goal]').forEach(b=>b.onclick=()=>saveIndividualGoal(b.dataset.savePersonGoal));
 }
 async function saveIndividualGoal(personId){
