@@ -368,7 +368,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 <script src="./app.js?v=95" defer></script>
 <script src="./fx-engine.js" defer></script>
 <script src="./sales-count-fix.js" defer></script>
-<script src="./month-live.js?v=39" defer></script>
+<script src="./month-live.js?v=40" defer></script>
 <script src="./gestao-rafael.js?v=6" defer></script>
 <script>
 if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js", {scope:"./"}).catch(console.error)); }
@@ -450,14 +450,14 @@ function init(){
  var area=document.getElementById('areaSel'),month=document.getElementById('monthCurrentSelect');
  if(area){area.disabled=false;area.addEventListener('change',function(){
  var u=new URL(location.href);if(area.value==='promotor')u.searchParams.delete('area');else u.searchParams.set('area',area.value);
- u.searchParams.set('v','86');location.assign(u.toString());
+ u.searchParams.set('v','91');location.assign(u.toString());
  });}
  if(month){
  var requested=new URLSearchParams(location.search).get('month');
  if(requested&&Array.from(month.options).some(function(o){return o.value===requested;}))month.value=requested;
  month.addEventListener('change',function(){
  if(!month.value)return;
- var u=new URL(location.href);u.searchParams.set('month',month.value);u.searchParams.set('v','86');
+ var u=new URL(location.href);u.searchParams.set('month',month.value);u.searchParams.set('v','91');
  try{sessionStorage.setItem('raiox.view.month.v1',month.value)}catch(_){}
  location.assign(u.toString());
  });}
