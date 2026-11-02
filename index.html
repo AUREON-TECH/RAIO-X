@@ -47,7 +47,19 @@ html,body{max-width:100%;overflow-x:hidden}
 #cin .hero-leader{max-width:960px;margin:8px auto;padding:12px}
 #cin .mgrid{max-width:960px;margin:6px auto}
 @media(max-width:900px){#cin .goal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#cin .goal-card:nth-child(3){grid-column:span 2}#cin .goal-copy strong{font-size:clamp(19px,5vw,29px)}#cin .goal-card:nth-child(3) .goal-copy strong{font-size:clamp(22px,6vw,34px)}#cin .future-mission{width:98vw;padding:8px}}
-</style></head>
+</style><style id="raiox-management-access-v102">
+#entryCeoPortal{display:flex!important;visibility:visible!important;opacity:1!important;align-items:center;justify-content:space-between;gap:10px;min-width:0;text-decoration:none;color:#f0f6ff;background:linear-gradient(115deg,#102746,#283369);border:1px solid #55a8fa;border-radius:14px;padding:12px 15px;box-sizing:border-box;flex:1 1 0}
+#entryCeoPortal .entry-action-copy{min-width:0;display:flex;flex-direction:column;gap:3px}
+#entryCeoPortal .entry-action-copy small{color:#81eaff;font-size:10px;letter-spacing:.08em}
+#entryCeoPortal .entry-action-copy b{font-size:clamp(12px,1.2vw,16px);white-space:nowrap}
+#entryCeoPortal .entry-action-copy em{font-size:10px;opacity:.8;font-style:normal}
+#entryCeoPortal:hover,#entryCeoPortal:focus-visible{border-color:#b1eaff;filter:brightness(1.13)}
+#cin .entry-command-dock{display:flex!important;flex-wrap:nowrap!important;align-items:stretch!important;gap:8px!important}
+#cin .entry-command-dock>#enter{flex:1 1 0!important;min-width:0!important}
+#cin .entry-command-dock>#installRaioX{flex:1 1 0!important;min-width:0!important}
+@media(max-width:650px){#cin .entry-command-dock{flex-wrap:wrap!important}#cin .entry-command-dock>*{flex:1 1 100%!important}#entryCeoPortal{min-height:56px}}
+</style>
+</head>
 <body class="raiox-live-loading">
 <div id="raioxAppShell">
 <div class="cin future-cin" id="cin">
@@ -90,7 +102,7 @@ html,body{max-width:100%;overflow-x:hidden}
           <span class="entry-action-copy"><small>OPERAÇÃO</small><b>ENTRAR NO RAIO X</b><em>Performance • Ranking • Diagnóstico</em></span>
           <strong>→</strong>
         </button>
-        <a class="entry-management" id="entryCeoPortal" href="./ceo.html" hidden>
+        <a class="entry-management" id="entryCeoPortal" href="./ceo.html" aria-label="Abrir acesso do gestor">
           <span class="entry-action-icon">GX</span>
           <span class="entry-action-copy"><small>ACESSO DE GESTÃO</small><b>PORTAL DE GESTÃO</b><em>CEO & Gerência • Pessoas • XIA</em></span>
           <strong>→</strong>
