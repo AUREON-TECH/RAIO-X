@@ -246,6 +246,33 @@
     </div>
   </div>
 
+  <div class="card pad" id="octoberManagementDiagnosis" style="margin:16px 0;max-width:100%;min-width:0">
+    <div class="eye">DIAGNÓSTICO DE FECHAMENTO • OUTUBRO/2026</div>
+    <h3 style="margin:8px 0">Onde perdemos resultado e como melhorar</h3>
+    <p style="color:#adc2db">Análise do consolidado de outubro. Os indicadores de vendas representam cotas; não equivalem necessariamente a casais compradores.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:16px 0">
+      <div style="padding:14px;background:#0c203c;border-radius:12px"><small>Volume da meta</small><h3>76,2%</h3><p>449 / 589 casais</p></div>
+      <div style="padding:14px;background:#0c203c;border-radius:12px"><small>Vendas da meta</small><h3>72,5%</h3><p>87 / 120 cotas</p></div>
+      <div style="padding:14px;background:#0c203c;border-radius:12px"><small>VGV da meta</small><h3>61,5%</h3><p>R$ 7,38 mi / R$ 12 mi</p></div>
+      <div style="padding:14px;background:#0c203c;border-radius:12px"><small>Cancelamentos</small><h3>17,2%</h3><p>15 de 87 cotas</p></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">
+      <article style="padding:15px;border:1px solid #735a35;border-radius:12px"><h4>1. Volume de captação insuficiente</h4><p><b>Evidência:</b> faltaram 140 casais para a meta (23,8%).</p><p><b>Ação:</b> acompanhar entradas por ponto e turno, medir comparecimento e corrigir os períodos de menor fluxo. Estabelecer alertas diários de desvio.</p></article>
+      <article style="padding:15px;border:1px solid #735a35;border-radius:12px"><h4>2. Conversão comercial abaixo do alvo</h4><p><b>Evidência:</b> 87 cotas / 449 atendimentos = 19,4%, contra referência de 25%.</p><p><b>Ação:</b> acompanhar taxa de casais compradores separadamente, auditar qualificação, passagem captador–liner–closer e objeções de não compra.</p></article>
+      <article style="padding:15px;border:1px solid #735a35;border-radius:12px"><h4>3. Ticket e composição das vendas</h4><p><b>Evidência:</b> ticket bruto de R$ 84.854 por cota; o VGV atingiu apenas 61,5% da meta.</p><p><b>Ação:</b> revisar mix de produtos, propostas por perfil de renda e oportunidades de múltiplas cotas sem comprometer a adequação da oferta.</p></article>
+      <article style="padding:15px;border:1px solid #735a35;border-radius:12px"><h4>4. Cancelamentos e retenção</h4><p><b>Evidência:</b> 15 cotas canceladas em 87 vendidas (17,2%).</p><p><b>Ação:</b> mapear motivo, profissional, faixa de renda, produto e dias até cancelamento; reforçar transparência da oferta e confirmação de entendimento do contrato.</p></article>
+      <article style="padding:15px;border:1px solid #735a35;border-radius:12px"><h4>5. Qualidade do perfil e da pesquisa</h4><p><b>Oportunidade:</b> comparar conversão e cancelamento por renda, Q/NQ, origem e brinde.</p><p><b>Ação:</b> priorizar perfis com maior compra ativa e menor cancelamento. Não concluir qual faixa é melhor sem cruzar os registros individuais.</p></article>
+      <article style="padding:15px;border:1px solid #735a35;border-radius:12px"><h4>6. Produtividade e liderança</h4><p><b>Oportunidade:</b> identificar concentração de resultados e diferenças entre turnos e profissionais.</p><p><b>Ação:</b> acompanhar casais por dia trabalhado, eficiência por profissional, evolução semanal e plano de treinamento com responsáveis e prazos.</p></article>
+    </div>
+    <h4 style="margin-top:20px">Plano de ação recomendado</h4>
+    <div style="overflow-x:auto"><table style="width:100%;min-width:600px"><thead><tr><th>Prioridade</th><th>Responsável sugerido</th><th>Indicador de acompanhamento</th></tr></thead><tbody>
+    <tr><td>Captação por ponto e turno</td><td>Gestor + sublíder</td><td>Casais/dia e comparecimento</td></tr>
+    <tr><td>Qualificação e passagem para sala</td><td>Captadores + liners</td><td>Q/NQ e conversão por origem</td></tr>
+    <tr><td>Auditoria dos cancelamentos</td><td>Gestão + comercial</td><td>Cotas ativas, canceladas e motivos</td></tr>
+    <tr><td>Coaching individual</td><td>Gestor + sublíder</td><td>Casais, cotas e eficiência por dia trabalhado</td></tr>
+    </tbody></table></div>
+    <p style="font-size:12px;color:#9cb3cf">Fonte: fechamento oficial de outubro/2026. Recomendações gerenciais; causas ainda precisam de validação operacional.</p>
+  </div>
   <div class="diag-ops" id="diagOps"></div>
 
   <div class="attention-section">
@@ -499,5 +526,5 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </style>
 <script id="raiox-month-menu-sync-v92">
 (function(){function sync(){var m=new URLSearchParams(location.search).get('month')||'2026-11-01';var names={'2026-11-01':'Novembro/2026','2026-10-01':'Outubro/2026','2026-09-01':'Setembro/2026'};var s=document.getElementById('raioxMonthSummary');if(s)s.textContent=names[m]||names['2026-11-01'];document.querySelectorAll('[data-month-ref]').forEach(function(a){if(a.dataset.monthRef===m)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')})}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync);else sync()})();
-</script></body>
+</script><script>document.addEventListener('DOMContentLoaded',function(){var p=document.getElementById('octoberManagementDiagnosis');function sync(){if(!p)return;var sel=document.getElementById('monthCurrentSelect');var m=new URLSearchParams(location.search).get('month')||(sel&&sel.value)||'2026-11-01';p.hidden=m!=='2026-10-01'}sync();window.addEventListener('pageshow',sync);document.getElementById('monthCurrentSelect')?.addEventListener('change',sync)})</script><style>#octoberManagementDiagnosis[hidden]{display:none!important}#octoberManagementDiagnosis td,#octoberManagementDiagnosis th{padding:10px;border-bottom:1px solid #293b5a;text-align:left}#octoberManagementDiagnosis article p{font-size:13px;line-height:1.55}</style></body>
 </html>
