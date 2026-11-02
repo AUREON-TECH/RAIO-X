@@ -32,7 +32,15 @@ async function load(ctx){
  const render=()=>{
  const p=listed.find(x=>x.id===sel.value);
  if(!p){root.textContent='Selecione um profissional para ver a meta e o desempenho.';return}
- const g=goals.find(x=>norm(x.person_name)===norm(p.full_name)),perf=performance.find(x=>norm(x.professional_name)===norm(p.full_name))||{};
+ const matchGoal=(name)=>{
+   const nameKey=norm(name), exact=goals.find(x=>norm(x.person_name)===nameKey);
+   if(exact)return exact;
+   const aliases={'adrianomoreira':'adriano','marcioalfaia':'marcio','josyenefreitas':'josyene','larissaribeiro':'larissa','jessicabarbosa':'jessica','matheusdomingossantos':'matheusdomingos','otaviojosedeoliveiramartin':'otavio','leticialeandradetoledo':'leticia','paulovictorortiz':'paulo','pedrohenriquegomessantos':'pedro','suenecintiadasilva':'suene','marloncruzgoncalves':'marlon'};
+   const key=aliases[nameKey]||nameKey;
+   const matches=goals.filter(x=>{const gn=norm(x.person_name);return gn===key||gn.startsWith(key)||key.startsWith(gn)&&gn.length>=5});
+   return matches.length===1?matches[0]:null;
+ };
+ const g=matchGoal(p.full_name),perf=performance.find(x=>norm(x.professional_name)===norm(p.full_name))||{};
  root.innerHTML='<strong>'+esc(p.full_name)+'</strong><p style="font-size:12px;opacity:.75">'+esc(active.label)+' • resultados oficiais</p>'+
  '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:10px">'+
  card('Casais',perf.couples,g?.couples_goal)+card('Vendas / cotas',perf.sales,g?.sales_goal)+card('VGV',perf.vgv,g?.vgv_goal,'money')+
