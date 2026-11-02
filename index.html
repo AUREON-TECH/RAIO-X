@@ -128,7 +128,7 @@ html,body{max-width:100%;overflow-x:hidden}
 <header class="top">
   <div><div class="eye" id="eye">CENTRAL DE MISSÃO</div><h2 id="pt">Performance da Captação</h2><div class="muted" id="ps">Onde estamos, onde podemos chegar e o que fazer hoje.</div><div class="flow-badge" id="flowBadge">ETAPA 01 DE 08 • CENTRAL</div></div>
   <div class="top-actions">
-    <div class="area-switch month-switch"><div><small>MÊS</small><b id="monthCurrentLabel">—</b></div><select id="monthCurrentSelect" aria-label="Escolher mês" style="position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important" tabindex="-1"><option value="2026-11-01">Novembro/2026</option><option value="2026-10-01">Outubro/2026</option><option value="2026-09-01">Setembro/2026</option></select><details class="raiox-month-menu" id="raioxMonthMenu"><summary id="raioxMonthSummary">Novembro/2026</summary><div class="raiox-month-menu-list"><a href="./?month=2026-11-01&v=92" data-month-ref="2026-11-01">Novembro/2026 <small>Atual</small></a><a href="./?month=2026-10-01&v=92" data-month-ref="2026-10-01">Outubro/2026 <small>Histórico</small></a><a href="./?month=2026-09-01&v=92" data-month-ref="2026-09-01">Setembro/2026 <small>Histórico</small></a></div></details></div>
+    <div class="area-switch month-switch"><div><small>MÊS</small><b id="monthCurrentLabel">—</b></div><select id="monthCurrentSelect" aria-label="Escolher mês" style="display:block!important;position:relative!important;width:100%!important;min-width:160px!important;height:48px!important;opacity:1!important;pointer-events:auto!important;visibility:visible!important;z-index:10!important;cursor:pointer!important;appearance:auto!important" ><option value="2026-11-01">Novembro/2026</option><option value="2026-10-01">Outubro/2026</option><option value="2026-09-01">Setembro/2026</option></select></div>
     <div class="area-switch"><div><small>VISÃO DA ÁREA</small><b id="areaCurrent">Promotor de Marketing</b></div><select id="areaSel" aria-label="Escolher área"><option value="promotor">Promotor de Marketing</option><option value="liner">Liner / Consultor</option><option value="closer">Closer / Fechador</option></select><div class="area-quick" aria-label="Trocar visão da área"><a data-area-link="promotor" href="./">Promotor</a><a data-area-link="liner" href="./?area=liner">Liner</a><a data-area-link="closer" href="./?area=closer">Closer</a></div></div>
     <div class="leaders"><div class="chip">CRIADO POR<b>AUREON</b></div><div class="chip">PRODUTO<b>RAIO X</b></div></div>
   </div>
@@ -419,7 +419,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 <script src="./app.js?v=95" defer></script>
 <script src="./fx-engine.js" defer></script>
 <script src="./sales-count-fix.js" defer></script>
-<script src="./month-live.js?v=41" defer></script>
+<script src="./month-live.js?v=42" defer></script>
 <script src="./gestao-rafael.js?v=6" defer></script>
 <script>
 if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js", {scope:"./"}).catch(console.error)); }
@@ -501,14 +501,14 @@ function init(){
  var area=document.getElementById('areaSel'),month=document.getElementById('monthCurrentSelect');
  if(area){area.disabled=false;area.addEventListener('change',function(){
  var u=new URL(location.href);if(area.value==='promotor')u.searchParams.delete('area');else u.searchParams.set('area',area.value);
- u.searchParams.set('v','91');location.assign(u.toString());
+ u.searchParams.set('v','98');location.assign(u.toString());
  });}
  if(month){
  var requested=new URLSearchParams(location.search).get('month');
  if(requested&&Array.from(month.options).some(function(o){return o.value===requested;}))month.value=requested;
  month.addEventListener('change',function(){
  if(!month.value)return;
- var u=new URL(location.href);u.searchParams.set('month',month.value);u.searchParams.set('v','91');
+ var u=new URL(location.href);u.searchParams.set('month',month.value);u.searchParams.set('v','98');
  try{sessionStorage.setItem('raiox.view.month.v1',month.value)}catch(_){}
  location.assign(u.toString());
  });}
