@@ -763,7 +763,9 @@ function renderIndividualGoals(){
 async function saveIndividualGoal(personId){
   const row=document.querySelector('[data-individual-goal="'+personId+'"]');if(!row)return;
   const body={month_id:state.month.id,person_id:personId,updated_at:new Date().toISOString()};
-  row.querySelectorAll('[data-pg]').forEach(i=>body[i.dataset.pg]=Number(i.value||0));
+  const couplesInput=row.querySelector('[data-pg="couples_goal"]');
+  if(!couplesInput)return;
+  body.couples_goal=Math.max(0,Math.floor(Number(couplesInput.value||0)));
   try{
     await rest('ceo_person_goals?on_conflict=month_id,person_id',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(body)});
     await loadGoals(); renderIndividualGoals(); renderPeople(); await renderProfessionalProfile();
