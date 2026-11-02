@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#060a18">
 <title>RAIO X • Portal de Gestão</title>
 <link rel="icon" href="./icon.svg">
-<link rel="stylesheet" href="./ceo.css?build=20261102-grid109">
+<link rel="stylesheet" href="./ceo.css?build=20261102-grid110">
 <style id="ceo-only-couples-v103">
 #ceoNav>button:not([data-tab="goals"]),#ceoNav .nav-admin-label{display:none!important}
 #ceoNav{display:flex;flex-direction:column;gap:8px}
@@ -19,6 +19,22 @@
 #couplesGoalsOnly .individual-goal-inputs label:not(:has([data-pg="couples_goal"])){display:none!important}
 #couplesGoalsOnly .individual-goal-inputs{display:flex!important;align-items:center;gap:10px;flex-wrap:wrap}
 #couplesGoalsOnly .individual-goal-row{gap:12px}
+/* Gestão compacta em tela única, sem cortar controles */
+@media(min-width:1100px){
+.ceo-side{width:210px!important}
+.ceo-main{margin-left:210px!important;max-width:none!important;width:calc(100% - 210px)!important;padding:10px 14px!important}
+.ceo-top{padding:9px 16px!important;min-height:72px!important;margin-bottom:6px!important}
+.ceo-top h1{font-size:clamp(18px,2vw,25px)!important}
+.ceo-top p{display:none!important}
+#goalsStandalone{margin:3px 0!important}
+#couplesGoalsOnly{padding:8px 10px!important;max-height:none!important;overflow:visible!important}
+#individualGoalsEditor{height:calc(100dvh - 230px)!important;min-height:370px;max-height:650px;grid-template-rows:repeat(11,minmax(0,1fr))!important;grid-auto-flow:column!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+#individualGoalsEditor .rx-goal-row{min-height:0!important;padding:2px 5px!important;grid-template-columns:18px minmax(0,1fr) 58px 32px 68px 56px!important}
+#individualGoalsEditor .rx-goal-row input{height:25px!important}
+#individualGoalSummary{margin:0!important}
+#goalsLoadStatus{margin:0 0 5px!important;padding:3px 8px!important}
+}
+@media(max-width:1099px){.ceo-main{min-width:0!important}#individualGoalsEditor{height:auto!important}}
 </style></head>
 <body>
 <div id="ceoLoading" class="ceo-loading"><div class="loader-mark">RX</div><b>Validando acesso de gestão...</b></div>
@@ -48,7 +64,7 @@
       <div><span class="eyebrow">CENTRAL PRIVADA</span><h1 id="ceoTitle">Hoje</h1><p id="ceoSubtitle">Registro operacional diário da sua equipe.</p></div>
       <div class="month-box"><label>MÊS DE REFERÊNCIA<select id="monthSelect"></select></label><button id="monthGoalsBtn" class="ghost">Metas</button><button id="newMonthBtn" class="ghost">+ Novo mês</button></div>
     </header>
-    <div id="goalsStandalone" style="display:block!important;visibility:visible!important;position:relative;z-index:2;margin:16px 0 24px"><div id="goalsLoadStatus" style="padding:14px 18px;border:1px solid #21688a;border-radius:12px;color:#c7f7ff;margin-bottom:12px">Carregando lista de profissionais • versão 107...</div>      <div class="panel" id="couplesGoalsOnly">
+    <div id="goalsStandalone" style="display:block!important;visibility:visible!important;position:relative;z-index:2;margin:16px 0 24px"><div id="goalsLoadStatus" style="padding:14px 18px;border:1px solid #21688a;border-radius:12px;color:#c7f7ff;margin-bottom:12px">Carregando metas da equipe...</div>      <div class="panel" id="couplesGoalsOnly">
         <div class="panel-head"><div><span class="eyebrow">METAS INDIVIDUAIS</span><h2>Meta de casais da equipe</h2><p>Defina a quantidade de casais por captador. Somente o gestor pode alterar; Felipe e Raphael não recebem meta.</p></div><span class="pill">Individual</span></div>
         <div id="individualGoalSummary" class="team-goal-summary"></div>
         <div id="individualGoalsEditor" class="assignment-list"></div>
@@ -537,6 +553,6 @@
 <script src="./fx-data.js?build=20261004-clean1"></script>
 <script src="./xia-performance.js?build=20261004-clean1"></script>
 <script src="./profile-intel.js?v=1" defer></script>
-<script src="./ceo.js?build=20261102-grid109"></script>
+<script src="./ceo.js?build=20261102-grid110"></script>
 </body>
 </html>
