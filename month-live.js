@@ -151,14 +151,21 @@
   function fillMonthSelector(months,selectedRef){
     const select=$('monthCurrentSelect');
     if(!select)return;
-    select.innerHTML=months.map(m=>'<option value="'+esc(m.ref_month)+'">'+esc(m.label)+(m.status==='closed'?' • fechado':'')+'</option>').join('');
+    const historical=[
+      {ref_month:'2026-11-01',label:'Novembro/2026'},
+      {ref_month:'2026-10-01',label:'Outubro/2026'},
+      {ref_month:'2026-09-01',label:'Setembro/2026'}
+    ];
+    const combined=[...historical,...months.filter(m=>!historical.some(h=>h.ref_month===m.ref_month))];
+    select.innerHTML=combined.map(m=>'<option value="'+esc(m.ref_month)+'">'+esc(m.label)+'</option>').join('');
     select.value=selectedRef;
     select.onchange=()=>{
-      try{sessionStorage.setItem('raiox.view.month.v1',select.value);}catch(_){}
-      const u=new URL(location.href); u.searchParams.set('month',select.value); location.href=u.toString();
+      const u=new URL(location.href);
+      u.searchParams.set('month',select.value);
+      u.searchParams.set('v','91');
+      location.assign(u.toString());
     };
   }
-
 
   function daysInRefMonth(ref){
     const y=Number(ref.slice(0,4)),m=Number(ref.slice(5,7));
@@ -534,11 +541,9 @@
       const months=await rest('ceo_months?select=ref_month,label,status,goal_research,goal_couples,goal_sales,goal_vgv,super_goal_research,super_goal_couples,super_goal_sales,super_goal_vgv&order=ref_month.desc',token);
       if(!months?.length)return;
 
-      let stored='';
-      try{stored=sessionStorage.getItem('raiox.view.month.v1')||'';}catch(_){}
       const openMonth=months.find(m=>m.status==='open')||months[0];
       const requested=new URLSearchParams(location.search).get('month')||'';
-      const selectedRef=months.some(m=>m.ref_month===requested)?requested:(months.some(m=>m.ref_month===stored)?stored:openMonth.ref_month);
+      const selectedRef=months.some(m=>m.ref_month===requested)?requested:openMonth.ref_month;
       const month=months.find(m=>m.ref_month===selectedRef)||openMonth;
 
       fillMonthSelector(months,month.ref_month);
