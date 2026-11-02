@@ -450,11 +450,14 @@ function init(){
  var area=document.getElementById('areaSel'),month=document.getElementById('monthCurrentSelect');
  if(area){area.disabled=false;area.addEventListener('change',function(){
  var u=new URL(location.href);if(area.value==='promotor')u.searchParams.delete('area');else u.searchParams.set('area',area.value);
- u.searchParams.set('v','85');location.assign(u.toString());
+ u.searchParams.set('v','86');location.assign(u.toString());
  });}
- if(month){month.addEventListener('change',function(){
+ if(month){
+ var requested=new URLSearchParams(location.search).get('month');
+ if(requested&&Array.from(month.options).some(function(o){return o.value===requested;}))month.value=requested;
+ month.addEventListener('change',function(){
  if(!month.value)return;
- var u=new URL(location.href);u.searchParams.set('month',month.value);u.searchParams.set('v','85');
+ var u=new URL(location.href);u.searchParams.set('month',month.value);u.searchParams.set('v','86');
  try{sessionStorage.setItem('raiox.view.month.v1',month.value)}catch(_){}
  location.assign(u.toString());
  });}
