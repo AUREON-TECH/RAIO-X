@@ -15,13 +15,16 @@ async function load(ctx){
  const active=months.find(m=>m.ref_month===requested)||months.find(m=>m.ref_month===stored)||months.find(m=>m.status==='open')||months[0];
  if(!active)return;
  el('myGoalMonth').textContent=active.label;
- const [people,goals,performance]=await Promise.all([
- rest('ceo_people?select=id,full_name,status&order=full_name.asc',token),
- rest('ceo_person_goals?select=person_id,couples_goal,sales_goal,vgv_goal,research_goal&month_id=eq.'+encodeURIComponent(active.id),token),
- rest('raiox_performance_records?select=professional_name,couples,sales,vgv,researches&ref_month=eq.'+encodeURIComponent(active.ref_month)+'&role=eq.Promotor%20de%20Marketing',token)
- ]);
+ const performance=await rest('raiox_performance_records?select=professional_name,couples,sales,vgv,researches&ref_month=eq.'+encodeURIComponent(active.ref_month)+'&role=eq.Promotor%20de%20Marketing',token);
  if(id!==loadId)return;
- const listed=people.filter(p=>p.status!=='inactive'&&p.status!=='inativo');
+ const listed=performance.map(p=>({id:norm(p.professional_name),full_name:p.professional_name})).filter((p,i,arr)=>arr.findIndex(x=>x.id===p.id)===i).sort((a,b)=>a.full_name.localeCompare(b.full_name,'pt-BR'));
+ let goals=[],authorized=false;
+ try{
+ const registry=await rest('ceo_people?select=id,full_name,status',token);
+ const privateGoals=await rest('ceo_person_goals?select=person_id,couples_goal,sales_goal,vgv_goal,research_goal&month_id=eq.'+encodeURIComponent(active.id),token);
+ goals=privateGoals.map(g=>({...g,person_name:registry.find(p=>p.id===g.person_id)?.full_name||''}));
+ authorized=true;
+ }catch(accessError){console.info('Metas protegidas; resultados públicos disponíveis.');}
  const previous=sel.value;
  sel.innerHTML='<option value="">Escolha seu nome</option>'+listed.map(p=>'<option value="'+esc(p.id)+'">'+esc(p.full_name)+'</option>').join('');
  if(listed.some(p=>p.id===previous))sel.value=previous;
@@ -29,12 +32,12 @@ async function load(ctx){
  const render=()=>{
  const p=listed.find(x=>x.id===sel.value);
  if(!p){root.textContent='Selecione um profissional para ver a meta e o desempenho.';return}
- const g=goals.find(x=>x.person_id===p.id),perf=performance.find(x=>norm(x.professional_name)===norm(p.full_name))||{};
+ const g=goals.find(x=>norm(x.person_name)===norm(p.full_name)),perf=performance.find(x=>norm(x.professional_name)===norm(p.full_name))||{};
  root.innerHTML='<strong>'+esc(p.full_name)+'</strong><p style="font-size:12px;opacity:.75">'+esc(active.label)+' • resultados oficiais</p>'+
  '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:10px">'+
  card('Casais',perf.couples,g?.couples_goal)+card('Vendas / cotas',perf.sales,g?.sales_goal)+card('VGV',perf.vgv,g?.vgv_goal,'money')+
  (Number(g?.research_goal)>0?card('Pesquisas',perf.researches,g.research_goal):'')+'</div>'+
- (!g?'<p style="margin-top:12px;color:#f0c884">A gestão ainda não cadastrou uma meta individual para este profissional neste mês.</p>':'');
+ (!authorized?'<p style="margin-top:12px;color:#f0c884">Resultado oficial disponível. Metas individuais exigem autorização da gestão.</p>':!g?'<p style="margin-top:12px;color:#f0c884">A gestão ainda não cadastrou uma meta individual para este profissional neste mês.</p>':'');
  };
  sel.onchange=render;render();
  }catch(e){if(id===loadId){root.textContent=(e&&(/HTTP (401|403)/.test(String(e.message||e))))?'As metas individuais exigem acesso autorizado. Entre com seu usuário aprovado para consultar; somente o gestor pode editar.':'Não foi possível carregar as metas individuais. Confira a conexão e atualize a página.';}console.error('RAIO X metas individuais',e)}
