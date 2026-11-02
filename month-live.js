@@ -464,7 +464,7 @@
       const sourceChecked=!!imported;
 
       const sum=rows.reduce((a,r)=>{a.c+=num(r[0]);a.s+=num(r[1]);a.v+=num(r[2]);a.q+=num(r[3]);a.nq+=num(r[4]);return a;},{c:0,s:0,v:0,q:0,nq:0});
-      const consistent=Math.abs(sum.c-p.c)<.01&&(sourceChecked?Math.abs(sum.v-p.v)<.01:Math.abs(sum.s-p.s)<.01);
+      const consistent=Math.abs(sum.c-p.c)<.01&&Math.abs(sum.s-p.s)<.01&&Math.abs(sum.v-p.v)<.01;
       if($('fxName'))$('fxName').textContent=p.n;
       if($('fxValidation')){
         $('fxValidation').textContent=consistent?'✓ '+month.label.toUpperCase()+' • DADOS CONFERIDOS':'⚠ SOMA DIÁRIA DIFERE DO TOTAL MENSAL';
@@ -472,9 +472,9 @@
       }
       if(!rows.length || !consistent){
         const conv=p.c?p.s/p.c*100:0,ticket=p.s?p.v/p.s:0;
-        if($('fxValidation')){$('fxValidation').textContent='ℹ HISTÓRICO DIÁRIO INDIVIDUAL INDISPONÍVEL';$('fxValidation').className='fx-validate';}
+        if($('fxValidation')){$('fxValidation').textContent=rows.length?'⚠ HISTÓRICO DIÁRIO DIVERGENTE DO TOTAL MENSAL':'ℹ HISTÓRICO DIÁRIO INDIVIDUAL INDISPONÍVEL';$('fxValidation').className='fx-validate '+(rows.length?'bad':'');}
         if($('fxKpis'))$('fxKpis').innerHTML=[['Volume',p.c,'total mensal oficial'],['Vendas',p.s,conv.toFixed(1).replace('.',',')+'% conversão'],['VGV',fmtMoneyFull(p.v),fmtMoneyFull(ticket)+' ticket'],['Constância','—','sem detalhamento diário']].map(x=>'<div class="fx-kpi"><small>'+x[0]+'</small><b>'+x[1]+'</b><span>'+x[2]+'</span></div>').join('');
-        if($('fxChart'))$('fxChart').innerHTML='<div class="current-month-empty"><b>'+esc(month.label)+' • '+esc(p.n)+'</b>Os totais mensais estão disponíveis, mas o histórico diário individual ainda não foi importado. Não é possível calcular constância ou dias zerados.</div>';
+        if($('fxChart'))$('fxChart').innerHTML='<div class="current-month-empty"><b>'+esc(month.label)+' • '+esc(p.n)+'</b>Os totais mensais estão disponíveis, mas o histórico diário individual está ausente ou divergente. Não é possível calcular constância ou dias zerados com segurança.</div>';
         if($('fxDriver'))$('fxDriver').innerHTML='<small>LEITURA MENSAL</small><h3>Resultado consolidado</h3><p>'+fmtInt(p.c)+' casais, '+fmtInt(p.s)+' vendas e '+conv.toFixed(1).replace('.',',')+'% de conversão.</p>';
         if($('fxPositive'))$('fxPositive').innerHTML='<div class="fx-insight positive"><b>Resultado mensal</b><p>'+fmtInt(p.s)+' vendas registradas.</p></div>';
         if($('fxNegative'))$('fxNegative').innerHTML='<div class="fx-insight unknown"><b>Constância não avaliada</b><p>Não há distribuição diária confiável para identificar dias sem venda.</p></div>';
@@ -490,7 +490,7 @@
         ['VGV',fmtMoneyFull(p.v),fmtMoneyFull(ticket)+' ticket'],
         ['Constância',active+'/'+Math.max(1,rows.length),'dias com volume']
       ].map(x=>'<div class="fx-kpi"><small>'+x[0]+'</small><b>'+x[1]+'</b><span>'+x[2]+'</span></div>').join('');
-      if($('fxChart')){const peak=Math.max(1,...rows.map(r=>num(r[0])));$('fxChart').innerHTML='<div style="padding:14px"><div style="display:flex;align-items:end;gap:3px;height:155px;border-bottom:1px solid #5270a2">'+rows.map((r,i)=>'<div title="Dia '+(i+1)+': '+fmtInt(r[0])+' casais" style="flex:1;min-width:3px;height:'+Math.max(2,Math.round(num(r[0])/peak*140))+'px;background:'+(num(r[0])?'linear-gradient(#4de2ee,#5367dd)':'#273755')+';border-radius:3px 3px 0 0"></div>').join('')+'</div><div style="display:flex;justify-content:space-between;font-size:11px;color:#b7c9ed;margin-top:8px"><span>01/'+mm+'</span><span>'+active+' dias com casais • '+fmtInt(p.c)+' no mês</span><span>31/'+mm+'</span></div>'+(sourceChecked?'<p style="font-size:11px;color:#b7c9ed;margin-top:10px">Vendas diárias = atendimentos com valor. Total mensal de contratos preservado.</p>':'')+'</div>'; }
+      if($('fxChart')){const peak=Math.max(1,...rows.map(r=>num(r[0])));$('fxChart').innerHTML='<div style="padding:14px"><div style="display:flex;align-items:end;gap:3px;height:155px;border-bottom:1px solid #5270a2">'+rows.map((r,i)=>'<div title="Dia '+(i+1)+': '+fmtInt(r[0])+' casais" style="flex:1;min-width:3px;height:'+Math.max(2,Math.round(num(r[0])/peak*140))+'px;background:'+(num(r[0])?'linear-gradient(#4de2ee,#5367dd)':'#273755')+';border-radius:3px 3px 0 0"></div>').join('')+'</div><div style="display:flex;justify-content:space-between;font-size:11px;color:#b7c9ed;margin-top:8px"><span>01/'+mm+'</span><span>'+active+' dias com casais • '+fmtInt(p.c)+' no mês</span><span>'+daysInRefMonth(month.ref_month)+'/'+mm+'</span></div>'+(sourceChecked?'<p style="font-size:11px;color:#b7c9ed;margin-top:10px">Vendas diárias = atendimentos com valor. Total mensal de contratos preservado.</p>':'')+'</div>'; }
       if($('fxDriver'))$('fxDriver').innerHTML='<small>LEITURA PRINCIPAL</small><h3>'+((conv>=20)?'Conversão':'Constância')+'</h3><p>'+fmtInt(p.c)+' de volume, '+fmtInt(p.s)+' vendas e '+conv.toFixed(1).replace('.',',')+'% de conversão.</p>';
       if($('fxPositive'))$('fxPositive').innerHTML='<div class="fx-insight positive"><b>Dias ativos</b><p>'+active+' dias com volume.</p></div>';
       if($('fxNegative'))$('fxNegative').innerHTML='<div class="fx-insight negative"><b>Dias sem venda</b><p>'+rows.filter(r=>num(r[0])>0&&num(r[1])===0).length+' dias tiveram volume e nenhuma venda.</p></div>';
