@@ -118,7 +118,7 @@
 </header>
 
 <section id="dash" class="sec on">
-  <div id="raioxSalaSnapshot" class="card pad" style="margin-bottom:14px;border:1px solid #3c79a0;max-width:100%;overflow:hidden">
+  <div id="raioxSalaSnapshot" hidden class="card pad" style="margin-bottom:14px;border:1px solid #3c79a0;max-width:100%;overflow:hidden">
     <div class="title"><h3>Controle de sala • Outubro completo (arquivo de 01/11/2026)</h3><span class="mini">TSExplorer • 31/10/2026 • conciliado com o consolidado oficial</span></div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-top:12px">
       <div><small>ATENDIMENTOS</small><h3>449</h3></div>
@@ -408,5 +408,32 @@ if ("serviceWorker" in navigator) { window.addEventListener("load", () => naviga
 })();
 </script>
 <script src="./individual-goals.js?v=1" defer></script>
+<style id="raiox-central-layout-fix">
+#raioxSalaSnapshot[hidden]{display:none!important}
+.top-actions .area-switch{min-width:0}
+.top-actions .area-switch b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;max-width:100%}
+.top-actions select{min-width:0;max-width:100%}
+.top-actions .leaders .chip{overflow-wrap:anywhere}
+@media(max-width:1100px){.top-actions{flex-wrap:wrap!important}.top-actions .area-switch{flex:1 1 240px;max-width:100%}.top-actions .leaders{flex:1 1 150px}}
+@media(max-width:700px){.top-actions .area-switch{flex:1 1 100%}.top-actions select{width:100%}}
+</style>
+<script id="raiox-snapshot-month-guard">
+(function(){
+ function sync(){
+  var panel=document.getElementById('raioxSalaSnapshot');
+  if(!panel)return;
+  var chosen=document.getElementById('monthCurrentSelect');
+  var query=new URLSearchParams(location.search).get('month');
+  var ref=(chosen&&chosen.value)||query||'';
+  panel.hidden=ref!=='2026-10-01';
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync);else sync();
+ var select=document.getElementById('monthCurrentSelect');
+ if(select)select.addEventListener('change',sync);
+ var observer=new MutationObserver(sync);
+ if(select)observer.observe(select,{childList:true,attributes:true,attributeFilter:['value']});
+ setTimeout(sync,1200);
+})();
+</script>
 </body>
 </html>
