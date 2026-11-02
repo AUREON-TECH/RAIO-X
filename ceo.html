@@ -35,7 +35,37 @@
 #goalsLoadStatus{margin:0 0 5px!important;padding:3px 8px!important}
 }
 @media(max-width:1099px){.ceo-main{min-width:0!important}#individualGoalsEditor{height:auto!important}}
-</style></head>
+</style>
+<style id="ceo-layout-compact-v111">
+/* Sem margem duplicada da barra lateral: ocupar toda a largura útil */
+@media (min-width:1100px){
+  #ceoApp.ceo-app{display:grid!important;grid-template-columns:210px minmax(0,1fr)!important;column-gap:0!important}
+  #ceoApp .ceo-side{width:210px!important;grid-column:1!important}
+  #ceoApp .ceo-main{grid-column:2!important;margin:0!important;max-width:none!important;width:100%!important;min-width:0!important;padding:10px 14px 20px!important}
+  #ceoApp .ceo-top{width:100%!important}
+  #goalsStandalone{margin:4px 0 0!important}
+  #couplesGoalsOnly{padding:10px 12px!important;margin:0!important}
+  #individualGoalSummary{display:flex!important;align-items:center!important;justify-content:flex-start!important;flex-wrap:wrap!important;gap:8px 22px!important;margin:4px 0 8px!important;max-width:100%!important}
+  #individualGoalSummary > *{flex:0 0 auto!important;min-width:0!important;margin:0!important}
+  #individualGoalsEditor{height:calc(100dvh - 190px)!important;min-height:440px!important;max-height:760px!important;gap:3px 10px!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(11,minmax(0,1fr))!important;grid-auto-flow:column!important}
+  #individualGoalsEditor .rx-goal-row{min-width:0!important;min-height:0!important;padding:3px 7px!important;gap:6px!important;grid-template-columns:18px minmax(0,1fr) 56px 25px 72px 60px!important}
+  #individualGoalsEditor .rx-goal-row input{height:27px!important}
+  #goalsLoadStatus{margin:0 0 6px!important}
+}
+@media (min-width:1100px) and (max-height:760px){
+  #individualGoalsEditor{height:auto!important;min-height:0!important;max-height:none!important;grid-template-rows:repeat(11,minmax(38px,auto))!important}
+}
+@media (min-width:700px) and (max-width:1099px){
+  #ceoApp .ceo-main{margin:0!important;width:100%!important;max-width:none!important;padding:12px!important}
+  #individualGoalsEditor{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}
+}
+@media (max-width:699px){
+  #ceoApp .ceo-main{margin:0!important;width:100%!important;max-width:none!important}
+  #individualGoalsEditor{grid-template-columns:minmax(0,1fr)!important;grid-auto-flow:row!important;height:auto!important}
+  #individualGoalsEditor .rx-goal-row{gap:4px!important;padding:6px!important}
+}
+</style>
+</head>
 <body>
 <div id="ceoLoading" class="ceo-loading"><div class="loader-mark">RX</div><b>Validando acesso de gestão...</b></div>
 
