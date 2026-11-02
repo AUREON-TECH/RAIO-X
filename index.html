@@ -111,7 +111,7 @@
 <header class="top">
   <div><div class="eye" id="eye">CENTRAL DE MISSÃO</div><h2 id="pt">Performance da Captação</h2><div class="muted" id="ps">Onde estamos, onde podemos chegar e o que fazer hoje.</div><div class="flow-badge" id="flowBadge">ETAPA 01 DE 08 • CENTRAL</div></div>
   <div class="top-actions">
-    <div class="area-switch month-switch"><div><small>MÊS</small><b id="monthCurrentLabel">—</b></div><select id="monthCurrentSelect" aria-label="Escolher mês"><option value="2026-11-01">Novembro/2026</option><option value="2026-10-01">Outubro/2026 • fechado</option><option value="2026-09-01">Setembro/2026 • fechado</option></select></div>
+    <div class="area-switch month-switch"><div><small>MÊS</small><b id="monthCurrentLabel">—</b></div><select id="monthCurrentSelect" aria-label="Escolher mês"><option value="2026-11-01">Novembro/2026</option><option value="2026-10-01">Outubro/2026 • fechado</option><option value="2026-09-01">Setembro/2026 • fechado</option></select></div><nav class="month-direct-nav" aria-label="Acessar histórico mensal"><a href="./?month=2026-09-01&v=87">Setembro</a><a href="./?month=2026-10-01&v=87">Outubro</a><a href="./?month=2026-11-01&v=87">Novembro</a></nav>
     <div class="area-switch"><div><small>VISÃO DA ÁREA</small><b id="areaCurrent">Promotor de Marketing</b></div><select id="areaSel" aria-label="Escolher área"><option value="promotor">Promotor de Marketing</option><option value="liner">Liner / Consultor</option><option value="closer">Closer / Fechador</option></select><div class="area-quick" aria-label="Trocar visão da área"><a data-area-link="promotor" href="./">Promotor</a><a data-area-link="liner" href="./?area=liner">Liner</a><a data-area-link="closer" href="./?area=closer">Closer</a></div></div>
     <div class="leaders"><div class="chip">CRIADO POR<b>AUREON</b></div><div class="chip">PRODUTO<b>RAIO X</b></div></div>
   </div>
@@ -465,5 +465,5 @@ function init(){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
-</body>
+<style id="raiox-month-direct-nav-style">.month-direct-nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.month-direct-nav a{font-size:12px;padding:10px 12px;border:1px solid #34628b;border-radius:10px;background:#0b1b36;color:#bceeff;text-decoration:none;font-weight:700}.month-direct-nav a[aria-current="page"]{background:#174e72;color:#fff;border-color:#23cbec}.month-direct-nav a:focus-visible{outline:3px solid #23cbec}@media(max-width:650px){.month-direct-nav{width:100%}.month-direct-nav a{flex:1;text-align:center}}</style><script>document.addEventListener("DOMContentLoaded",function(){var m=new URLSearchParams(location.search).get("month")||"2026-11-01";document.querySelectorAll(".month-direct-nav a").forEach(function(a){if(new URL(a.href).searchParams.get("month")===m)a.setAttribute("aria-current","page")})})</script></body>
 </html>
