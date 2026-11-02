@@ -661,3 +661,22 @@ textarea{font-size:12px}
 .operational-history-panel{margin-bottom:18px}.operational-history-filters{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:14px}.op-history-row{display:grid;grid-template-columns:minmax(170px,1fr) 110px 150px minmax(260px,2fr);gap:12px;align-items:center;padding:11px 4px;border-bottom:1px solid rgba(130,150,190,.1)}.op-history-row span,.op-history-row small{color:#91a6cc}@media(max-width:760px){.operational-history-filters,.op-history-row{grid-template-columns:1fr}}
 
 .manual-tools{margin:14px 0}.manual-tools>summary{cursor:pointer;list-style:none;padding:12px 16px;border:1px solid rgba(130,150,190,.18);border-radius:12px;color:#91a6cc;background:rgba(255,255,255,.02);font-weight:700}.manual-tools>summary:before{content:"＋ ";color:#22d2ff}.manual-tools[open]>summary:before{content:"− "}.manual-tools>.panel,.manual-tools>.today-help{margin-top:10px}.operational-history-panel{max-height:560px;overflow:auto}
+
+/* Compact individual goals: 22 people in two columns, no horizontal scrolling */
+#goalsStandalone{margin:8px 0!important}
+#couplesGoalsOnly{padding:10px 14px!important}
+#couplesGoalsOnly .panel-head{display:none!important}
+#individualGoalsEditor{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 12px!important}
+#individualGoalsEditor .rx-goal-row{min-width:0;display:grid;grid-template-columns:19px minmax(0,1fr) 63px 38px 74px 62px;gap:6px;align-items:center;min-height:37px;padding:3px 6px;border:1px solid rgba(110,146,200,.18);border-radius:7px;background:rgba(8,18,42,.55);font-size:11px}
+.rx-goal-num{color:#8ba6cc}.rx-goal-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
+.rx-goal-row input{width:100%;min-width:0;height:28px;padding:3px 5px;text-align:center;border-radius:6px}
+.rx-goal-done{text-align:center}.rx-goal-progress{min-width:0;text-align:center;font-size:10px}
+.rx-goal-progress i{display:block;height:4px;background:#253553;border-radius:5px;overflow:hidden}.rx-goal-progress em{display:block;height:100%;background:#20d8ce}
+.rx-goal-row .primary.small{padding:5px 6px;min-height:27px;font-size:10px}
+.rx-goal-unlinked{font-size:9px;color:#f3bb7a}
+.rx-goal-totals{display:flex;gap:14px;flex-wrap:wrap;justify-content:space-around;font-size:11px;padding:6px}
+.rx-goal-totals b{color:#3ce5ef;font-size:15px;margin-right:4px}
+#goalsLoadStatus{padding:5px 10px!important;margin-bottom:6px!important;font-size:11px}
+@media(min-width:1100px){#couplesGoalsOnly{max-height:calc(100dvh - 215px);overflow:hidden}#individualGoalsEditor{grid-auto-flow:column;grid-template-rows:repeat(11,minmax(0,1fr));height:min(490px,calc(100dvh - 290px));gap:2px 12px!important}#individualGoalsEditor .rx-goal-row{min-height:0}}
+@media(max-width:1099px){#individualGoalsEditor{grid-template-columns:1fr}#individualGoalsEditor .rx-goal-row{grid-template-columns:18px minmax(0,1fr) 60px 34px 68px 60px}}
+@media(max-width:530px){#individualGoalsEditor .rx-goal-row{grid-template-columns:16px minmax(0,1fr) 48px 24px 48px 52px;gap:3px;font-size:9px;padding:3px}.rx-goal-row .primary.small{font-size:9px;padding:4px}}
