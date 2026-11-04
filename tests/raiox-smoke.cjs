@@ -35,11 +35,19 @@ for(const profile of devicesToTest){
  }
  // Non-destructive controls: month, area, individual, rankings, report refresh.
  await page.locator('.bottom [data-go="dash"]').click();
- for(const id of ['monthCurrentSelect','areaSel']){
-  const sel=page.locator('#'+id);
-  if(!await sel.count()||!await sel.isVisible()){console.log('FAIL missing/hidden filter',profile.name,id);failures++;}
-  else if(await sel.locator('option').count()===0){console.log('FAIL empty filter',profile.name,id);failures++;}
+ const monthTabs=page.locator('[data-month-tab]');
+ if(await monthTabs.count()!==3){console.log('FAIL missing month tabs',profile.name);failures++;}
+ for(const month of ['2026-09-01','2026-10-01','2026-11-01']){
+  const link=page.locator('[data-month-tab="'+month+'"]');
+  if(!await link.count()||!await link.isVisible()){console.log('FAIL month tab invisible',profile.name,month);failures++;continue;}
+  await link.click();await page.waitForLoadState('domcontentloaded');
+  await page.waitForTimeout(1200);
+  const selected=new URL(page.url()).searchParams.get('month');
+  if(selected!==month){console.log('FAIL month navigation',profile.name,month,selected);failures++;}
  }
+ const area=page.locator('#areaSel');
+ if(!await area.count()||!await area.isVisible()||await area.locator('option').count()!==3){console.log('FAIL area filter',profile.name);failures++;}
+ else {await area.selectOption('liner');await page.waitForTimeout(1000);if(new URL(page.url()).searchParams.get('area')!=='liner'){console.log('FAIL area navigation',profile.name);failures++;}await area.selectOption('promotor');await page.waitForTimeout(1000);}
  await page.locator('.bottom [data-go="ind"]').click();
  const individual=page.locator('#sel');
  if(await individual.count()&&await individual.locator('option').count()>1){
