@@ -12,7 +12,7 @@ on:
       - '.github/workflows/raiox-smoke.yml'
 jobs:
   smoke:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
