@@ -555,7 +555,7 @@
     const allPeople=dynamicPeople(selected,month);
     const people=allPeople.filter(p=>!(month.ref_month==='2026-10-01' && /(?:manara\s+alexandre\s+sousa|clacion\s+de\s+souza\s+braga|gabriell?a\s+furtado)/i.test(p.n)));
     window.raioxVoiceData={month:month.label,refMonth:month.ref_month,people:people.map(p=>({name:p.n,couples:p.c,sales:p.s,vgv:p.v,q:p.q,nq:p.nq,gifts:p.g,days:p.d,weekly:p.w,projection:p.p})),updatedAt:Date.now()};
-    window.dispatchEvent(new CustomEvent('raiox:analytics-data'));
+    window.dispatchEvent(new CustomEvent('raiox:analytics-data',{detail:{month:month.ref_month,rows:selected}}));
     dynamicCentral(month,allPeople);
     dynamicRank(month,people);
     dynamicIndividual(month,people);
@@ -568,7 +568,7 @@
 
   function markLiveReady(){ document.body.classList.remove('raiox-live-loading'); document.body.classList.add('raiox-live-ready'); }
 
-  async function load(ctx){
+  async function load(ctx,overrideMonth){
     if(!cfg.url||!cfg.key)return;
     document.body.classList.add('raiox-live-loading');
     try{
@@ -577,7 +577,7 @@
       if(!months?.length)return;
 
       const openMonth=months.find(m=>m.status==='open')||months[0];
-      const requested=new URLSearchParams(location.search).get('month')||'';
+      const requested=overrideMonth||new URLSearchParams(location.search).get('month')||'';
       const selectedRef=months.some(m=>m.ref_month===requested)?requested:openMonth.ref_month;
       const month=months.find(m=>m.ref_month===selectedRef)||openMonth;
 
@@ -597,6 +597,7 @@
     }
   }
 
+  window.addEventListener('raiox:select-month',e=>{const ref=e.detail?.month;if(!/^2026-(09|10|11)-01$/.test(ref||''))return;load(window.RAIOX_AUTH||null,ref);});
   window.addEventListener('raiox:authenticated',e=>load(e.detail));
   load(window.RAIOX_AUTH||null);
 })();
