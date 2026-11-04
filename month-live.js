@@ -551,7 +551,7 @@
   }
   function renderDynamicMonth(month,rows){
     const selected=rows.filter(r=>r.role===areaRole());
-    if(!selected.length){currentMonthEmpty(month);return;}
+    if(!selected.length){window.raioxVoiceData={month:month.label,refMonth:month.ref_month,people:[],updatedAt:Date.now()};window.dispatchEvent(new CustomEvent('raiox:analytics-data',{detail:{month:month.ref_month,rows:[]}}));currentMonthEmpty(month);return;}
     const allPeople=dynamicPeople(selected,month);
     const people=allPeople.filter(p=>!(month.ref_month==='2026-10-01' && /(?:manara\s+alexandre\s+sousa|clacion\s+de\s+souza\s+braga|gabriell?a\s+furtado)/i.test(p.n)));
     window.raioxVoiceData={month:month.label,refMonth:month.ref_month,people:people.map(p=>({name:p.n,couples:p.c,sales:p.s,vgv:p.v,q:p.q,nq:p.nq,gifts:p.g,days:p.d,weekly:p.w,projection:p.p})),updatedAt:Date.now()};
@@ -571,12 +571,12 @@
   let latestMonthRequest=0;
   async function load(ctx,overrideMonth){
     const requestId=++latestMonthRequest;
-    if(!cfg.url||!cfg.key)return;
+    if(!cfg.url||!cfg.key){document.body.classList.remove('raiox-live-loading');document.body.classList.add('raiox-live-error');const label=document.getElementById('monthCurrentLabel');if(label)label.textContent='Configuração de dados indisponível';return;}
     document.body.classList.add('raiox-live-loading');
     try{
       const token=ctx?.session?.access_token||cfg.key;
       const months=await rest('ceo_months?select=ref_month,label,status,goal_research,goal_couples,goal_sales,goal_vgv,super_goal_research,super_goal_couples,super_goal_sales,super_goal_vgv&order=ref_month.desc',token);
-      if(!months?.length)return;
+      if(!months?.length)throw new Error('Nenhum mês encontrado no banco de dados.');
 
       const openMonth=months.find(m=>m.status==='open')||months[0];
       const requested=overrideMonth||new URLSearchParams(location.search).get('month')||'';
@@ -584,6 +584,7 @@
       const month=months.find(m=>m.ref_month===selectedRef)||openMonth;
 
       fillMonthSelector(months,month.ref_month);
+      document.querySelectorAll('[data-month-tab]').forEach(a=>{if(a.dataset.monthTab===month.ref_month)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
 
       const rows=await rest('raiox_performance_records?select=professional_name,role,researches,couples,sales,vgv,q,nq,gifts,active_days,week_volume,week_sales,week_vgv,daily,updated_on,snapshot_at&ref_month=eq.'+encodeURIComponent(month.ref_month),token);
       const dailyRows=await rest('raiox_daily_totals?select=work_date,couples,sales,vgv,q,nq,snapshot_at&ref_month=eq.'+encodeURIComponent(month.ref_month)+'&order=work_date.asc',token)||[];
