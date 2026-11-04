@@ -607,5 +607,27 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  var stage=document.getElementById('cin');
  if(stage&&window.MutationObserver){new MutationObserver(schedule).observe(stage,{childList:true,subtree:true,characterData:true});}
 })();
-</script></body>
+</script>
+<script id="raiox-month-picker-final-v109">
+(function(){
+ const labels={'2026-09-01':'Setembro/2026','2026-10-01':'Outubro/2026','2026-11-01':'Novembro/2026'};
+ function setup(){
+  const old=document.getElementById('monthCurrentSelect');if(!old)return;
+  const selected=new URLSearchParams(location.search).get('month');
+  const chosen=labels[selected]?selected:'2026-11-01';
+  const select=old.cloneNode(false);
+  select.innerHTML=Object.entries(labels).reverse().map(([value,label])=>'<option value="'+value+'">'+label+'</option>').join('');
+  select.value=chosen;select.setAttribute('aria-label','Selecionar mês dos resultados');
+  old.replaceWith(select);
+  select.addEventListener('change',function(){
+   if(!labels[select.value])return;
+   const url=new URL(location.href);url.searchParams.set('month',select.value);url.searchParams.set('v','109');
+   location.assign(url.toString());
+  });
+  const label=document.getElementById('monthCurrentLabel');if(label)label.textContent=labels[chosen];
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+})();
+</script>
+</body>
 </html>
