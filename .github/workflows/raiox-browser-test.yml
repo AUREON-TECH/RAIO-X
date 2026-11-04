@@ -1,0 +1,47 @@
+name: RAIO X - Teste real de meses e Analytics
+on:
+  push:
+    paths:
+      - 'index.html'
+      - 'month-live.js'
+      - '.github/workflows/raiox-browser-test.yml'
+  workflow_dispatch:
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar navegador
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Testar site publicado em navegador real
+        run: |
+          node <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage({viewport:{width:390,height:844}});
+            for(const month of ['2026-09-01','2026-10-01','2026-11-01']){
+              const url='https://aureon-tech.github.io/RAIO-X/?v=123&month='+month+'#dash';
+              await page.goto(url,{waitUntil:'domcontentloaded',timeout:45000});
+              await page.waitForTimeout(6500);
+              const result=await page.evaluate(()=>({
+                url:location.href,
+                selected:new URLSearchParams(location.search).get('month'),
+                buttons:[...document.querySelectorAll('[data-month-tab]')].map(x=>({month:x.dataset.monthTab,href:x.href})),
+                smoke:window.RAIOX_SMOKE_TEST||null,
+                analytics:!!document.querySelector('#analyticsChart'),
+                errors:document.querySelector('#raioxMonthFeedback')?.textContent||''
+              }));
+              console.log('MONTH',month,JSON.stringify(result));
+              if(result.selected!==month||result.buttons.length!==3||!result.analytics)throw Error('Failed month shell '+month);
+            }
+            await page.goto('https://aureon-tech.github.io/RAIO-X/?v=123&month=2026-11-01#dash',{waitUntil:'domcontentloaded'});
+            await page.locator('[data-month-tab="2026-10-01"]').click({timeout:15000});
+            await page.waitForURL(/month=2026-10-01/,{timeout:20000});
+            console.log('CLICK NAVIGATION OK',page.url());
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
