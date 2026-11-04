@@ -568,7 +568,9 @@
 
   function markLiveReady(){ document.body.classList.remove('raiox-live-loading'); document.body.classList.add('raiox-live-ready'); }
 
+  let latestMonthRequest=0;
   async function load(ctx,overrideMonth){
+    const requestId=++latestMonthRequest;
     if(!cfg.url||!cfg.key)return;
     document.body.classList.add('raiox-live-loading');
     try{
@@ -584,14 +586,18 @@
       fillMonthSelector(months,month.ref_month);
 
       const rows=await rest('raiox_performance_records?select=professional_name,role,researches,couples,sales,vgv,q,nq,gifts,active_days,week_volume,week_sales,week_vgv,daily,updated_on,snapshot_at&ref_month=eq.'+encodeURIComponent(month.ref_month),token);
-      officialDaily=await rest('raiox_daily_totals?select=work_date,couples,sales,vgv,q,nq,snapshot_at&ref_month=eq.'+encodeURIComponent(month.ref_month)+'&order=work_date.asc',token)||[];
+      const dailyRows=await rest('raiox_daily_totals?select=work_date,couples,sales,vgv,q,nq,snapshot_at&ref_month=eq.'+encodeURIComponent(month.ref_month)+'&order=work_date.asc',token)||[];
+      if(requestId!==latestMonthRequest)return;
+      officialDaily=dailyRows;
       currentPerformanceRows=rows||[];
       updateCurrentMonthLabels(month);
       updateGoalHero(month,rows||[]);
       renderDynamicMonth(month,rows||[]);
       markLiveReady();
+      window.dispatchEvent(new CustomEvent('raiox:month-loaded',{detail:{month:month.ref_month,count:(rows||[]).length}}));
     }catch(err){
       console.error('RAIO X mês selecionado:',err);
+      const label=document.getElementById('monthCurrentLabel');if(label)label.textContent='Erro ao carregar mês';
       document.body.classList.remove('raiox-live-loading');
       document.body.classList.add('raiox-live-error');
     }
