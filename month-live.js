@@ -566,6 +566,36 @@
     dynamicCosts(month,allPeople);
   }
 
+  function renderCaptainHistory(month,rows){
+    let panel=$('raioxCaptainHistory');
+    if(!panel){
+      panel=document.createElement('section');panel.id='raioxCaptainHistory';
+      panel.style.cssText='margin:14px 0;padding:15px;border:1px solid #3b658a;border-radius:15px;background:#0b2035;color:#e6f3ff';
+      const anchor=$('radarCaptain')||$('heroLeaderName')||$('missionText');
+      if(anchor)anchor.parentElement?.after(panel);
+      else document.querySelector('main')?.prepend(panel);
+    }
+    const y=Number(month.ref_month.slice(0,4)),m=Number(month.ref_month.slice(5,7));
+    const last=new Date(Date.UTC(y,m,0)).getUTCDate();
+    const starts=[];for(let d=1;d<=last;d++){const dt=new Date(Date.UTC(y,m-1,d));if(dt.getUTCDay()===1||d===1)starts.push(d);}
+    const today=new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'});
+    const cards=starts.map((start,i)=>{
+      const end=i+1<starts.length?starts[i+1]-1:last;
+      const startIso=month.ref_month.slice(0,7)+'-'+String(start).padStart(2,'0');
+      const endIso=month.ref_month.slice(0,7)+'-'+String(end).padStart(2,'0');
+      if(startIso>today)return '';
+      const scores=rows.filter(r=>r.role==='Promotor de Marketing').map(r=>{
+        let couples=0,sales=0,vgv=0,valid=false;
+        const daily=Array.isArray(r.daily)?r.daily:[];
+        for(let day=start;day<=end;day++){const entry=daily[day-1];if(!Array.isArray(entry))continue;valid=true;couples+=num(entry[0]);sales+=num(entry[1]);vgv+=num(entry[2]);}
+        return {name:r.professional_name,couples,sales,vgv,valid};
+      }).filter(x=>x.valid&&x.couples>0).sort((a,b)=>b.couples-a.couples||b.sales-a.sales||b.vgv-a.vgv);
+      const winner=scores[0];
+      const closed=endIso<today;
+      return '<article style="border:1px solid #294967;border-radius:12px;padding:11px;background:#102b43"><small style="color:#91c5e5">'+String(start).padStart(2,'0')+' a '+String(end).padStart(2,'0')+'/'+String(m).padStart(2,'0')+'</small><div style="font-weight:800;margin-top:6px">'+(winner?esc(winner.name):'Resultado não disponível')+'</div><div style="font-size:12px;color:#a9c9dc;margin-top:5px">'+(winner?fmtInt(winner.couples)+' casais • '+fmtInt(winner.sales)+' vendas':'Sem dados diários por profissional')+'</div><small style="color:#e3b969">'+(closed?'Semana encerrada':'Semana em andamento')+'</small></article>';
+    }).filter(Boolean);
+    panel.innerHTML='<h3 style="margin:0 0 5px">Histórico dos Capitães da Semana</h3><p style="font-size:12px;color:#a9c9dc;margin:0 0 12px">Semanas de segunda a domingo • resultados exibidos somente quando há dados diários individuais.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:9px">'+cards.join('')+'</div>';
+  }
   function markLiveReady(){ document.body.classList.remove('raiox-live-loading'); document.body.classList.add('raiox-live-ready'); }
 
   let latestMonthRequest=0;
@@ -594,6 +624,7 @@
       updateCurrentMonthLabels(month);
       updateGoalHero(month,rows||[]);
       renderDynamicMonth(month,rows||[]);
+      renderCaptainHistory(month,rows||[]);
       // Totais oficiais diários prevalecem sobre snapshots individuais antigos.
       if(month.ref_month==='2026-11-01' && areaRole()==='Promotor de Marketing' && dailyRows.length){
         const latest=dailyRows.filter(d=>String(d.work_date)<='2026-11-17');
