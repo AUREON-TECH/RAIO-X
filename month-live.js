@@ -594,6 +594,31 @@
       updateCurrentMonthLabels(month);
       updateGoalHero(month,rows||[]);
       renderDynamicMonth(month,rows||[]);
+      // Totais oficiais diários prevalecem sobre snapshots individuais antigos.
+      if(month.ref_month==='2026-11-01' && areaRole()==='Promotor de Marketing' && dailyRows.length){
+        const latest=dailyRows.filter(d=>String(d.work_date)<='2026-11-17');
+        const total={couples:sum(latest,'couples'),sales:sum(latest,'sales'),vgv:sum(latest,'vgv'),q:sum(latest,'q'),nq:sum(latest,'nq')};
+        const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0}).format(n);
+        const stamp='17/11/2026';
+        const mission=$('missionText');
+        if(mission)mission.innerHTML='<b>BASE OFICIAL ATÉ '+stamp+'</b> • '+fmtInt(total.couples)+' casais • '+fmtInt(total.sales)+' vendas ativas • VGV líquido '+money(total.vgv);
+        const grid=document.querySelector('.goal-grid');
+        if(grid){
+          const cards=grid.querySelectorAll('.goal-card .goal-copy strong');
+          if(cards[0])cards[0].textContent=fmtInt(total.couples);
+          if(cards[1])cards[1].textContent=fmtInt(total.sales);
+          if(cards[2])cards[2].textContent=money(total.vgv);
+          if(cards[3])cards[3].textContent=(total.couples?total.sales/total.couples*100:0).toFixed(1).replace('.',',')+'%';
+          if(cards[4])cards[4].textContent=total.sales?money(total.vgv/total.sales):'—';
+        }
+        if($('dk'))$('dk').innerHTML=[['Casais',fmtInt(total.couples)],['Vendas ativas',fmtInt(total.sales)],['VGV líquido',money(total.vgv)]].map(v=>'<div class="card kpi"><small>'+v[0]+'</small><b class="c">'+v[1]+'</b><span class="muted">Até '+stamp+'</span></div>').join('');
+        const existing=$('raioxDailySyncNotice');
+        if(!existing){
+          const notice=document.createElement('div');notice.id='raioxDailySyncNotice';notice.style.cssText='padding:10px 14px;margin:10px 0;background:#14283d;border:1px solid #376080;border-radius:10px;color:#d4e9f5;font-size:12px';
+          notice.textContent='Totais oficiais até 17/11/2026. Rankings individuais podem estar defasados até a conciliação por profissional.';
+          mission?.after(notice);
+        }
+      }
       markLiveReady();
       window.dispatchEvent(new CustomEvent('raiox:month-loaded',{detail:{month:month.ref_month,count:(rows||[]).length}}));
     }catch(err){
