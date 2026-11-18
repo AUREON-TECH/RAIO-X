@@ -75,7 +75,7 @@
     const winner=[...prom].filter(x=>num(x.couples)>=22).sort((x,y)=>num(y.couples)-num(x.couples))[0];
     if($('missionText')){ const snap=prom[0]?.snapshot_at?new Date(prom[0].snapshot_at):null; const stamp=snap&&!isNaN(snap)?snap.toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):String(prom[0]?.updated_on||'—').split('-').reverse().join('/'); $('missionText').innerHTML='<b>DADOS OFICIAIS</b> • '+esc(month.label)+' • atualizado em '+esc(stamp); }
     if($('heroLeaderName'))$('heroLeaderName').textContent=leader?.n||'Aguardando resultado semanal';
-    if($('heroLeaderSub'))$('heroLeaderSub').textContent=leader?'CAPITÃO VIGENTE • '+fmtInt(leader.w)+' CASAIS • '+leader.period:'CAPITÃO DA SEMANA • '+captain.week.label+' • SEM DADOS';
+    if($('heroLeaderSub'))$('heroLeaderSub').textContent=leader?'CAPITÃO VIGENTE • '+fmtInt(leader.w)+' CASAIS • '+leader.period :'ÚLTIMO CAPITÃO • AGUARDANDO RESULTADO SEMANAL CONFIRMADO';
     if($('iCap'))$('iCap').textContent=leader?leader.n+' • '+fmtInt(leader.w)+' casais':'Aguardando dados da semana';
     if($('i22'))$('i22').textContent=winner?winner.professional_name+' • VENCEDOR':monthLeader?monthLeader.professional_name+' • '+fmtInt(monthLeader.couples)+'/22':'—';
     const days=Math.max(1,...prom.map(r=>Number(String(r.updated_on||'').slice(8,10))||0));
@@ -244,14 +244,14 @@
       const start=end-6;
       const leaders=rows.filter(r=>r.role==='Promotor de Marketing').map(r=>{
         let w=0,ws=0,wv=0,observed=false;
-        for(let d=Math.max(1,start);d<=end;d++){
+        if(start<1)continue; // Exige a semana inteira de segunda a domingo.\n        for(let d=start;d<=end;d++){
           const item=Array.isArray(r.daily)?r.daily[d-1]:null;
           if(!Array.isArray(item))continue;
           observed=true;w+=num(item[0]);ws+=num(item[1]);wv+=num(item[2]);
         }
         return {n:r.professional_name,w,ws,wv,observed};
       }).filter(x=>x.observed&&x.w>0).sort((a,b)=>b.w-a.w||b.ws-a.ws||b.wv-a.wv||a.n.localeCompare(b.n,'pt-BR'));
-      if(leaders.length)reigning={...leaders[0],period:String(Math.max(1,start)).padStart(2,'0')+'/'+monthPrefix.slice(5)+' a '+String(end).padStart(2,'0')+'/'+monthPrefix.slice(5)};
+      if(leaders.length)reigning={...leaders[0],period:String(start).padStart(2,'0')+'/'+monthPrefix.slice(5)+' a '+String(end).padStart(2,'0')+'/'+monthPrefix.slice(5)};
     }
     return reigning;
   }
