@@ -674,7 +674,7 @@
         const existing=$('raioxDailySyncNotice');
         if(!existing){
           const notice=document.createElement('div');notice.id='raioxDailySyncNotice';notice.style.cssText='padding:10px 14px;margin:10px 0;background:#14283d;border:1px solid #376080;border-radius:10px;color:#d4e9f5;font-size:12px';
-          notice.textContent='Totais oficiais até 17/11/2026. Rankings individuais podem estar defasados até a conciliação por profissional.';
+          notice.textContent='Totais oficiais até '+stamp+'. Rankings individuais podem estar defasados até a conciliação por profissional.';
           mission?.after(notice);
         }
       }
