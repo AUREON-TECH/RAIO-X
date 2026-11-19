@@ -244,7 +244,8 @@
       const start=end-6;
       const leaders=rows.filter(r=>r.role==='Promotor de Marketing').map(r=>{
         let w=0,ws=0,wv=0,observed=false;
-        if(start<1)return null; // Exige a semana inteira de segunda a domingo.\n        for(let d=start;d<=end;d++){
+        if(start<1)return null; // Exige a semana inteira de segunda a domingo.
+        for(let d=start;d<=end;d++){
           const item=Array.isArray(r.daily)?r.daily[d-1]:null;
           if(!Array.isArray(item))continue;
           observed=true;w+=num(item[0]);ws+=num(item[1]);wv+=num(item[2]);
