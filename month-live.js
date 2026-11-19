@@ -654,10 +654,11 @@
       renderCaptainHistory(month,rows||[]);
       // Totais oficiais diários prevalecem sobre snapshots individuais antigos.
       if(month.ref_month==='2026-11-01' && areaRole()==='Promotor de Marketing' && dailyRows.length){
-        const latest=dailyRows.filter(d=>String(d.work_date)<='2026-11-17');
+        const latest=dailyRows;
         const total={couples:sum(latest,'couples'),sales:sum(latest,'sales'),vgv:sum(latest,'vgv'),q:sum(latest,'q'),nq:sum(latest,'nq')};
         const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0}).format(n);
-        const stamp='17/11/2026';
+        const latestDate=latest.reduce((max,d)=>String(d.work_date)>max?String(d.work_date):max,'');
+        const stamp=latestDate?latestDate.slice(8,10)+'/'+latestDate.slice(5,7)+'/'+latestDate.slice(0,4):'sem data';
         const mission=$('missionText');
         if(mission)mission.innerHTML='<b>BASE OFICIAL ATÉ '+stamp+'</b> • '+fmtInt(total.couples)+' casais • '+fmtInt(total.sales)+' vendas ativas • VGV líquido '+money(total.vgv);
         const grid=document.querySelector('.goal-grid');
@@ -687,7 +688,7 @@
     }
   }
 
-  window.addEventListener('raiox:select-month',e=>{const ref=e.detail?.month;if(!/^2026-(09|10|11)-01$/.test(ref||''))return;load(window.RAIOX_AUTH||null,ref);});
+  window.addEventListener('raiox:select-month',e=>{const ref=e.detail?.month;if(!/^2026-(0[1-9]|1[0-2])-01$/.test(ref||''))return;load(window.RAIOX_AUTH||null,ref);});
   window.addEventListener('raiox:authenticated',e=>load(e.detail));
   load(window.RAIOX_AUTH||null);
 })();
