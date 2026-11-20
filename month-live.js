@@ -195,9 +195,9 @@
       nq:num(row.nq),
       g:num(row.gifts),
       d:num(row.active_days),
-      w:num(row.week_volume),
-      ws:num(row.week_sales),
-      wv:num(row.week_vgv),
+      w:(Array.isArray(row.daily)&&row.daily.length?num(row.week_volume):((num(row.week_volume)>0)?num(row.week_volume):null)),
+      ws:(Array.isArray(row.daily)&&row.daily.length?num(row.week_sales):((num(row.week_volume)>0)?num(row.week_sales):null)),
+      wv:(Array.isArray(row.daily)&&row.daily.length?num(row.week_vgv):((num(row.week_volume)>0)?num(row.week_vgv):null)),
       p:Math.round(num(row.couples)/Math.max(1,elapsed)*totalDays),
       daily:Array.isArray(row.daily)?row.daily:[]
     };
@@ -353,7 +353,7 @@
         const achievement=milestone?'<span title="Parabéns! '+milestone.label+'" style="display:inline-flex;align-items:center;gap:5px;margin-top:5px;padding:5px 9px;border-radius:999px;background:'+milestone.bg+';color:'+milestone.fg+';font-size:11px;font-weight:800;white-space:nowrap">'+milestone.emoji+' '+milestone.label+'</span>':'';
         return '<tr><td class="pos">'+(['🥇','🥈','🥉'][i]||'#'+(i+1))+'</td>'+
           '<td><div class="person"><div class="av">'+esc(p.n.charAt(0))+'</div><div><b>'+esc(p.n)+'</b><span class="mini">'+esc(p.r)+'</span>'+achievement+'</div></div></td>'+
-          '<td><b>'+fmtInt(p.c)+'</b></td><td>'+fmtInt(p.w)+'</td><td>'+fmtInt(p.s)+'</td><td>'+fmtMoneyFull(p.v)+'</td>'+
+          '<td><b>'+fmtInt(p.c)+'</b></td><td>'+(p.w===null?'—':fmtInt(p.w))+'</td><td>'+fmtInt(p.s)+'</td><td>'+fmtMoneyFull(p.v)+'</td>'+
           '<td>'+conv.toFixed(1).replace('.',',')+'%</td><td>'+fmtInt(p.q)+'</td><td>'+fmtMoneyFull(cost)+'</td><td><b class="v">'+fmtInt(p.p)+'</b></td>'+
           '<td><span class="tag">'+fmtInt(p.d)+' dias ativos</span></td></tr>';
       }).join('');
@@ -373,12 +373,12 @@
         ['Vendas',p.s,conv.toFixed(1).replace('.',',')+'% conversão'],
         ['VGV',fmtMoneyFull(p.v),p.s?fmtMoneyFull(p.v/p.s)+' ticket':'sem venda'],
         ['Q',p.q,qual.toFixed(1).replace('.',',')+'% qualificação'],
-        ['Semana',p.w,p.ws+' venda(s)'],
+        ['Semana',p.w===null?'—':fmtInt(p.w),p.ws===null?'Aguardando dados individuais':fmtInt(p.ws)+' venda(s)'],
         ['Projeção',p.p,'fim de '+month.label],
         ['Custo/volume',fmtMoneyFull(cost),'brindes ÷ volume']
       ].map(x=>'<div class="card kpi"><small>'+x[0]+'</small><b class="c">'+x[1]+'</b><span class="muted">'+x[2]+'</span></div>').join('');
       if($('cc'))$('cc').innerHTML='<b>'+esc(p.n)+'</b> está com <b>'+fmtInt(p.c)+'</b> '+(areaRole()==='Promotor de Marketing'?'casais':'atendimentos')+', <b>'+fmtInt(p.s)+'</b> vendas e <b>'+fmtMoneyFull(p.v)+'</b> em VGV no mês '+esc(month.label)+'.';
-      if($('cg'))$('cg').innerHTML='<div><small>Conversão</small><b>'+conv.toFixed(1).replace('.',',')+'%</b></div><div><small>Qualificação</small><b>'+qual.toFixed(1).replace('.',',')+'%</b></div><div><small>Dias ativos</small><b>'+fmtInt(p.d)+'</b></div><div><small>Semana</small><b>'+fmtInt(p.w)+'</b></div>';
+      if($('cg'))$('cg').innerHTML='<div><small>Conversão</small><b>'+conv.toFixed(1).replace('.',',')+'%</b></div><div><small>Qualificação</small><b>'+qual.toFixed(1).replace('.',',')+'%</b></div><div><small>Dias ativos</small><b>'+fmtInt(p.d)+'</b></div><div><small>Semana</small><b>'+(p.w===null?'—':fmtInt(p.w))+'</b></div>';
     };
     const allCards=$('allIndividualCards'),allSummary=$('allIndividualSummary');
     if(allCards&&allSummary){
