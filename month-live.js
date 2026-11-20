@@ -640,7 +640,7 @@
         const active=tab===button;tab.setAttribute('aria-selected',String(active));
         tab.style.background=active?'#b58b43':'#102b43';tab.style.color=active?'#111':'#e6f3ff';tab.style.borderColor=active?'#b58b43':'#45647d';
       });
-      panel.querySelectorAll('[data-captain-view]').forEach(section=>{section.hidden=section.getAttribute('data-captain-view')!==view;});
+      panel.querySelectorAll('[data-captain-view]').forEach(section=>{const visible=section.getAttribute('data-captain-view')===view;section.hidden=!visible;section.style.display=visible?(view==='history'?'grid':'block'):'none';});
     }));
   }
   function markLiveReady(){ document.body.classList.remove('raiox-live-loading'); document.body.classList.add('raiox-live-ready'); }
