@@ -724,5 +724,3 @@
   window.addEventListener('raiox:authenticated',e=>load(e.detail));
   load(window.RAIOX_AUTH||null);
 })();
-/* Ranking semanal completo do Capitão */
-.captain-full-ranking{max-height:560px;overflow-y:auto;padding-right:3px;margin-top:7px}.captain-full-ranking .fight{grid-template-columns:27px minmax(0,1fr) auto}.captain-full-ranking .fight.captain-last{border-color:#ffbd4a55;background:#ffbd4a0b}.captain-full-ranking .captain-last .place{background:#ffbd4a;color:#241600}.captain-data-note{font-size:10px;margin-top:9px;padding:8px;border-top:1px solid #879aff20}
