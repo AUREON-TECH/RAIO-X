@@ -598,30 +598,50 @@
     if(!panel){
       panel=document.createElement('section');panel.id='raioxCaptainHistory';
       panel.style.cssText='margin:14px 0;padding:15px;border:1px solid #3b658a;border-radius:15px;background:#0b2035;color:#e6f3ff';
-      const anchor=$('radarCaptain')||$('heroLeaderName')||$('missionText');
+      const anchor=$('heroLeader')||$('radarCaptain')||$('heroLeaderName')||$('missionText');
       if(anchor)anchor.parentElement?.after(panel);
       else document.querySelector('main')?.prepend(panel);
     }
     const y=Number(month.ref_month.slice(0,4)),m=Number(month.ref_month.slice(5,7));
-    const last=new Date(Date.UTC(y,m,0)).getUTCDate();
-    const starts=[];for(let d=1;d<=last;d++){const dt=new Date(Date.UTC(y,m-1,d));if(dt.getUTCDay()===1||d===1)starts.push(d);}
-    const today=new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'});
-    const cards=starts.map((start,i)=>{
-      const end=i+1<starts.length?starts[i+1]-1:last;
-      const startIso=month.ref_month.slice(0,7)+'-'+String(start).padStart(2,'0');
-      const endIso=month.ref_month.slice(0,7)+'-'+String(end).padStart(2,'0');
-      if(startIso>today)return '';
+    const monthStart=new Date(Date.UTC(y,m-1,1)),monthEnd=new Date(Date.UTC(y,m,0));
+    const today=new Date(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())+'T00:00:00Z');
+    const weeks=[];
+    for(let d=new Date(monthStart);d<=monthEnd;d.setUTCDate(d.getUTCDate()+1)){
+      if(d.getUTCDay()!==1)continue;
+      const start=new Date(d),end=new Date(d);end.setUTCDate(end.getUTCDate()+6);
+      if(end>monthEnd||end>=today)continue;
+      const startDay=start.getUTCDate(),endDay=end.getUTCDate();
       const scores=rows.filter(r=>r.role==='Promotor de Marketing').map(r=>{
-        let couples=0,sales=0,vgv=0,valid=false;
+        let couples=0,sales=0,vgv=0,complete=true;
         const daily=Array.isArray(r.daily)?r.daily:[];
-        for(let day=start;day<=end;day++){const entry=daily[day-1];if(!Array.isArray(entry))continue;valid=true;couples+=num(entry[0]);sales+=num(entry[1]);vgv+=num(entry[2]);}
-        return {name:r.professional_name,couples,sales,vgv,valid};
-      }).filter(x=>x.valid&&x.couples>0).sort((a,b)=>b.couples-a.couples||b.sales-a.sales||b.vgv-a.vgv);
-      const winner=scores[0];
-      const closed=endIso<today;
-      return '<article style="border:1px solid #294967;border-radius:12px;padding:11px;background:#102b43"><small style="color:#91c5e5">'+String(start).padStart(2,'0')+' a '+String(end).padStart(2,'0')+'/'+String(m).padStart(2,'0')+'</small><div style="font-weight:800;margin-top:6px">'+(winner?esc(winner.name):'Resultado não disponível')+'</div><div style="font-size:12px;color:#a9c9dc;margin-top:5px">'+(winner?fmtInt(winner.couples)+' casais • '+fmtInt(winner.sales)+' vendas':'Sem dados diários por profissional')+'</div><small style="color:#e3b969">'+(closed?'Semana encerrada':'Semana em andamento')+'</small></article>';
-    }).filter(Boolean);
-    panel.innerHTML='<h3 style="margin:0 0 5px">Histórico dos Capitães da Semana</h3><p style="font-size:12px;color:#a9c9dc;margin:0 0 12px">Semanas de segunda a domingo • resultados exibidos somente quando há dados diários individuais.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:9px">'+cards.join('')+'</div>';
+        for(let day=startDay;day<=endDay;day++){
+          const entry=daily[day-1];
+          if(!Array.isArray(entry)){complete=false;break;}
+          couples+=num(entry[0]);sales+=num(entry[1]);vgv+=num(entry[2]);
+        }
+        return {name:r.professional_name,couples,sales,vgv,complete};
+      }).filter(x=>x.complete&&x.couples>0).sort((a,b)=>b.couples-a.couples||b.sales-a.sales||b.vgv-a.vgv||a.name.localeCompare(b.name,'pt-BR'));
+      weeks.push({start:startDay,end:endDay,winner:scores[0]||null});
+    }
+    const current=lastConfirmedCaptain(rows,month);
+    const currentHtml=current
+      ?'<article style="border:1px solid #b58b43;border-radius:12px;padding:13px;background:#142c40"><small style="color:#e3bd70">ÚLTIMO VENCEDOR CONFIRMADO</small><div style="font-size:20px;font-weight:850;margin-top:6px">'+esc(current.n)+'</div><div style="font-size:13px;color:#c2d8e8;margin-top:5px">'+fmtInt(current.w)+' casais • '+fmtInt(current.ws)+' vendas</div><small style="color:#a9c9dc">Semana: '+esc(current.period)+'</small></article>'
+      :'<article style="border:1px solid #294967;border-radius:12px;padding:13px;background:#102b43"><b>Vencedor ainda não confirmado</b><div style="font-size:12px;color:#a9c9dc;margin-top:5px">A base individual diária não permite validar o último fechamento semanal.</div></article>';
+    const historyHtml=weeks.length
+      ?weeks.slice().reverse().map(w=>{
+        const label=String(w.start).padStart(2,'0')+'/'+String(m).padStart(2,'0')+' a '+String(w.end).padStart(2,'0')+'/'+String(m).padStart(2,'0');
+        return '<article style="border:1px solid #294967;border-radius:12px;padding:11px;background:#102b43"><small style="color:#91c5e5">'+label+'</small><div style="font-weight:800;margin-top:6px">'+(w.winner?esc(w.winner.name):'Resultado não disponível')+'</div><div style="font-size:12px;color:#a9c9dc;margin-top:5px">'+(w.winner?fmtInt(w.winner.couples)+' casais • '+fmtInt(w.winner.sales)+' vendas':'Sem dados diários completos por profissional')+'</div></article>';
+      }).join('')
+      :'<div style="font-size:12px;color:#a9c9dc">Ainda não há semanas completas neste mês.</div>';
+    panel.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><h3 style="margin:0">Capitão da Semana</h3><small style="color:#a9c9dc">Segunda a domingo</small></div><div role="tablist" aria-label="Capitão da Semana" style="display:flex;gap:8px;margin:12px 0"><button type="button" data-captain-tab="current" aria-selected="true" style="border:1px solid #b58b43;border-radius:9px;padding:8px 12px;background:#b58b43;color:#111;font-weight:800">Vencedor atual</button><button type="button" data-captain-tab="history" aria-selected="false" style="border:1px solid #45647d;border-radius:9px;padding:8px 12px;background:#102b43;color:#e6f3ff;font-weight:700">Anteriores</button></div><div data-captain-view="current">'+currentHtml+'</div><div data-captain-view="history" hidden style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:9px">'+historyHtml+'</div>';
+    panel.querySelectorAll('[data-captain-tab]').forEach(button=>button.addEventListener('click',()=>{
+      const view=button.getAttribute('data-captain-tab');
+      panel.querySelectorAll('[data-captain-tab]').forEach(tab=>{
+        const active=tab===button;tab.setAttribute('aria-selected',String(active));
+        tab.style.background=active?'#b58b43':'#102b43';tab.style.color=active?'#111':'#e6f3ff';tab.style.borderColor=active?'#b58b43':'#45647d';
+      });
+      panel.querySelectorAll('[data-captain-view]').forEach(section=>{section.hidden=section.getAttribute('data-captain-view')!==view;});
+    }));
   }
   function markLiveReady(){ document.body.classList.remove('raiox-live-loading'); document.body.classList.add('raiox-live-ready'); }
 
