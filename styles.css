@@ -298,3 +298,29 @@ body.raiox-live-ready #raioxAppShell,body.raiox-live-error #raioxAppShell{opacit
 
 /* Ranking semanal completo do Capitão */
 .captain-full-ranking{max-height:560px;overflow-y:auto;padding-right:3px;margin-top:7px}.captain-full-ranking .fight{grid-template-columns:27px minmax(0,1fr) auto}.captain-full-ranking .fight.captain-last{border-color:#ffbd4a55;background:#ffbd4a0b}.captain-full-ranking .captain-last .place{background:#ffbd4a;color:#241600}.captain-data-note{font-size:10px;margin-top:9px;padding:8px;border-top:1px solid #879aff20}
+
+
+/* RAIO X — legibilidade ampliada em todas as telas */
+html{font-size:16px}
+body{font-size:16px!important;line-height:1.5}
+button,input,select,textarea{font-size:15px}
+label,.lbl,.muted,.hint,.sub,.eyebrow{font-size:13px}
+p,li{font-size:15px;line-height:1.55}
+table th,table td{font-size:14px!important;line-height:1.45!important;padding-top:10px!important;padding-bottom:10px!important}
+.kpi small,.kpi span,.mc small,.mc span{font-size:13px!important;line-height:1.4}
+.card small,.card .muted,.panel small{font-size:13px}
+.nav button,.bottom button{font-size:12px!important;line-height:1.35!important}
+.stage-context .eye{font-size:12px}
+.stage-context-meta span{font-size:11px}
+.captain-data-note{font-size:12px}
+.analytics-label{font-size:12px}
+.analytics-value{font-size:14px}
+@media(max-width:740px){
+  body{font-size:16px!important}
+  main{font-size:15px}
+  button,input,select,textarea{font-size:16px!important}
+  .bottom button{font-size:11px!important}
+  table th,table td{font-size:14px!important}
+  .analytics-label{font-size:11px}
+  .analytics-value{font-size:13px}
+}
