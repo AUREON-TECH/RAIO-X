@@ -577,7 +577,7 @@
     if($('radarCaptain')){
       $('radarCaptain').innerHTML='<div class="muted">Semana: '+captain.week.label+' • segunda a domingo • ranking completo</div>'+
         (leaders.length?'<div class="captain-full-ranking">'+leaders.map((p,i)=>{
-          const last=/^suene(?:\s|$)/i.test(p.n.trim());
+          const last=leaders.length>0&&leaders.every(x=>x.hasData)&&i===leaders.length-1;
           const value=p.hasData?fmtInt(p.w):'—';
           const sales=p.hasData?fmtInt(p.ws)+' venda(s)':'Dados pendentes';
           return '<div class="fight '+(i===0?'lead':'')+(last?' captain-last':'')+'"><div class="place">'+(i+1)+'</div><div class="who"><b>'+esc(p.n)+(last?' • ÚLTIMA COLOCADA':'')+'</b><small>'+sales+'</small></div><div class="score">'+value+'<span class="gap">casais na semana</span></div></div>';
