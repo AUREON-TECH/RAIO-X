@@ -324,3 +324,20 @@ table th,table td{font-size:14px!important;line-height:1.45!important;padding-to
   .analytics-label{font-size:11px}
   .analytics-value{font-size:13px}
 }
+
+
+/* RAIO X — reforço geral de leitura: textos pequenos deixam de ficar microscópicos */
+body{font-size:17px!important;line-height:1.55!important}
+body :is(p,li,label,th,td,button,input,select,textarea){font-size:16px!important;line-height:1.45!important}
+body :is(small,.muted,.hint,.lbl,.eyebrow,.caption,.sub,.meta,.analytics-scrollhint,.stage-context-meta span,.stage-context .eye){font-size:14px!important;line-height:1.4!important}
+body :is(.bottom button,.nav button){font-size:13px!important;line-height:1.35!important}
+body :is(.kpi small,.kpi span,.mc small,.mc span,.daily-live-card small,.daily-live-card span){font-size:14px!important}
+body :is(table th,table td){font-size:15px!important;line-height:1.5!important}
+body :is(.analytics-label,.analytics-value){font-size:14px!important;line-height:1.4!important}
+body :is(.fight,.captain-full-ranking .fight){font-size:15px!important}
+@media(max-width:740px){
+ body{font-size:17px!important}
+ body :is(p,li,label,th,td,button,input,select,textarea){font-size:16px!important}
+ body :is(small,.muted,.hint,.lbl,.eyebrow,.caption,.sub,.meta){font-size:14px!important}
+ body :is(.bottom button,.nav button){font-size:13px!important}
+}
