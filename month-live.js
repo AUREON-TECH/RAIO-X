@@ -215,7 +215,7 @@
   function captainScores(rows,month){
     const week=captainWeek();
     if(month.ref_month.slice(0,7)!==week.start.slice(0,7))return {week,leaders:[]};
-    const leaders=rows.filter(r=>r.role==='Promotor de Marketing' && !(/manara\\s+alexandre\\s+sousa/i.test(r.professional_name)&&month.ref_month==='2026-10-01')).map(r=>{
+    const leaders=rows.filter(r=>r.role==='Promotor de Marketing' && !(/manara\s+alexandre\s+sousa/i.test(r.professional_name)&&month.ref_month==='2026-10-01')).map(r=>{
       const updated=String(r.updated_on||'').slice(0,10);
       const weeklyIsCurrent=updated>=week.start&&updated<=week.end;
       // week_volume é o acumulado semanal calculado pela importação mais recente.
