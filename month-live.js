@@ -602,7 +602,6 @@
     const anchor=$('raiox-strategy-v124')||$('heroLeader');
     if(anchor&&panel.previousElementSibling!==anchor)anchor.after(panel);
     else if(!panel.isConnected){const fallback=$('missionText');if(fallback)fallback.after(panel);}
-    }
     const y=Number(month.ref_month.slice(0,4)),m=Number(month.ref_month.slice(5,7));
     const monthStart=new Date(Date.UTC(y,m-1,1)),monthEnd=new Date(Date.UTC(y,m,0));
     const today=new Date(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())+'T00:00:00Z');
