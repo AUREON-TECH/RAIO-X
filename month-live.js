@@ -597,10 +597,11 @@
     let panel=$('raioxCaptainHistory');
     if(!panel){
       panel=document.createElement('section');panel.id='raioxCaptainHistory';
-      panel.style.cssText='margin:14px 0;padding:15px;border:1px solid #3b658a;border-radius:15px;background:#0b2035;color:#e6f3ff';
-      const anchor=$('heroLeader')||$('radarCaptain')||$('heroLeaderName')||$('missionText');
-      if(anchor)anchor.parentElement?.after(panel);
-      else document.querySelector('main')?.prepend(panel);
+      panel.style.cssText='width:min(960px,100%);box-sizing:border-box;margin:10px auto 14px;padding:13px;border:1px solid #315b80;border-radius:15px;background:linear-gradient(125deg,#0b2035,#101b3b);color:#e6f3ff;box-shadow:0 10px 28px rgba(0,0,0,.18)';
+    }
+    const anchor=$('raiox-strategy-v124')||$('heroLeader');
+    if(anchor&&panel.previousElementSibling!==anchor)anchor.after(panel);
+    else if(!panel.isConnected){const fallback=$('missionText');if(fallback)fallback.after(panel);}
     }
     const y=Number(month.ref_month.slice(0,4)),m=Number(month.ref_month.slice(5,7));
     const monthStart=new Date(Date.UTC(y,m-1,1)),monthEnd=new Date(Date.UTC(y,m,0));
