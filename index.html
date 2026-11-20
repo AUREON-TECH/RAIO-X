@@ -80,6 +80,25 @@ html,body{max-width:100%;overflow-x:hidden}
 #raioxCaptainHistory h3{font-size:15px!important;letter-spacing:.04em}
 @media(max-width:700px){#raioxCaptainHistory [data-captain-view="history"]{grid-template-columns:1fr!important}#raioxCaptainHistory{padding:10px!important}}
 </style><style id="raiox-historical-data-visibility">[hidden]{display:none!important}</style>
+<style id="raiox-mobile-nav-grid-v1">
+@media(max-width:740px){
+  main{padding-bottom:126px!important}
+  .bottom{
+    display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    grid-auto-rows:39px!important;gap:4px!important;
+    left:6px!important;right:6px!important;bottom:6px!important;
+    padding:6px!important;overflow:visible!important;overflow-x:visible!important;
+    touch-action:manipulation!important;justify-content:stretch!important;
+  }
+  .bottom button{
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    flex:none!important;width:100%!important;min-width:0!important;
+    height:39px!important;min-height:39px!important;padding:2px 1px!important;
+    white-space:normal!important;overflow-wrap:anywhere!important;
+    font-size:11px!important;line-height:1.12!important;border-radius:8px!important;
+  }
+}
+</style>
 </head>
 <body class="raiox-live-loading">
 <div id="raioxAppShell">
@@ -169,7 +188,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
 <main>
 <header class="top">
-  <div><div class="eye" id="eye">CENTRAL DE MISSÃO</div><h2 id="pt">Performance da Captação</h2><div class="muted" id="ps">Onde estamos, onde podemos chegar e o que fazer hoje.</div><div class="flow-badge" id="flowBadge">ETAPA 01 DE 08 • CENTRAL</div></div>
+  <div><div class="eye" id="eye">CENTRAL DE MISSÃO</div><h2 id="pt">Performance da Captação</h2><div class="muted" id="ps">Onde estamos, onde podemos chegar e o que fazer hoje.</div><div class="flow-badge" id="flowBadge">ETAPA 01 DE 10 • CENTRAL</div></div>
   <div class="top-actions">
     <div class="area-switch month-switch raiox-month-tabs-v115"><div><small>MÊS</small><b id="monthCurrentLabel">—</b></div><div class="raiox-month-buttons" aria-label="Selecionar mês"><a data-month-tab="2026-09-01" href="?month=2026-09-01&v=115#dash">SET/26</a><a data-month-tab="2026-10-01" href="?month=2026-10-01&v=115#dash">OUT/26</a><a data-month-tab="2026-11-01" href="?month=2026-11-01&v=115#dash">NOV/26</a></div><select id="monthCurrentSelect" aria-label="Mês selecionado" style="position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important"><option value="2026-11-01">Novembro/2026</option><option value="2026-10-01">Outubro/2026</option><option value="2026-09-01">Setembro/2026</option></select></div>
     <div class="area-switch"><div><small>VISÃO DA ÁREA</small><b id="areaCurrent">Promotor de Marketing</b></div><select id="areaSel" aria-label="Escolher área"><option value="promotor">Promotor de Marketing</option><option value="liner">Liner / Consultor</option><option value="closer">Closer / Fechador</option></select><div class="area-quick" aria-label="Trocar visão da área"><a data-area-link="promotor" href="./">Promotor</a><a data-area-link="liner" href="./?area=liner">Liner</a><a data-area-link="closer" href="./?area=closer">Closer</a></div></div>
@@ -434,8 +453,8 @@ html,body{max-width:100%;overflow-x:hidden}
 <section id="analytics" class="sec"><div class="stage-context"><span class="eye">INTELIGÊNCIA VISUAL</span><h3>RAIO X Analytics</h3><p>Evolução e oportunidades com dados do mês selecionado.</p></div><div class="card pad" style="margin:12px 0"><div class="raiox-analytics-controls"><label>Indicador <select id="analyticsMetric"><option value="couples">Casais</option><option value="sales">Vendas</option><option value="vgv">VGV</option><option value="conversion">Conversão</option></select></label><label>Profissional <select id="analyticsPerson"><option value="">Todos</option></select></label></div><div id="analyticsSummary" class="raiox-analytics-summary"></div><h3>Comparativo por profissional</h3><div id="analyticsChart" class="raiox-analytics-chart">Carregando dados oficiais...</div><h3>Onde atuar</h3><div id="analyticsInsights"></div></div></section></main>
 </div>
 
-<nav class="bottom">
-  <button class="active" data-go="dash">01<br>Central</button><button data-go="rank">02<br>Ranking</button><button data-go="ind">03<br>Individual</button><button data-go="fx">04<br>FX</button><button data-go="diag">05<br>Diagnóstico</button><button data-go="perfil">06<br>Perfil</button><button data-go="proj">07<br>Projeção</button><button data-go="custos">08<br>Custos</button><button data-go="gestao">09<br>Gestão Raphael Bueno</button>
+<nav class="bottom" aria-label="Navegação principal">
+  <button class="active" data-go="dash">01<br>Central</button><button data-go="rank">02<br>Ranking</button><button data-go="ind">03<br>Individual</button><button data-go="fx">04<br>FX</button><button data-go="diag">05<br>Diagnóstico</button><button data-go="perfil">06<br>Perfil</button><button data-go="proj">07<br>Projeção</button><button data-go="custos">08<br>Custos</button><button data-go="analytics">09<br>Analytics</button><button data-go="gestao">10<br>Gestão</button>
 </nav>
 
 </div>
