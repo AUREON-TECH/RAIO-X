@@ -215,20 +215,24 @@
   function captainScores(rows,month){
     const week=captainWeek();
     if(month.ref_month.slice(0,7)!==week.start.slice(0,7))return {week,leaders:[]};
-    const leaders=rows.filter(r=>r.role==='Promotor de Marketing' && !(/manara\s+alexandre\s+sousa/i.test(r.professional_name)&&month.ref_month==='2026-10-01')).map(r=>{
+    const leaders=rows.filter(r=>r.role==='Promotor de Marketing' && !(/manara\\s+alexandre\\s+sousa/i.test(r.professional_name)&&month.ref_month==='2026-10-01')).map(r=>{
+      const updated=String(r.updated_on||'').slice(0,10);
+      const weeklyIsCurrent=updated>=week.start&&updated<=week.end;
+      // week_volume é o acumulado semanal calculado pela importação mais recente.
+      // O array daily pode conter o histórico mensal e não deve zerar a semana atual.
+      if(weeklyIsCurrent){
+        return {n:r.professional_name,w:num(r.week_volume),ws:num(r.week_sales),wv:num(r.week_vgv),hasData:true};
+      }
       const daily=Array.isArray(r.daily)?r.daily:[];
-      let w=0,ws=0,wv=0,hasDaily=false;
+      let w=0,ws=0,wv=0,observed=0;
       for(let i=0;i<daily.length;i++){
         const day=month.ref_month.slice(0,7)+'-'+String(i+1).padStart(2,'0');
         if(day<week.start||day>week.end||!Array.isArray(daily[i]))continue;
-        hasDaily=true;w+=num(daily[i][0]);ws+=num(daily[i][1]);wv+=num(daily[i][2]);
+        observed++;w+=num(daily[i][0]);ws+=num(daily[i][1]);wv+=num(daily[i][2]);
       }
-      const weeklyFallback=!hasDaily&&String(r.updated_on||'')>=week.start&&String(r.updated_on||'')<=week.end&&num(r.week_volume)>0;
-      if(weeklyFallback){w=num(r.week_volume);ws=num(r.week_sales);wv=num(r.week_vgv);}
-      return {n:r.professional_name,w:hasDaily||weeklyFallback?w:null,ws:hasDaily||weeklyFallback?ws:null,wv:hasDaily||weeklyFallback?wv:null,hasData:hasDaily||weeklyFallback};
+      const complete=observed===7;
+      return {n:r.professional_name,w:complete?w:null,ws:complete?ws:null,wv:complete?wv:null,hasData:complete};
     }).sort((a,b)=>{
-      const aSuene=/^suene(?:\s|$)/i.test(a.n.trim()),bSuene=/^suene(?:\s|$)/i.test(b.n.trim());
-      if(aSuene!==bSuene)return aSuene?1:-1;
       if(a.hasData!==b.hasData)return a.hasData?-1:1;
       return (b.w??-1)-(a.w??-1)||(b.ws??-1)-(a.ws??-1)||(b.wv??-1)-(a.wv??-1)||a.n.localeCompare(b.n,'pt-BR');
     });
