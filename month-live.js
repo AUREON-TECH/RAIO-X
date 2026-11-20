@@ -214,9 +214,8 @@
   }
   function captainScores(rows,month){
     const week=captainWeek();
-    // Nunca usar totais de uma semana anterior como se fossem da atual.
     if(month.ref_month.slice(0,7)!==week.start.slice(0,7))return {week,leaders:[]};
-    const leaders=rows.filter(r=>r.role==='Promotor de Marketing' && !(/manara\s+alexandre\s+sousa/i.test(r.professional_name)&&month.ref_month==='2026-10-01')).map(r=>{
+    const leaders=rows.filter(r=>r.role==='Promotor de Marketing' && !(/manara\\s+alexandre\\s+sousa/i.test(r.professional_name)&&month.ref_month==='2026-10-01')).map(r=>{
       const daily=Array.isArray(r.daily)?r.daily:[];
       let w=0,ws=0,wv=0,hasDaily=false;
       for(let i=0;i<daily.length;i++){
@@ -224,11 +223,15 @@
         if(day<week.start||day>week.end||!Array.isArray(daily[i]))continue;
         hasDaily=true;w+=num(daily[i][0]);ws+=num(daily[i][1]);wv+=num(daily[i][2]);
       }
-      if(!hasDaily&&String(r.updated_on||'')>=week.start&&String(r.updated_on||'')<=week.end){
-        w=num(r.week_volume);ws=num(r.week_sales);wv=num(r.week_vgv);
-      }
-      return {n:r.professional_name,w,ws,wv};
-    }).filter(p=>p.w>0).sort((a,b)=>b.w-a.w||b.ws-a.ws||b.wv-a.wv||a.n.localeCompare(b.n,'pt-BR'));
+      const weeklyFallback=!hasDaily&&String(r.updated_on||'')>=week.start&&String(r.updated_on||'')<=week.end&&num(r.week_volume)>0;
+      if(weeklyFallback){w=num(r.week_volume);ws=num(r.week_sales);wv=num(r.week_vgv);}
+      return {n:r.professional_name,w:hasDaily||weeklyFallback?w:null,ws:hasDaily||weeklyFallback?ws:null,wv:hasDaily||weeklyFallback?wv:null,hasData:hasDaily||weeklyFallback};
+    }).sort((a,b)=>{
+      const aSuene=/^suene$/i.test(a.n.trim()),bSuene=/^suene$/i.test(b.n.trim());
+      if(aSuene!==bSuene)return aSuene?1:-1;
+      if(a.hasData!==b.hasData)return a.hasData?-1:1;
+      return (b.w??-1)-(a.w??-1)||(b.ws??-1)-(a.ws??-1)||(b.wv??-1)-(a.wv??-1)||a.n.localeCompare(b.n,'pt-BR');
+    });
     return {week,leaders};
   }
   function lastConfirmedCaptain(rows,month){
@@ -567,7 +570,16 @@
       $('metaPace').innerHTML='<div class="ops-pad"><div class="ops-head"><div><span class="ops-kicker">RITMO DO MÊS</span><h3>'+esc(month.label)+'</h3></div></div><div class="pace-summary"><div class="pace-box"><small>Volume</small><b class="c">'+fmtInt(t.c)+'</b><span>'+fmtInt(goal)+' meta geral</span></div><div class="pace-box"><small>Vendas</small><b class="g">'+fmtInt(t.s)+'</b><span>'+fmtInt(month.goal_sales)+' meta geral</span></div><div class="pace-box"><small>VGV</small><b class="v">'+fmtMoneyFull(t.v)+'</b><span>'+fmtMoneyFull(month.goal_vgv)+' meta geral</span></div></div></div>';
     }
     if($('dailyEvolution'))$('dailyEvolution').innerHTML='<div class="ops-pad"><div class="evo-title"><span class="ops-kicker">EVOLUÇÃO DIÁRIA</span><h3>'+esc(month.label)+'</h3><p>'+nonzero.length+' dia(s) com lançamento na base mensal.</p></div><div class="daily-live-grid">'+nonzero.map(r=>'<div class="daily-live-card"><small>'+String(r[0]).padStart(2,'0')+'/'+month.ref_month.slice(5,7)+'</small><b>'+fmtInt(r[1])+' casais</b><span>'+fmtInt(r[2])+' vendas • '+fmtMoneyFull(r[3])+'</span><em>Q '+fmtInt(r[4])+' • NQ '+fmtInt(r[5])+'</em></div>').join('')+'</div></div>';
-    if($('radarCaptain'))$('radarCaptain').innerHTML='<div class="muted">Semana: '+captain.week.label+' • segunda a domingo • prêmio R$ 200</div>'+(leaders.length?leaders.slice(0,5).map((p,i)=>'<div class="fight '+(i===0?'lead':'')+'"><div class="place">'+(i+1)+'</div><div class="who"><b>'+esc(p.n)+'</b><small>'+fmtInt(p.ws)+' venda(s) na semana</small></div><div class="score">'+fmtInt(p.w)+'<span class="gap">casais</span></div></div>').join(''):'<div class="muted">Sem resultados confirmados nesta semana.</div>');
+    if($('radarCaptain')){
+      $('radarCaptain').innerHTML='<div class="muted">Semana: '+captain.week.label+' • segunda a domingo • ranking completo</div>'+
+        (leaders.length?'<div class="captain-full-ranking">'+leaders.map((p,i)=>{
+          const last=/^suene$/i.test(p.n.trim());
+          const value=p.hasData?fmtInt(p.w):'—';
+          const sales=p.hasData?fmtInt(p.ws)+' venda(s)':'Dados pendentes';
+          return '<div class="fight '+(i===0?'lead':'')+(last?' captain-last':'')+'"><div class="place">'+(i+1)+'</div><div class="who"><b>'+esc(p.n)+(last?' • ÚLTIMA COLOCADA':'')+'</b><small>'+sales+'</small></div><div class="score">'+value+'<span class="gap">casais na semana</span></div></div>';
+        }).join('')+'</div>':'<div class="muted">Sem profissionais cadastrados nesta semana.</div>')+
+        (leaders.some(p=>!p.hasData)?'<div class="muted captain-data-note">— indica que o detalhamento semanal ainda não foi importado; não representa zero.</div>':'');
+    }
     const byV=[...people].sort((a,b)=>b.v-a.v),byC=[...people].sort((a,b)=>b.c-a.c);
     if($('radarVgv'))$('radarVgv').innerHTML=byV.slice(0,5).map((p,i)=>'<div class="fight '+(i===0?'lead':'')+'"><div class="place">'+(i+1)+'</div><div class="who"><b>'+esc(p.n)+'</b></div><div class="score">'+fmtMoneyFull(p.v)+'</div></div>').join('');
     if($('radarCouples'))$('radarCouples').innerHTML=byC.slice(0,5).map((p,i)=>'<div class="fight '+(i===0?'lead':'')+'"><div class="place">'+(i+1)+'</div><div class="who"><b>'+esc(p.n)+'</b></div><div class="score">'+fmtInt(p.c)+'</div></div>').join('');
@@ -712,3 +724,5 @@
   window.addEventListener('raiox:authenticated',e=>load(e.detail));
   load(window.RAIOX_AUTH||null);
 })();
+/* Ranking semanal completo do Capitão */
+.captain-full-ranking{max-height:560px;overflow-y:auto;padding-right:3px;margin-top:7px}.captain-full-ranking .fight{grid-template-columns:27px minmax(0,1fr) auto}.captain-full-ranking .fight.captain-last{border-color:#ffbd4a55;background:#ffbd4a0b}.captain-full-ranking .captain-last .place{background:#ffbd4a;color:#241600}.captain-data-note{font-size:10px;margin-top:9px;padding:8px;border-top:1px solid #879aff20}
