@@ -79,7 +79,8 @@ html,body{max-width:100%;overflow-x:hidden}
 #raioxCaptainHistory [data-captain-tab]{min-height:34px;padding:7px 12px!important;font-size:11px}
 #raioxCaptainHistory h3{font-size:15px!important;letter-spacing:.04em}
 @media(max-width:700px){#raioxCaptainHistory [data-captain-view="history"]{grid-template-columns:1fr!important}#raioxCaptainHistory{padding:10px!important}}
-</style></head>
+</style><style id="raiox-historical-data-visibility">[hidden]{display:none!important}</style>
+</head>
 <body class="raiox-live-loading">
 <div id="raioxAppShell">
 <div class="cin future-cin" id="cin">
@@ -622,5 +623,21 @@ $('rx124-clear').addEventListener('click',()=>{localStorage.removeItem(storage);
 $('rx124-form').addEventListener('submit',e=>{e.preventDefault();const target=Number($('rx124-target').value),prize=$('rx124-prize').value.trim();const rule=$('rx124-rule').value,customRule=$('rx124-customrule').value.trim();if(!Number.isInteger(target)||target<1||target>999||!prize||(rule==='personalizada'&&!customRule))return;localStorage.setItem(storage,JSON.stringify({date:new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'}),target,prize,rule,customRule}));$('rx124-form').hidden=true;showSpiff()});
 showSpiff();
 })();
-</script><script id="raiox-contract-status-v126">(function(){const base='https://veznreiamwstlulkpocz.supabase.co',key='sb_publishable_7ukoyUiZh73XRZxzBDhqjw_OsvJ8_JB';let current='';async function show(e){current=e.detail?.month||'';let box=document.getElementById('raioxContractStatus');if(!box){box=document.createElement('div');box.id='raioxContractStatus';box.style.cssText='padding:10px 14px;margin:10px 0;border:1px solid #245776;border-radius:12px;background:#0c2136;color:#c3e8f5;font-size:12px;line-height:1.6';const target=document.getElementById('missionText');if(target)target.after(box);else return;}box.hidden=true;const month=current;if(month!=='2026-11-01')return;try{const r=await fetch(base+'/rest/v1/portal_operation_summaries?select=payload&ref_month=eq.'+month,{headers:{apikey:key},cache:'no-store'});if(!r.ok)return;const a=await r.json(),s=a[0]?.payload;if(!s||current!==month)return;const money=n=>Number(n).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});box.textContent='Contratos: '+s.active_sales+' ativos + '+s.cancelled_sales+' cancelados = '+s.sales+' brutos • VGV bruto '+money(s.gross)+' • Cancelamentos '+money(s.cancelled_vgv)+' • VGV líquido '+money(s.net)+' • Base até '+s.through.split('-').reverse().join('/');box.hidden=false;}catch{}}window.addEventListener('raiox:month-loaded',show);})();</script></body>
+</script><script id="raiox-contract-status-v126">(function(){const base='https://veznreiamwstlulkpocz.supabase.co',key='sb_publishable_7ukoyUiZh73XRZxzBDhqjw_OsvJ8_JB';let current='';async function show(e){current=e.detail?.month||'';let box=document.getElementById('raioxContractStatus');if(!box){box=document.createElement('div');box.id='raioxContractStatus';box.style.cssText='padding:10px 14px;margin:10px 0;border:1px solid #245776;border-radius:12px;background:#0c2136;color:#c3e8f5;font-size:12px;line-height:1.6';const target=document.getElementById('missionText');if(target)target.after(box);else return;}box.hidden=true;const month=current;if(month!=='2026-11-01')return;try{const r=await fetch(base+'/rest/v1/portal_operation_summaries?select=payload&ref_month=eq.'+month,{headers:{apikey:key},cache:'no-store'});if(!r.ok)return;const a=await r.json(),s=a[0]?.payload;if(!s||current!==month)return;const money=n=>Number(n).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});box.textContent='Contratos: '+s.active_sales+' ativos + '+s.cancelled_sales+' cancelados = '+s.sales+' brutos • VGV bruto '+money(s.gross)+' • Cancelamentos '+money(s.cancelled_vgv)+' • VGV líquido '+money(s.net)+' • Base até '+s.through.split('-').reverse().join('/');box.hidden=false;}catch{}}window.addEventListener('raiox:month-loaded',show);})();</script><script id="raiox-historical-data-guard">
+(function(){
+  const ids=['octoberManagementDiagnosis','incomePurchaseAnalysis','incomeExactReport'];
+  function sync(month){
+    const show=month==='2026-10-01';
+    ids.forEach(id=>{
+      const el=document.getElementById(id);
+      if(!el)return;
+      el.hidden=!show;
+      el.setAttribute('aria-hidden',String(!show));
+    });
+  }
+  sync(new URLSearchParams(location.search).get('month')||'');
+  window.addEventListener('raiox:month-loaded',e=>sync(e.detail?.month||''));
+})();
+</script>
+</body>
 </html>
