@@ -71,6 +71,14 @@ html,body{max-width:100%;overflow-x:hidden}
 <style id="raiox-strategy-style-v124">
 #raiox-strategy-v124{width:min(1050px,100%);margin:12px auto 9px;text-align:left;color:#f2f7ff;border:1px solid #315d91;border-radius:17px;background:linear-gradient(115deg,#081d3b,#121632);padding:12px 14px;box-sizing:border-box}
 .rx124-head,.rx124-spiffhead{display:flex;justify-content:space-between;align-items:center;gap:8px}.rx124-head strong{color:#6ee9ff;font-size:11px;letter-spacing:.14em}.rx124-head span,.rx124-footer{color:#9eb8d9;font-size:10px}.rx124-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:9px}.rx124-grid article{min-width:0;border:1px solid #315377;background:#102447;border-radius:12px;padding:11px;display:flex;flex-direction:column;gap:6px}.rx124-grid article>small,.rx124-spiffhead small{color:#80e8ff;font-size:10px;letter-spacing:.07em;font-weight:800}.rx124-grid article>b{font-size:clamp(15px,1.6vw,24px);overflow-wrap:anywhere}.rx124-grid article>span{font-size:11px;color:#bbd1ec;line-height:1.4}.rx124-spiff{border-color:#d4a64c!important;background:linear-gradient(115deg,#33240c,#211936)!important}.rx124-spiffhead button,#rx124-form button{border:1px solid #e5b85f;background:#f1c56e;color:#0d1930;border-radius:8px;padding:5px 9px;font-weight:800;cursor:pointer}.rx124-footer{margin-top:8px}.rx124-spiff form{display:grid;grid-template-columns:1fr 1.3fr;gap:7px}.rx124-spiff form[hidden]{display:none}.rx124-spiff form label{font-size:10px;color:#d9e6f6}.rx124-rule{color:#f7d68c!important;font-weight:700}.rx124-spiff select{width:100%;min-width:0;box-sizing:border-box;padding:7px;border:1px solid #6483a2;background:#07162b;color:white;border-radius:6px;margin-top:4px}.rx124-spiff input{width:100%;min-width:0;box-sizing:border-box;padding:7px;border:1px solid #6483a2;background:#07162b;color:white;border-radius:6px;margin-top:4px}.rx124-spiff form button{font-size:11px}@media(max-width:680px){.rx124-grid{grid-template-columns:1fr}.rx124-head{align-items:start;flex-direction:column}.rx124-grid article{padding:9px}.rx124-spiff form{grid-template-columns:1fr 1fr}}
+</style><style id="raiox-unified-dashboard-v137">
+#cin .hero-leader,#cin .mgrid.live-grid{display:none!important}
+#raioxCaptainHistory{width:min(960px,100%)!important;margin:10px auto 14px!important;box-sizing:border-box}
+#raioxCaptainHistory [data-captain-view="history"]{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+#raioxCaptainHistory [data-captain-view="current"] article{min-height:78px;display:flex;flex-direction:column;justify-content:center}
+#raioxCaptainHistory [data-captain-tab]{min-height:34px;padding:7px 12px!important;font-size:11px}
+#raioxCaptainHistory h3{font-size:15px!important;letter-spacing:.04em}
+@media(max-width:700px){#raioxCaptainHistory [data-captain-view="history"]{grid-template-columns:1fr!important}#raioxCaptainHistory{padding:10px!important}}
 </style></head>
 <body class="raiox-live-loading">
 <div id="raioxAppShell">
@@ -453,7 +461,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 <script src="./app.js?v=112" defer></script>
 <script src="./fx-engine.js" defer></script>
 <script src="./sales-count-fix.js" defer></script>
-<script src="./month-live.js?v=136" defer></script>
+<script src="./month-live.js?v=137" defer></script>
 <script src="./gestao-rafael.js?v=6" defer></script>
 <script>
 if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js", {scope:"./"}).catch(console.error)); }
