@@ -227,7 +227,7 @@
       if(weeklyFallback){w=num(r.week_volume);ws=num(r.week_sales);wv=num(r.week_vgv);}
       return {n:r.professional_name,w:hasDaily||weeklyFallback?w:null,ws:hasDaily||weeklyFallback?ws:null,wv:hasDaily||weeklyFallback?wv:null,hasData:hasDaily||weeklyFallback};
     }).sort((a,b)=>{
-      const aSuene=/^suene(?:\\s|$)/i.test(a.n.trim()),bSuene=/^suene(?:\\s|$)/i.test(b.n.trim());
+      const aSuene=/^suene(?:\s|$)/i.test(a.n.trim()),bSuene=/^suene(?:\s|$)/i.test(b.n.trim());
       if(aSuene!==bSuene)return aSuene?1:-1;
       if(a.hasData!==b.hasData)return a.hasData?-1:1;
       return (b.w??-1)-(a.w??-1)||(b.ws??-1)-(a.ws??-1)||(b.wv??-1)-(a.wv??-1)||a.n.localeCompare(b.n,'pt-BR');
@@ -573,7 +573,7 @@
     if($('radarCaptain')){
       $('radarCaptain').innerHTML='<div class="muted">Semana: '+captain.week.label+' • segunda a domingo • ranking completo</div>'+
         (leaders.length?'<div class="captain-full-ranking">'+leaders.map((p,i)=>{
-          const last=/^suene(?:\\s|$)/i.test(p.n.trim());
+          const last=/^suene(?:\s|$)/i.test(p.n.trim());
           const value=p.hasData?fmtInt(p.w):'—';
           const sales=p.hasData?fmtInt(p.ws)+' venda(s)':'Dados pendentes';
           return '<div class="fight '+(i===0?'lead':'')+(last?' captain-last':'')+'"><div class="place">'+(i+1)+'</div><div class="who"><b>'+esc(p.n)+(last?' • ÚLTIMA COLOCADA':'')+'</b><small>'+sales+'</small></div><div class="score">'+value+'<span class="gap">casais na semana</span></div></div>';
