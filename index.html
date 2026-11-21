@@ -202,6 +202,7 @@ html,body{max-width:100%;overflow-x:hidden}
           <span>⬇</span><b>INSTALAR APP</b><small>No celular</small>
         </button>
       </div>
+      <button class="entry-rank-shortcut" id="entryRankShortcut" type="button"><span>🏆</span><span><b>ACESSAR RANKING</b><small>Classificação individual • resultados do mês</small></span><strong>→</strong></button>
       <div class="install-status" id="installStatus" hidden></div>
     </div>
   </div>
@@ -511,6 +512,8 @@ document.addEventListener('DOMContentLoaded',()=>{
     history.replaceState(null,'',location.pathname+location.search+'#dash');
   };
   if(enter) enter.addEventListener('click',openOperation);
+  const entryRank=document.getElementById('entryRankShortcut');
+  if(entryRank) entryRank.addEventListener('click',()=>{openOperation();setTimeout(()=>document.querySelector('.app [data-go="rank"]')?.click(),180);});
   if(location.hash==='#dash') openOperation();
 });
 </script>
@@ -828,6 +831,18 @@ showSpiff();
  #cin .entry-command-dock>*{min-height:68px!important}
  #cin .entry-action-copy b{font-size:15px!important}
 }
+</style>
+
+
+<style id="raiox-entry-ranking-shortcut-v131">
+#cin .entry-rank-shortcut{display:flex;align-items:center;justify-content:center;gap:12px;width:min(650px,100%);min-height:62px;margin:10px auto 0;padding:12px 18px;border:1px solid #e7b957;border-radius:13px;background:linear-gradient(110deg,#30210c,#17233d);color:#fff;cursor:pointer;text-align:left;box-sizing:border-box}
+#cin .entry-rank-shortcut>span:nth-child(2){display:flex;flex-direction:column;gap:3px;flex:1}
+#cin .entry-rank-shortcut b{font-size:16px;letter-spacing:.06em;color:#ffda83}
+#cin .entry-rank-shortcut small{font-size:13px;color:#c9d8e9}
+#cin .entry-rank-shortcut>span:first-child{font-size:24px}
+#cin .entry-rank-shortcut>strong{font-size:23px;color:#ffda83}
+#cin .entry-rank-shortcut:hover{filter:brightness(1.15);border-color:#ffe2a0}
+@media(max-width:650px){#cin .entry-rank-shortcut{min-height:58px;padding:10px 13px}#cin .entry-rank-shortcut b{font-size:15px}#cin .entry-rank-shortcut small{font-size:12px}}
 </style>
 
 </body>
