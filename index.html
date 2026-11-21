@@ -699,5 +699,27 @@ showSpiff();
   window.addEventListener('raiox:month-loaded',e=>sync(e.detail?.month||''));
 })();
 </script>
+
+<style id="raiox-readable-type-v127">
+/* Legibilidade: regra final para prevalecer sobre estilos antigos */
+#raioxAppShell { font-size:16px!important; }
+#raioxAppShell :is(p,li,label,th,td,button,input,select,textarea,.muted,.hint,.lbl,.eyebrow,.sub,.meta,.caption,.analytics-scrollhint,.captain-data-note,.daily-live-card span,.daily-live-card small,.stage-context-meta span,.stage-context .eye) {
+  font-size:15px!important; line-height:1.5!important;
+}
+#raioxAppShell :is(.kpi small,.kpi span,.mc small,.mc span,.card small,.panel small) {
+  font-size:14px!important; line-height:1.45!important;
+}
+#raioxAppShell :is(.analytics-label,.analytics-value) { font-size:14px!important; line-height:1.45!important; }
+#raioxAppShell .bottom button { font-size:12px!important; line-height:1.3!important; }
+#raioxAppShell :is(.fight,.captain-full-ranking .fight) { font-size:15px!important; }
+@media(max-width:740px) {
+  #raioxAppShell :is(p,li,label,th,td,button,input,select,textarea,.muted,.hint,.lbl,.eyebrow,.sub,.meta,.caption,.analytics-scrollhint,.captain-data-note,.daily-live-card span,.daily-live-card small,.stage-context-meta span,.stage-context .eye) {
+    font-size:15px!important; line-height:1.5!important;
+  }
+  #raioxAppShell .bottom button { font-size:12px!important; min-height:48px!important; }
+  #raioxAppShell :is(.kpi small,.kpi span,.mc small,.mc span) { font-size:14px!important; }
+}
+</style>
+
 </body>
 </html>
